@@ -12,7 +12,7 @@
 		7922F91628A2E6160068879D /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7922F91528A2E6160068879D /* HomeView.swift */; };
 		7922F91828A2E6360068879D /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7922F91728A2E6360068879D /* Global.swift */; };
 		7922F91A28A2F1C40068879D /* ViewLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7922F91928A2F1C40068879D /* ViewLibrary.swift */; };
-		7922F91C28A2F3A40068879D /* StudentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7922F91B28A2F3A30068879D /* StudentView.swift */; };
+		7922F91C28A2F3A40068879D /* StudentEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7922F91B28A2F3A30068879D /* StudentEditView.swift */; };
 		795BC64D28A2DDD3004A9840 /* nachhilfeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795BC64C28A2DDD3004A9840 /* nachhilfeApp.swift */; };
 		795BC64F28A2DDD3004A9840 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795BC64E28A2DDD3004A9840 /* ContentView.swift */; };
 		795BC65128A2DDD5004A9840 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 795BC65028A2DDD5004A9840 /* Assets.xcassets */; };
@@ -22,6 +22,7 @@
 		795BC66128A2DE8A004A9840 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 795BC66028A2DE8A004A9840 /* RealmSwift */; };
 		795BC66428A2DFC0004A9840 /* Lesson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795BC66328A2DFC0004A9840 /* Lesson.swift */; };
 		795BC66628A2E077004A9840 /* Exam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795BC66528A2E077004A9840 /* Exam.swift */; };
+		79C1000028A41E620049DAD3 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C1FFFF28A41E620049DAD3 /* Enums.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,7 +31,7 @@
 		7922F91528A2E6160068879D /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		7922F91728A2E6360068879D /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		7922F91928A2F1C40068879D /* ViewLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewLibrary.swift; sourceTree = "<group>"; };
-		7922F91B28A2F3A30068879D /* StudentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentView.swift; sourceTree = "<group>"; };
+		7922F91B28A2F3A30068879D /* StudentEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentEditView.swift; sourceTree = "<group>"; };
 		795BC64928A2DDD3004A9840 /* nachhilfe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nachhilfe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		795BC64C28A2DDD3004A9840 /* nachhilfeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nachhilfeApp.swift; sourceTree = "<group>"; };
 		795BC64E28A2DDD3004A9840 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -40,6 +41,7 @@
 		795BC65B28A2DE3D004A9840 /* Student.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Student.swift; sourceTree = "<group>"; };
 		795BC66328A2DFC0004A9840 /* Lesson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lesson.swift; sourceTree = "<group>"; };
 		795BC66528A2E077004A9840 /* Exam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exam.swift; sourceTree = "<group>"; };
+		79C1FFFF28A41E620049DAD3 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,7 +64,7 @@
 				795BC64E28A2DDD3004A9840 /* ContentView.swift */,
 				7922F91128A2E5650068879D /* LoginView.swift */,
 				7922F91528A2E6160068879D /* HomeView.swift */,
-				7922F91B28A2F3A30068879D /* StudentView.swift */,
+				7922F91B28A2F3A30068879D /* StudentEditView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -88,6 +90,7 @@
 			children = (
 				795BC64C28A2DDD3004A9840 /* nachhilfeApp.swift */,
 				7922F91328A2E5C60068879D /* Privacy.swift */,
+				79C1FFFF28A41E620049DAD3 /* Enums.swift */,
 				7922F91028A2E5580068879D /* Views */,
 				795BC66228A2DFB8004A9840 /* Models */,
 				795BC65028A2DDD5004A9840 /* Assets.xcassets */,
@@ -194,7 +197,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7922F91228A2E5650068879D /* LoginView.swift in Sources */,
-				7922F91C28A2F3A40068879D /* StudentView.swift in Sources */,
+				7922F91C28A2F3A40068879D /* StudentEditView.swift in Sources */,
 				795BC64F28A2DDD3004A9840 /* ContentView.swift in Sources */,
 				795BC66628A2E077004A9840 /* Exam.swift in Sources */,
 				795BC65C28A2DE3D004A9840 /* Student.swift in Sources */,
@@ -203,6 +206,7 @@
 				7922F91628A2E6160068879D /* HomeView.swift in Sources */,
 				7922F91428A2E5C60068879D /* Privacy.swift in Sources */,
 				795BC66428A2DFC0004A9840 /* Lesson.swift in Sources */,
+				79C1000028A41E620049DAD3 /* Enums.swift in Sources */,
 				7922F91828A2E6360068879D /* Global.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

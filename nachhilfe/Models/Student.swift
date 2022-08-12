@@ -8,21 +8,6 @@
 import SwiftUI
 import RealmSwift
 
-class StudentLayer: ObservableObject{
-    init(){
-        surname = ""
-        name = ""
-        schoolClass = ""
-        payment = 0
-        color = .teal
-    }
-    @Published var surname: String
-    @Published var name: String
-    @Published var schoolClass: String
-    @Published var payment: Int
-    @Published var color: Student.Colors
-}
-
 class Student: Object, ObjectKeyIdentifiable{
     @Persisted(primaryKey: true) var _id: ObjectId
     @Persisted var surname: String
@@ -53,6 +38,73 @@ class Student: Object, ObjectKeyIdentifiable{
             case .black: return .black
             }
         }
+    }
+    
+    static func add(students: ObservedResults<Student>, model: StudentModel){
+        let student = Student()
+        student.surname = model.surname
+        student.name = model.name
+        student.schoolClass = model.schoolClass
+        student.payment = model.payment
+        student.color = model.color
+        students.append(student)
+    }
+    
+    static func update(student: ObservedRealmObject<Student>.Wrapper, model: StudentModel){
+        student.surname.wrappedValue = model.surname
+        student.name.wrappedValue = model.name
+        student.schoolClass.wrappedValue = model.schoolClass
+        student.payment.wrappedValue = model.payment
+        student.color.wrappedValue = model.color
+    }
+    static func delete(student: Student){
+        let students = realmEnv.objects(Student.self).filter("_id == %@", student._id).first!
+        try! realmEnv.write{
+            for exam in students.exams{
+                print(exam)
+                //delete exams
+            }
+            for lesson in students.lessons{
+                print(lesson)
+                //delete lessons
+            }
+            realmEnv.delete(student)
+        }
+    }
+}
+
+class StudentModel: ObservableObject{
+    init(){
+        _id = ObjectId()
+        surname = ""
+        name = ""
+        schoolClass = ""
+        payment = 0
+        color = .teal
+    }
+    @Published var _id: ObjectId
+    @Published var surname: String
+    @Published var name: String
+    @Published var schoolClass: String
+    @Published var payment: Int
+    @Published var color: Student.Colors
+    
+    func toLayer(student: Student)->StudentModel{
+        _id = student._id
+        surname = student.surname
+        name = student.name
+        schoolClass = student.schoolClass
+        payment = student.payment
+        color = student.color
+        return self
+    }
+    func toRealm(student: Student)->Student{
+        student.surname = surname
+        student.name = name
+        student.schoolClass = schoolClass
+        student.payment = payment
+        student.color = color
+        return student
     }
 }
 
