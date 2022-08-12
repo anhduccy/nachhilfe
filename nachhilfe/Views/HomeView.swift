@@ -8,42 +8,56 @@
 import SwiftUI
 import Realm
 import RealmSwift
+import UIKit
 
 struct HomeView: View {
     @ObservedResults(Student.self) var students
     
-    @State var showStudentView: Bool = false
+    @State var showStudentEditView: Bool = false
     @State var editViewType: EditViewTypes = .add
+    @State var selectedStudent: Student? = nil
+    
+    @State var username: String = "Anh"
     
     var body: some View {
         ZStack{
-            HStack{
-                VStack(spacing: 30){
-                    LeftText("Hallo Anh!", font: .system(size: 50), fontWeight: .black)
-                    VStack{
-                        HStack{
-                            LeftText("Alle Nachhilfeschüler", font: .title, fontWeight: .bold)
-                            Spacer()
-                            Button(action: {
-                                showStudentView = true
+            VStack(spacing: 30){
+                HStack(spacing: 7){
+                    Text("Hallo")
+                        .font(.system(size: 50).weight(.black))
+                    Text(username+"!")
+                        .font(.system(size: 50).weight(.black))
+                        .foregroundColor(.teal)
+                    Spacer()
+                }
+                VStack{
+                    HStack{
+                        LeftText("Alle Nachhilfeschüler", font: .title, fontWeight: .bold)
+                        Spacer()
+                        Button(action: {
+                            withAnimation{
                                 editViewType = .add
-                            }, label: {
-                                Icon(systemName: "plus")
-                            })
-                        }
-                        ScrollView(.horizontal, showsIndicators: false){
-                            HStack(spacing: 10){
-                                ForEach(students, id: \.self){ student in
-                                    StudentCard(student: student, editViewType: $editViewType)
-                                }
+                                selectedStudent = nil
+                                showStudentEditView = true
+                            }
+                        }, label: {
+                            Icon(systemName: "plus")
+                        })
+                    }
+                    ScrollView(.horizontal, showsIndicators: false){
+                        HStack(spacing: 10){
+                            ForEach(students, id: \.self){ student in
+                                StudentCard(student: student, selectedStudent: $selectedStudent, showStudentEditView: $showStudentEditView, editViewType: $editViewType)
                             }
                         }
                     }
-                    Spacer()
                 }
-                
-                StudentEditView(type: .add, student: nil, isPresented: $showStudentView)
+                Spacer()
             }
+                
+            StudentEditView(type: editViewType, student: selectedStudent, isPresented: $showStudentEditView)
+                .offset(x: showStudentEditView ? 330 : UIScreen().bounds.width+750, y: UIScreen().bounds.height-350/2)
+                        
         }
         .padding(50)
     }
@@ -51,14 +65,13 @@ struct HomeView: View {
 
 struct StudentCard: View{
     let student: Student
-    @State var showStudentEditView: Bool = false
+    @Binding var selectedStudent: Student?
+    @Binding var showStudentEditView: Bool
     @Binding var editViewType: EditViewTypes
     
     var body: some View{
         ZStack{
-            //Background
-            RoundedRectangle(cornerRadius: 15)
-                .foregroundColor(.teal)
+            GlassBackground(width: 275, height: 200, color: student.color.color)
             VStack{
                 HStack(alignment: .top){
                     Image(systemName: "person.fill")
@@ -68,16 +81,18 @@ struct StudentCard: View{
                         .opacity(0.5)
                     Spacer()
                     Button(action: {
-                        showStudentEditView.toggle()
+                        withAnimation{
+                            editViewType = .edit
+                            selectedStudent = student
+                            showStudentEditView = true
+                        }
                     }, label: {
                         Image(systemName: "info.circle")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 15)
-                    }).sheet(isPresented: $showStudentEditView){
-                        StudentEditView(type: .edit, student: student, isPresented: $showStudentEditView)
-                    }
-                }.foregroundColor(.white)
+                    })
+                }.foregroundColor(student.color.color)
                 Spacer()
             }.padding(15)
             
@@ -88,7 +103,7 @@ struct StudentCard: View{
                     .font(.title.weight(.bold))
                 Spacer()
             }
-            .foregroundColor(.white)
+            .foregroundColor(student.color.color)
             .padding(30)
         }.frame(width: 275, height: 200)
     }
