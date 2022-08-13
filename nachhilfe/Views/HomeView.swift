@@ -10,7 +10,7 @@ import Realm
 import RealmSwift
 import UIKit
 
-struct HomeView: View {
+struct HomeView: View, KeyboardReadable {
     @ObservedResults(Student.self) var students
     
     @State var showStudentEditView: Bool = false
@@ -54,12 +54,13 @@ struct HomeView: View {
                 }
                 Spacer()
             }
-                
+            
             StudentEditView(type: editViewType, student: selectedStudent, isPresented: $showStudentEditView)
                 .offset(x: showStudentEditView ? 330 : UIScreen().bounds.width+750, y: UIScreen().bounds.height-350/2)
                         
         }
         .padding(50)
+        .ignoresSafeArea(.keyboard)
     }
 }
 
@@ -68,7 +69,6 @@ struct StudentCard: View{
     @Binding var selectedStudent: Student?
     @Binding var showStudentEditView: Bool
     @Binding var editViewType: EditViewTypes
-    
     var body: some View{
         ZStack{
             GlassBackground(width: 275, height: 200, color: student.color.color)

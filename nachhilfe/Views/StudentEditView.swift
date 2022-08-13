@@ -34,7 +34,11 @@ struct StudentEditView: View {
             ZStack{
                 VStack(spacing: 20){
                     HStack(alignment: .top){
-                        Text("Dein/e Schüler/in").font(.title.weight(.bold))
+                        if type == .add{
+                            Text("Neue/r Schüler/in").font(.title.weight(.bold))
+                        } else if type == .edit{
+                            Text("Dein/e Schüler/in").font(.title.weight(.bold))
+                        }
                         Spacer()
                         Button(action: {
                             withAnimation{
@@ -76,7 +80,9 @@ struct StudentEditView: View {
                         Text("€")
                     }
                     .font(.title2.bold())
-                    Spacer()
+                    
+                    Spacer().ignoresSafeArea(.keyboard)
+
                     HStack{
                         Spacer()
                         Button("Speichern"){
