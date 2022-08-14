@@ -17,7 +17,7 @@ struct ContentView: View {
                 LoginView()
             } else {
                 if let user = realmApp.currentUser{
-                    HomeView()
+                    NavigatorView()
                         .environment(\.realmConfiguration, user.configuration(partitionValue: user.id))
                         .onAppear{
                             realmEnv = try! Realm(configuration: user.configuration(partitionValue: user.id))
@@ -33,11 +33,5 @@ struct ContentView: View {
                 global.username = user.id
             }
         }
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
     }
 }
