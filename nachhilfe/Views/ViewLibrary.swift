@@ -32,7 +32,7 @@ extension KeyboardReadable {
 
 
 struct LeftText: View{
-    init(_ text: String, font: Font, fontWeight: Font.Weight){
+    init(_ text: String, font: Font = .body, fontWeight: Font.Weight = .regular){
         self.text = text
         self.font = font
         self.fontWeight = fontWeight

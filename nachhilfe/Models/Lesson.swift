@@ -15,8 +15,68 @@ class Lesson: Object, ObjectKeyIdentifiable{
     @Persisted var duration: Int
     @Persisted var isDone: Bool
     @Persisted var isPayed: Bool
+    @Persisted var content: String
     @Persisted var notes: String
-    @Persisted var notesGood: String
-    @Persisted var notesBad: String
-    @Persisted var notesContent: String
+    
+    static func add(student: Student, model: LessonModel){
+        try? realmEnv.write{
+            let student: Student = realmEnv.objects(Student.self).filter("_id == %@", student._id).first!
+            student.lessons.append(model.toRealm(lesson: Lesson()))
+        }
+    }
+    
+    static func update(lesson: ObservedRealmObject<Lesson>.Wrapper, model: LessonModel){
+        lesson.date.wrappedValue = model.date
+        lesson.duration.wrappedValue = model.duration
+        lesson.isDone.wrappedValue = model.isDone
+        lesson.isPayed.wrappedValue = model.isPayed
+        lesson.content.wrappedValue = model.content
+        lesson.notes.wrappedValue = model.notes
+    }
+    static func delete(lesson: Lesson){
+        realmEnv.delete(lesson)
+    }
+}
+
+class LessonModel: ObservableObject{
+    init(){
+        self._id = ObjectId()
+        self.date = Date()
+        self.duration = 60
+        self.isDone = false
+        self.isPayed = false
+        self.content = ""
+        self.notes = ""
+        self.student = Student()
+    }
+    @Published var _id: ObjectId
+    @Published var date: Date
+    @Published var duration: Int
+    @Published var isDone: Bool
+    @Published var isPayed: Bool
+    @Published var content: String
+    @Published var notes: String
+    @Published var student: Student
+    
+    func toLayer(lesson: Lesson)->LessonModel{
+        _id = lesson._id
+        date = lesson.date
+        duration = lesson.duration
+        isDone = lesson.isDone
+        isPayed = lesson.isPayed
+        content = lesson.content
+        notes = lesson.notes
+        student = lesson.student.first ?? Student()
+        return self
+    }
+    
+    func toRealm(lesson: Lesson)->Lesson{
+        lesson.date = date
+        lesson.duration = duration
+        lesson.isDone = isDone
+        lesson.isPayed = isPayed
+        lesson.content = content
+        lesson.notes = notes
+        return lesson
+    }
 }

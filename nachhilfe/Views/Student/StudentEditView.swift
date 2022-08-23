@@ -84,6 +84,14 @@ struct StudentEditView: View {
                     Spacer().ignoresSafeArea(.keyboard)
 
                     HStack{
+                        if type == .edit{
+                            Button(action: {
+                                Student.delete(student: student)
+                            }, label: {
+                                Image(systemName: "trash")
+                                    .foregroundColor(.white)
+                            })
+                        }
                         Spacer()
                         Button("Speichern"){
                             if type == .add{

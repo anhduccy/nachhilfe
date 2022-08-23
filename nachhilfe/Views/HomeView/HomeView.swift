@@ -24,9 +24,9 @@ struct HomeView: View, KeyboardReadable {
             VStack(spacing: 30){
                 HStack(spacing: 7){
                     Text("Hallo")
-                        .font(.system(size: 50).weight(.black))
+                        .font(.system(size: 50).weight(.heavy))
                     Text(username+"!")
-                        .font(.system(size: 50).weight(.black))
+                        .font(.system(size: 50).weight(.heavy))
                         .foregroundColor(.teal)
                     Spacer()
                 }

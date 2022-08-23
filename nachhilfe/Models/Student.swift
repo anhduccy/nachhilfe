@@ -41,13 +41,7 @@ class Student: Object, ObjectKeyIdentifiable{
     }
     
     static func add(students: ObservedResults<Student>, model: StudentModel){
-        let student = Student()
-        student.surname = model.surname
-        student.name = model.name
-        student.schoolClass = model.schoolClass
-        student.payment = model.payment
-        student.color = model.color
-        students.append(student)
+        students.append(model.toRealm(student: Student()))
     }
     
     static func update(student: ObservedRealmObject<Student>.Wrapper, model: StudentModel){
@@ -59,7 +53,6 @@ class Student: Object, ObjectKeyIdentifiable{
     }
     static func delete(student: Student){
         let students = realmEnv.objects(Student.self).filter("_id == %@", student._id).first!
-        try! realmEnv.write{
             for exam in students.exams{
                 print(exam)
                 //delete exams
@@ -69,7 +62,6 @@ class Student: Object, ObjectKeyIdentifiable{
                 //delete lessons
             }
             realmEnv.delete(student)
-        }
     }
 }
 
