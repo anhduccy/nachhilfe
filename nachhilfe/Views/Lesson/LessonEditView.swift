@@ -39,6 +39,13 @@ struct LessonEditView: View {
 	@ObservedResults(Student.self) var students
 	@State var selectedStudent: Student
 	
+	var dateFormatter: DateFormatter {
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateFormat = "dd. MMMM. YYYY"
+		dateFormatter.locale = Locale(identifier: "de_DE")
+		return dateFormatter
+	}
+	
 	var body: some View {
 		GeometryReader{ geo in
 			ZStack{
@@ -66,7 +73,7 @@ struct LessonEditView: View {
 									VStack(spacing: 0){
 										LeftText("\(selectedStudent.surname) \(selectedStudent.name)", font: .title, fontWeight: .bold)
 											.foregroundColor(.teal)
-										LeftText(type == .add ? "Neue Stunde hinzufügen" : "Stunde vom /{Datum}", font: .callout)
+										LeftText(type == .add ? "Neue Stunde hinzufügen" : "Stunde vom \(dateFormatter.string(from: model.date))", font: .callout)
 											.foregroundColor(.gray)
 									}
 								})
@@ -125,7 +132,7 @@ struct LessonEditView: View {
 							VStack(alignment: .leading){
 								Text(model.isDone ? "Die Stunde wurde absolviert" : "Die Stunde wurde noch nicht absolviert").font(.callout)
 									.foregroundColor(model.isDone ? .blue : .gray)
-								Text(model.isPayed ? "Die Stunde wurde bezahlt" : "Die Zahlung ist für diese Stunde noch ausstehend").font(.callout)
+								Text(model.isPayed ? "Die Stunde wurde bezahlt" : "Die Zahlung ist noch ausstehend").font(.callout)
 									.foregroundColor(model.isPayed ? .green : .gray)
 							}
 							Spacer()
@@ -145,8 +152,8 @@ struct LessonEditView: View {
 								} else if type == .edit{
 									Lesson.update(lesson: $selectedLesson, model: model)
 								}
+								isPresented = false
 							}
-							isPresented = false
 						}.bold()
 							.foregroundColor(.teal)
 					}

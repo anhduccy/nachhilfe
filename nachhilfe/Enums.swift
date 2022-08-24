@@ -31,4 +31,4 @@ enum ViewTypes: CaseIterable{
             return "clock"
         }
     }
-}
+} 
