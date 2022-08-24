@@ -52,26 +52,28 @@ struct LeftText: View{
 }
 
 struct Icon: View{
-    init(systemName: String, color: Color = .teal, size: CGFloat = 30){
+    init(systemName: String, color: Color = .teal, size: CGFloat = 30, isActivated: Bool = true){
         self.systemName = systemName
         self.color = color
         self.size = size
+        self.isActivated = isActivated
     }
-    let systemName: String
-    let color: Color
-    let size: CGFloat
+    private let systemName: String
+    private let color: Color
+    private let size: CGFloat
+    private let isActivated: Bool
     
     var body: some View{
         ZStack{
             Circle()
-                .fill(color)
+                .fill(isActivated ? color : .gray)
                 .opacity(0.2)
                 .frame(width: size, height: size)
             Image(systemName: systemName)
                 .resizable()
                 .scaledToFit()
                 .frame(width: size/2)
-                .foregroundColor(color)
+                .foregroundColor(isActivated ? color : .gray)
         }
     }
 }
