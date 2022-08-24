@@ -59,8 +59,7 @@ struct HomeView: View, KeyboardReadable {
                 .offset(x: showStudentEditView ? 330 : UIScreen().bounds.width+750, y: UIScreen().bounds.height-350/2)
                         
         }
-        .padding(.leading, 50)
-        .padding(.trailing, 50)
+        .padding()
         .ignoresSafeArea(.keyboard)
     }
 }

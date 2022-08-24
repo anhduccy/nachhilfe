@@ -14,52 +14,52 @@ struct LessonsView: View {
     @State var showLessonEditView: Bool = false
     @State var editViewType: EditViewTypes = .add
     
-    var body: some View {
-        ZStack{
-            VStack{
-                HStack(alignment: .bottom, spacing: 10){
-                    Text("Übersicht").font(.system(size: 50).weight(.heavy))
-                    Text("Nachhilfestunden").font(.title2.weight(.bold))
-                        .foregroundColor(.teal)
+	var body: some View {
+		ZStack{
+			HStack{
+				VStack{
+					VStack(spacing: 0){
+						HStack(alignment: .bottom, spacing: 10){
+							Text("Übersicht").font(.system(size: 50).weight(.heavy))
+							Spacer()
+							Button(action: {
+								withAnimation{
+									selectedLesson = nil
+									editViewType = .add
+									showLessonEditView = true
+								}
+							}, label: {
+								Icon(systemName: "plus")
+							})
+						}
+						LeftText("Nachhilfestunden", font: .title2, fontWeight: .bold)
+							.foregroundColor(.teal)
+					}
+                    HStack{
+                        LessonList()
+                        
+                        //Right: Statistics and Recents
+                        
+                        //FadeIn: EditView
+                    }
                     Spacer()
-                    Button(action: {
-                        withAnimation{
-                            selectedLesson = nil
-                            editViewType = .add
-                            showLessonEditView = true
-                        }
-                    }, label: {
-                        Icon(systemName: "plus")
-                    })
+                }.padding()
+                if showLessonEditView {
+					Divider()
+                    LessonEditView(type: editViewType, lesson: selectedLesson, isPresented: $showLessonEditView)
+						.frame(width: 350)
                 }
-                HStack{
-                    LessonList()
-                    
-                    //Right: Statistics and Recents
-                    
-                    //FadeIn: EditView
-                }
-                Spacer()
             }
-            
-            LessonEditView(type: editViewType, lesson: selectedLesson, isPresented: $showLessonEditView)
-                .offset(x: showLessonEditView ? 330 : UIScreen().bounds.width+750)
-        }
-        .padding(.leading, 50)
-        .padding(.trailing, 50)
-        
-    }
+		}
+	}
 }
 
 //Lesson List with all lessons + student filter option with the "all" case
 struct LessonList: View{
     @ObservedResults(Lesson.self) var lessons
     var body: some View{
-        Text("Alle").font(.title2.weight(.bold)) //Picker-Option
-        List{
-            ForEach(lessons, id: \.self){ lesson in
-                Text(lesson.date.description)
-            }
-        }
+		ForEach(lessons, id: \.self){ lesson in
+			Text(lesson.date.description)
+		}
     }
 }

@@ -27,6 +27,7 @@ struct LessonEditView: View {
         } else {
             _selectedStudent = State(initialValue: Student()) //TO-DO: ERROR MELDUNG
         }
+		print(_selectedStudent)
     }
     
     @Environment(\.colorScheme) var appearance
@@ -41,64 +42,92 @@ struct LessonEditView: View {
     var body: some View {
         GeometryReader{ geo in
             ZStack{
-                VStack{
+				VStack{
                     ScrollView(.vertical, showsIndicators: false) {
-                        VStack(alignment: .leading){
-                            LeftText(type == .add ? "Stunde hinzufügen" : "Stunde vom /{Datum}", font: .title, fontWeight: .bold)
-                                .foregroundColor(.teal)
-                            Picker("", selection: $selectedStudent){
-                                ForEach(students, id:\.self){ student in
-                                    Text(student.surname + " " + student.name).tag(student)
-                                }
-                            }
-                            HStack{
-                                Text("Dauer")
-                                TextField("in Minuten", value: $model.duration, format: .number)
-                                    .keyboardType(.decimalPad)
-                                    .textFieldStyle(.plain)
-                                Spacer()
-                            }
+						VStack(alignment: .leading, spacing: 30){
+							Menu(content: {
+								ForEach(students, id:\.self){ student in
+									Button(action: {
+										selectedStudent = student
+									}, label: {
+										HStack{
+											Text(student.surname + " " + student.name)
+											if selectedStudent == student {
+												Image(systemName: "checkmark")
+													.resizable()
+													.scaledToFit()
+													.frame(width: 15)
+											}
+										}
+									})
+								}
+							}, label: {
+								VStack(spacing: 0){
+									LeftText("\(selectedStudent.surname) \(selectedStudent.name)", font: .title, fontWeight: .bold)
+										.foregroundColor(.teal)
+									LeftText(type == .add ? "Neue Stunde hinzufügen" : "Stunde vom /{Datum}", font: .callout)
+										.foregroundColor(.gray)
+								}
+							})
+							
+							VStack(alignment: .leading){
+								HStack{
+									Icon(systemName: "clock")
+									TextField(value: $model.duration, format: .number, label: {Text("Dauer in Minuten")
+									})
+									.foregroundColor(.gray)
+									.keyboardType(.decimalPad)
+									.textFieldStyle(.roundedBorder)
+								}
+								
+								HStack{
+									Icon(systemName: "calendar")
+									DatePicker(selection: $model.date, displayedComponents: [.date, .hourAndMinute], label: {})
+										.datePickerStyle(.compact)
+								}
+							}
                             
-                            
-                            DatePicker("", selection: $model.date, displayedComponents: [.date, .hourAndMinute])
-                                .datePickerStyle(.graphical)
-                            
-                            VStack(spacing: 0) {
-                                LeftText("Inhalt der Nachhilfestunde", font: .title2, fontWeight: .bold)
-                                TextEditor(text: $model.content)
-                                    .border(.teal)
-                            }
-                            
-                            VStack(spacing: 0) {
-                                LeftText("Notizen", font: .title2, fontWeight: .bold)
-                                TextEditor(text: $model.notes)
-                                    .border(.teal)
-
-                            }
-                        
-                            Spacer()
+							VStack(spacing: 20){
+								VStack(spacing: 5) {
+									LeftText("Inhalt der Nachhilfestunde", font: .title3, fontWeight: .bold)
+									TextEditor(text: $model.content)
+										.border(.teal)
+										.frame(height: 150)
+								}
+								
+								VStack(spacing: 5) {
+									LeftText("Notizen", font: .title3, fontWeight: .bold)
+									TextEditor(text: $model.notes)
+										.border(.teal)
+										.frame(height: 150)
+								}
+							}
+							Spacer()
                         }
                     }
                     HStack{
-                        Spacer()
-                        Button("Fertig"){
-                            if type == .add{
-                                Lesson.add(student: selectedStudent, model: model)
-                            } else if type == .edit{
-                                Lesson.update(lesson: $selectedLesson, model: model)
-                            }
+                        Button("Abbrechen"){
+                            withAnimation{
+                                isPresented = false
+							}
+						}.foregroundColor(.gray)
+						Spacer()
+						Button("Fertig"){
+							withAnimation{
+								if type == .add{
+									Lesson.add(student: selectedStudent, model: model)
+								} else if type == .edit{
+									Lesson.update(lesson: $selectedLesson, model: model)
+								}
+							}
                             isPresented = false
                         }.bold()
                             .foregroundColor(.teal)
                     }
                 }
                 .padding()
-                .background(appearance == .dark ? .black : .white)
-                .cornerRadius(20)
-                .frame(height: geo.size.height*0.9)
-                .shadow(color: appearance == .dark ? .teal : .gray, radius: 2.5)
             }
-        }.frame(width: 350)
+        }
     }
 }
 

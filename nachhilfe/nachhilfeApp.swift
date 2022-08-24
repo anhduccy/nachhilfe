@@ -9,7 +9,7 @@ import SwiftUI
 import Realm
 import RealmSwift
 
-let realmApp = RealmSwift.App(id: Keys.app)
+let realmApp = RealmSwift.App(id: "nachhilfe-qnbvj")
 var realmEnv = try! Realm(configuration: .defaultConfiguration)
 
 @main
