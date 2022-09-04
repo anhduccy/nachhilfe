@@ -37,9 +37,6 @@ struct LessonsView: View {
 					}
 					HStack{
 						LessonList(selectedLesson: $selectedLesson, showLessonEditView: $showLessonEditView, editViewType: $editViewType)
-						Divider()
-						//Right: Statistics and Recents
-						EmptyView()
 					}
 					Spacer()
 				}.padding()
@@ -60,74 +57,87 @@ struct LessonList: View{
 	@Binding var editViewType: EditViewTypes
 
 	@ObservedResults(Student.self) var students
-	@ObservedResults(Lesson.self) var lessons
+	@ObservedResults(Lesson.self, sortDescriptor: SortDescriptor(keyPath: "date", ascending: true)) var lessons
 	@State var selectedStudent: Student? = nil
 	
 	var body: some View{
 		GeometryReader{ geo in
 			VStack {
-				Menu(content: {
-					Button(action: {
-						selectedStudent = nil
-					}, label: {
-						HStack{
-							Text("Alle")
-							if selectedStudent == nil{
-								Image(systemName: "checkmark")
-							}
-						}
-					})
-					
-					ForEach(students, id: \.self){ student in
+				HStack{
+					if selectedStudent == nil {
+						Text("Alle")
+							.font(.title3.weight(.bold))
+					} else {
+						Text(selectedStudent!.surname + " " + selectedStudent!.name)
+							.font(.title3.weight(.bold))
+					}
+					Spacer()
+					Menu(content: {
 						Button(action: {
-							selectedStudent = student
+							selectedStudent = nil
 						}, label: {
 							HStack{
-								Text(student.surname + " " + student.name)
-								if selectedStudent == student{
+								Text("Alle")
+								if selectedStudent == nil{
 									Image(systemName: "checkmark")
 								}
 							}
 						})
-					}
-				}, label: {
-					HStack{
-						Image(systemName: "line.3.horizontal.decrease.circle")
-						if selectedStudent == nil {
-							Text("Alle")
-						} else {
-							Text(selectedStudent!.surname + " " + selectedStudent!.name)
-						}
-						Spacer()
-					}.font(.title3.weight(.semibold))
-					.foregroundColor(.teal)
-				})
-				
-				
-				if selectedStudent == nil{
-					ForEach(lessons, id: \.self){ lesson in
-						LessonListItem(lesson: lesson)
-							.onTapGesture {
-								withAnimation{
-									selectedLesson = lesson
-									editViewType = .edit
-									showLessonEditView = true
+						
+						ForEach(students, id: \.self){ student in
+							Button(action: {
+								selectedStudent = student
+							}, label: {
+								HStack{
+									Text(student.surname + " " + student.name)
+									if selectedStudent == student{
+										Image(systemName: "checkmark")
+									}
 								}
-							}
-					}
-				} else {
-					ForEach(selectedStudent!.lessons, id: \.self){ lesson in
-						Text(lesson.date.description)
+							})
+						}
+					}, label: {
+						Text("Wählen").font(.body.weight(.regular))
+							.foregroundColor(.teal)
+					})
+					
+				}
+				
+				VStack(spacing: 10) {
+					if selectedStudent == nil{
+						ForEach(lessons, id: \.self){ lesson in
+							LessonListItem(lesson: lesson, all: true)
+								.onTapGesture {
+									withAnimation{
+										selectedLesson = lesson
+										editViewType = .edit
+										showLessonEditView = true
+									}
+								}
+						}
+					} else {
+						ForEach(selectedStudent!.lessons, id: \.self){ lesson in
+							LessonListItem(lesson: lesson, all: false)
+								.onTapGesture {
+									withAnimation{
+										selectedLesson = lesson
+										editViewType = .edit
+										showLessonEditView = true
+									}
+								}
+						}
 					}
 				}
 				Spacer()
-			}.frame(width: geo.size.width/2)
+			}.frame(width: geo.size.width)
 		}
 	}
 }
 
 struct LessonListItem: View{
-	let lesson: Lesson
+	@Environment(\.colorScheme) var appearance
+	@ObservedRealmObject var lesson: Lesson
+	let all: Bool
 	
 	var dateFormatter: DateFormatter {
 			let dateFormatter = DateFormatter()
@@ -138,13 +148,20 @@ struct LessonListItem: View{
 
 	var body: some View{
 		ZStack {
-			RoundedRectangle(cornerRadius: 5).fill(.ultraThinMaterial)
-				.shadow(radius: 2.5)
+			RoundedRectangle(cornerRadius: 10).fill(appearance == .dark ? Color.init(red: 30/255, green: 30/255, blue: 30/255) : Color.white)
+				.shadow(radius: 1.5)
 			
 			HStack {
 				VStack(alignment: .leading, spacing: 0) {
-					Text(dateFormatter.string(from: lesson.date))
-						.font(.callout.bold())
+					HStack(spacing: 5){
+						Text(dateFormatter.string(from: lesson.date))
+							.font(.callout.bold())
+						if all{
+							Text(lesson.student.first!.surname + " " + lesson.student.first!.name)
+								.font(.callout.bold())
+								.foregroundColor(.teal)
+						}
+					}
 					VStack{
 						if lesson.isPayed && lesson.isDone{
 							Text("Stunde absolviert und gezahlt")
@@ -162,22 +179,37 @@ struct LessonListItem: View{
 							Text("Stunde weder absolviert noch gezahlt")
 								.foregroundColor(.gray)
 						}
-					}.font(.caption)
+					}.font(.footnote)
 				}
 				Spacer()
-				HStack(spacing: 3){
-					Icon(systemName: lesson.isDone ? "checkmark.circle.fill" : "checkmark.circle", color: .blue, size: 35, isActivated: lesson.isDone)
+				HStack(spacing: 5){
+					Image(systemName: lesson.isDone ? "checkmark.circle.fill" : "checkmark.circle")
+						.resizable()
+						.scaledToFit()
+						.frame(width: 25)
 						.onTapGesture {
 							withAnimation{
-								lesson.isDone.toggle()
+								try! realmEnv.write{
+									$lesson.isDone.wrappedValue.toggle()
+								}
 							}
 						}
-					Icon(systemName: lesson.isPayed ? "eurosign.circle.fill" : "eurosign.circle", color: .green, size: 35, isActivated: lesson.isPayed)
+						.foregroundColor(lesson.isDone ? .teal : .gray)
+						.opacity(lesson.isDone ? 1 : 0.5)
+					
+					Image(systemName: lesson.isPayed ? "eurosign.circle.fill" : "eurosign.circle")
+						.resizable()
+						.scaledToFit()
+						.frame(width: 25)
 						.onTapGesture {
 							withAnimation{
-								lesson.isPayed.toggle()
+								try! realmEnv.write{
+									$lesson.isPayed.wrappedValue.toggle()
+								}
 							}
 						}
+						.foregroundColor(lesson.isPayed ? .green : .gray)
+						.opacity(lesson.isPayed ? 1 : 0.5)
 				}
 			}.padding()
 		}

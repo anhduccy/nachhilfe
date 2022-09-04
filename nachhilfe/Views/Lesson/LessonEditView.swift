@@ -52,45 +52,66 @@ struct LessonEditView: View {
 				VStack{
 					ScrollView(.vertical, showsIndicators: false) {
 						VStack(alignment: .leading, spacing: 25){
-							HStack{
-								Menu(content: {
-									ForEach(students, id:\.self){ student in
-										Button(action: {
-											selectedStudent = student
-										}, label: {
-											HStack{
-												Text(student.surname + " " + student.name)
-												if selectedStudent == student {
-													Image(systemName: "checkmark")
-														.resizable()
-														.scaledToFit()
-														.frame(width: 15)
+							VStack(spacing: 10){
+								HStack{
+									Menu(content: {
+										ForEach(students, id:\.self){ student in
+											Button(action: {
+												selectedStudent = student
+												model.student = student
+											}, label: {
+												HStack{
+													Text(student.surname + " " + student.name)
+													if selectedStudent == student {
+														Image(systemName: "checkmark")
+															.resizable()
+															.scaledToFit()
+															.frame(width: 15)
+													}
+												}
+											})
+										}
+									}, label: {
+										VStack(spacing: 0){
+											LeftText("\(selectedStudent.surname) \(selectedStudent.name)", font: .title, fontWeight: .bold)
+												.foregroundColor(.teal)
+											LeftText(type == .add ? "Neue Stunde hinzufügen" : "Stunde vom \(dateFormatter.string(from: model.date))", font: .callout)
+												.foregroundColor(.gray)
+										}
+									})
+									Spacer()
+									VStack(spacing: 3){
+										Image(systemName: model.isDone ? "checkmark.circle.fill" : "checkmark.circle")
+											.resizable()
+											.scaledToFit()
+											.frame(width: 20)
+											.onTapGesture {
+												withAnimation{
+													model.isDone.toggle()
 												}
 											}
-										})
-									}
-								}, label: {
-									VStack(spacing: 0){
-										LeftText("\(selectedStudent.surname) \(selectedStudent.name)", font: .title, fontWeight: .bold)
-											.foregroundColor(.teal)
-										LeftText(type == .add ? "Neue Stunde hinzufügen" : "Stunde vom \(dateFormatter.string(from: model.date))", font: .callout)
-											.foregroundColor(.gray)
-									}
-								})
-								Spacer()
-								VStack(spacing: 3){
-									Icon(systemName: model.isDone ? "checkmark.circle.fill" : "checkmark.circle", color: .blue, isActivated: model.isDone)
-										.onTapGesture {
-											withAnimation{
-												model.isDone.toggle()
+											.foregroundColor(model.isDone ? .teal : .gray)
+											.opacity(model.isDone ? 1 : 0.5)
+										
+										Image(systemName: model.isPayed ? "eurosign.circle.fill" : "eurosign.circle")
+											.resizable()
+											.scaledToFit()
+											.frame(width: 20)
+											.onTapGesture {
+												withAnimation{
+													model.isPayed.toggle()
+												}
 											}
-										}
-									Icon(systemName: model.isPayed ? "eurosign.circle.fill" : "eurosign.circle", color: .green, isActivated: model.isPayed)
-										.onTapGesture {
-											withAnimation{
-												model.isPayed.toggle()
-											}
-										}
+											.foregroundColor(model.isPayed ? .green : .gray)
+											.opacity(model.isPayed ? 1 : 0.5)
+									}
+								}
+								
+								VStack(alignment: .leading){
+									LeftText(model.isDone ? "Die Stunde wurde absolviert" : "Die Stunde wurde noch nicht absolviert", font: .callout)
+										.foregroundColor(model.isDone ? .blue : .gray)
+									LeftText(model.isPayed ? "Die Stunde wurde bezahlt" : "Die Zahlung ist noch ausstehend", font: .callout)
+										.foregroundColor(model.isPayed ? .green : .gray)
 								}
 							}
 							
@@ -114,26 +135,21 @@ struct LessonEditView: View {
 									}
 								}.foregroundColor(.gray)
 							}
+							Spacer()
 							VStack{
 								VStack(spacing: 5) {
 									LeftText("Inhalt der Nachhilfestunde", font: .title3, fontWeight: .bold)
 									TextEditor(text: $model.content)
-										.border(.teal)
+										.border(.gray.opacity(0.5))
 										.frame(height: 150)
 								}
 								
 								VStack(spacing: 5) {
 									LeftText("Notizen", font: .title3, fontWeight: .bold)
 									TextEditor(text: $model.notes)
-										.border(.teal)
+										.border(.gray.opacity(0.5))
 										.frame(height: 150)
 								}
-							}
-							VStack(alignment: .leading){
-								Text(model.isDone ? "Die Stunde wurde absolviert" : "Die Stunde wurde noch nicht absolviert").font(.callout)
-									.foregroundColor(model.isDone ? .blue : .gray)
-								Text(model.isPayed ? "Die Stunde wurde bezahlt" : "Die Zahlung ist noch ausstehend").font(.callout)
-									.foregroundColor(model.isPayed ? .green : .gray)
 							}
 							Spacer()
 						}
@@ -144,13 +160,22 @@ struct LessonEditView: View {
 								isPresented = false
 							}
 						}.foregroundColor(.gray)
+						if type == .edit{
+							Spacer()
+							Button(action: {
+								
+							}, label: {
+								Image(systemName: "trash")
+									.foregroundColor(.red)
+							})
+						}
 						Spacer()
 						Button("Fertig"){
 							withAnimation{
 								if type == .add{
 									Lesson.add(student: selectedStudent, model: model)
 								} else if type == .edit{
-									Lesson.update(lesson: $selectedLesson, model: model)
+									Lesson.update(student: selectedStudent, lesson: $selectedLesson, model: model)
 								}
 								isPresented = false
 							}

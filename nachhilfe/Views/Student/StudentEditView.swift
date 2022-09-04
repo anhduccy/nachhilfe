@@ -86,7 +86,10 @@ struct StudentEditView: View {
                     HStack{
                         if type == .edit{
                             Button(action: {
-                                Student.delete(student: student)
+								withAnimation{
+									isPresented.toggle()
+									Student.delete(student: student)
+								}
                             }, label: {
                                 Image(systemName: "trash")
                                     .foregroundColor(.white)

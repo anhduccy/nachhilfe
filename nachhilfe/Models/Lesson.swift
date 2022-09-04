@@ -25,13 +25,22 @@ class Lesson: Object, ObjectKeyIdentifiable{
         }
     }
     
-    static func update(lesson: ObservedRealmObject<Lesson>.Wrapper, model: LessonModel){
-        lesson.date.wrappedValue = model.date
-        lesson.duration.wrappedValue = model.duration
-        lesson.isDone.wrappedValue = model.isDone
-        lesson.isPayed.wrappedValue = model.isPayed
-        lesson.content.wrappedValue = model.content
-        lesson.notes.wrappedValue = model.notes
+    static func update(student: Student, lesson: ObservedRealmObject<Lesson>.Wrapper, model: LessonModel){
+        if lesson.wrappedValue.student.first!._id == model.student._id{
+            lesson.date.wrappedValue = model.date
+            lesson.duration.wrappedValue = model.duration
+            lesson.isDone.wrappedValue = model.isDone
+            lesson.isPayed.wrappedValue = model.isPayed
+            lesson.content.wrappedValue = model.content
+            lesson.notes.wrappedValue = model.notes
+        } else {
+            try! realmEnv.write{
+                let store = Lesson(value: lesson.wrappedValue)
+                realmEnv.delete(realmEnv.objects(Lesson.self).filter("_id == %@", lesson.wrappedValue._id))
+                let student = realmEnv.objects(Student.self).filter("_id == %@", model.student._id).first!
+                ObservedRealmObject(wrappedValue: student).projectedValue.lessons.append(model.toRealm(lesson: store))
+            }
+        }
     }
     static func delete(lesson: Lesson){
         realmEnv.delete(lesson)

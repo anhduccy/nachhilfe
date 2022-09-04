@@ -52,17 +52,26 @@ class Student: Object, ObjectKeyIdentifiable{
         student.color.wrappedValue = model.color
     }
     static func delete(student: Student){
-        let students = realmEnv.objects(Student.self).filter("_id == %@", student._id).first!
-            for exam in students.exams{
-                print(exam)
-                //delete exams
-            }
-            for lesson in students.lessons{
-                print(lesson)
-                //delete lessons
-            }
-            realmEnv.delete(student)
+		if realmEnv.isInWriteTransaction{
+			runDelete(student: student)
+		} else {
+			try! realmEnv.write{
+			   runDelete(student: student)
+			}
+		}
     }
+	static func runDelete(student: Student){
+		let studentObj = realmEnv.objects(Student.self).filter("_id == %@", student._id).first!
+			for exam in studentObj.exams{
+				print(exam)
+				//delete exams
+			}
+			for lesson in studentObj.lessons{
+				print(lesson)
+				//delete lessons
+			}
+			realmEnv.delete(studentObj)
+	}
 }
 
 class StudentModel: ObservableObject{
