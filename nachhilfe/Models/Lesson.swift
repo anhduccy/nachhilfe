@@ -18,14 +18,14 @@ class Lesson: Object, ObjectKeyIdentifiable{
     @Persisted var content: String
     @Persisted var notes: String
     
-    static func add(student: Student, model: LessonModel){
+    static func add(model: LessonModel){
         try? realmEnv.write{
-            let student: Student = realmEnv.objects(Student.self).filter("_id == %@", student._id).first!
+            let student: Student = realmEnv.objects(Student.self).filter("_id == %@", model.student._id).first!
             student.lessons.append(model.toRealm(lesson: Lesson()))
         }
     }
     
-    static func update(student: Student, lesson: ObservedRealmObject<Lesson>.Wrapper, model: LessonModel){
+    static func update(lesson: ObservedRealmObject<Lesson>.Wrapper, model: LessonModel){
         if lesson.wrappedValue.student.first!._id == model.student._id{
             lesson.date.wrappedValue = model.date
             lesson.duration.wrappedValue = model.duration
@@ -42,8 +42,11 @@ class Lesson: Object, ObjectKeyIdentifiable{
             }
         }
     }
+    
     static func delete(lesson: Lesson){
-        realmEnv.delete(lesson)
+        try! realmEnv.write{
+            realmEnv.delete(realmEnv.objects(Lesson.self).filter("_id == %@", lesson._id))
+        }
     }
 }
 

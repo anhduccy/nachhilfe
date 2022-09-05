@@ -67,8 +67,7 @@ class Student: Object, ObjectKeyIdentifiable{
 				//delete exams
 			}
 			for lesson in studentObj.lessons{
-				print(lesson)
-				//delete lessons
+				Lesson.delete(lesson: lesson)
 			}
 			realmEnv.delete(studentObj)
 	}

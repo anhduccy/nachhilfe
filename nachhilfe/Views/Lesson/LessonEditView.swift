@@ -21,23 +21,16 @@ struct LessonEditView: View {
 			self.selectedLesson = lesson!
 		}
 		
-		let students = realmEnv.objects(Student.self)
-		if students.first != nil {
-			_selectedStudent = State(initialValue: students.first!)
-		} else {
-			_selectedStudent = State(initialValue: Student()) //TO-DO: ERROR MELDUNG
-		}
-		print(_selectedStudent)
 	}
 	
 	@Environment(\.colorScheme) var appearance
 	@Binding var isPresented: Bool
 	let type: EditViewTypes
+	
 	@ObservedRealmObject var selectedLesson: Lesson
 	@ObservedObject var model: LessonModel
 	
 	@ObservedResults(Student.self) var students
-	@State var selectedStudent: Student
 	
 	var dateFormatter: DateFormatter {
 		let dateFormatter = DateFormatter()
@@ -57,12 +50,11 @@ struct LessonEditView: View {
 									Menu(content: {
 										ForEach(students, id:\.self){ student in
 											Button(action: {
-												selectedStudent = student
 												model.student = student
 											}, label: {
 												HStack{
 													Text(student.surname + " " + student.name)
-													if selectedStudent == student {
+													if model.student._id == student._id {
 														Image(systemName: "checkmark")
 															.resizable()
 															.scaledToFit()
@@ -73,10 +65,17 @@ struct LessonEditView: View {
 										}
 									}, label: {
 										VStack(spacing: 0){
-											LeftText("\(selectedStudent.surname) \(selectedStudent.name)", font: .title, fontWeight: .bold)
-												.foregroundColor(.teal)
-											LeftText(type == .add ? "Neue Stunde hinzufügen" : "Stunde vom \(dateFormatter.string(from: model.date))", font: .callout)
-												.foregroundColor(.gray)
+											if model.student.surname == "" && model.student.name == ""{
+												LeftText("Stunde hinzufügen", font: .title, fontWeight: .bold)
+													.foregroundColor(model.student.color.color)
+												LeftText("Tippe um Auszuwählen", font: .callout)
+													.foregroundColor(.gray)
+											} else {
+												LeftText("\(model.student.surname) \(model.student.name)", font: .title, fontWeight: .bold)
+													.foregroundColor(model.student.color.color)
+												LeftText("Stunde vom \(dateFormatter.string(from: model.date))", font: .callout)
+													.foregroundColor(.gray)
+											}
 										}
 									})
 									Spacer()
@@ -84,19 +83,19 @@ struct LessonEditView: View {
 										Image(systemName: model.isDone ? "checkmark.circle.fill" : "checkmark.circle")
 											.resizable()
 											.scaledToFit()
-											.frame(width: 20)
+											.frame(width: 25)
 											.onTapGesture {
 												withAnimation{
 													model.isDone.toggle()
 												}
 											}
-											.foregroundColor(model.isDone ? .teal : .gray)
+											.foregroundColor(model.isDone ? model.student.color.color : .gray)
 											.opacity(model.isDone ? 1 : 0.5)
 										
 										Image(systemName: model.isPayed ? "eurosign.circle.fill" : "eurosign.circle")
 											.resizable()
 											.scaledToFit()
-											.frame(width: 20)
+											.frame(width: 25)
 											.onTapGesture {
 												withAnimation{
 													model.isPayed.toggle()
@@ -109,7 +108,7 @@ struct LessonEditView: View {
 								
 								VStack(alignment: .leading){
 									LeftText(model.isDone ? "Die Stunde wurde absolviert" : "Die Stunde wurde noch nicht absolviert", font: .callout)
-										.foregroundColor(model.isDone ? .blue : .gray)
+										.foregroundColor(model.isDone ? model.student.color.color : .gray)
 									LeftText(model.isPayed ? "Die Stunde wurde bezahlt" : "Die Zahlung ist noch ausstehend", font: .callout)
 										.foregroundColor(model.isPayed ? .green : .gray)
 								}
@@ -117,13 +116,13 @@ struct LessonEditView: View {
 							
 							VStack(alignment: .leading){
 								HStack{
-									Icon(systemName: "calendar")
+									Icon(systemName: "calendar", color: model.student.color.color)
 									DatePicker(selection: $model.date, displayedComponents: [.date, .hourAndMinute], label: {})
 										.datePickerStyle(.compact)
 								}
 								VStack(spacing: 0){
 									HStack{
-										Icon(systemName: "clock")
+										Icon(systemName: "clock", color: model.student.color.color)
 										TextField(value: $model.duration, format: .number, label: {Text("Dauer in Minuten")
 										})
 										.keyboardType(.decimalPad)
@@ -142,6 +141,7 @@ struct LessonEditView: View {
 									TextEditor(text: $model.content)
 										.border(.gray.opacity(0.5))
 										.frame(height: 150)
+										.font(.callout)
 								}
 								
 								VStack(spacing: 5) {
@@ -149,6 +149,7 @@ struct LessonEditView: View {
 									TextEditor(text: $model.notes)
 										.border(.gray.opacity(0.5))
 										.frame(height: 150)
+										.font(.callout)
 								}
 							}
 							Spacer()
@@ -163,32 +164,36 @@ struct LessonEditView: View {
 						if type == .edit{
 							Spacer()
 							Button(action: {
-								
+								withAnimation{
+									isPresented = false
+									Lesson.delete(lesson: selectedLesson)
+								}
 							}, label: {
 								Image(systemName: "trash")
 									.foregroundColor(.red)
 							})
 						}
 						Spacer()
-						Button("Fertig"){
+						Button("Speichern"){
 							withAnimation{
 								if type == .add{
-									Lesson.add(student: selectedStudent, model: model)
+									Lesson.add(model: model)
 								} else if type == .edit{
-									Lesson.update(student: selectedStudent, lesson: $selectedLesson, model: model)
+									Lesson.update(lesson: $selectedLesson, model: model)
 								}
 								isPresented = false
 							}
 						}.bold()
-							.foregroundColor(.teal)
+							.disabled(model.student.surname == "" && model.student.name == "")
+							.foregroundColor(model.student.surname == "" && model.student.name == "" ? .gray : model.student.color.color)
 					}
 				}
-				.padding()
+				.padding(20)
 			}
 		}
 	}
 	private func calculatePayment()->String{
-		let perHour = Double(selectedStudent.payment)
+		let perHour = Double(model.student.payment)
 		let perMinute = perHour/60.00
 		let payment = perMinute * Double(model.duration)
 		let paymentBonus = payment / 2 + payment
