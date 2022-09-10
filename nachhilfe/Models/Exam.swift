@@ -23,35 +23,22 @@ class Exam: Object, ObjectKeyIdentifiable{
 	}
 	static func update(exam: ObservedRealmObject<Exam>.Wrapper, model: ExamModel){
 		if exam.wrappedValue.student.first!._id == model.student._id{
-			
-		} else {
-			
-		}
-	}
-	static func delete(){
-		
-	}
-	static func update(lesson: ObservedRealmObject<Lesson>.Wrapper, model: LessonModel){
-		if lesson.wrappedValue.student.first!._id == model.student._id{
-			lesson.date.wrappedValue = model.date
-			lesson.duration.wrappedValue = model.duration
-			lesson.isDone.wrappedValue = model.isDone
-			lesson.isPayed.wrappedValue = model.isPayed
-			lesson.content.wrappedValue = model.content
-			lesson.notes.wrappedValue = model.notes
+			exam.date.wrappedValue = model.date
+			exam.grade.wrappedValue = model.grade
+			exam.topics.wrappedValue = model.topics
 		} else {
 			try! realmEnv.write{
-				let store = Lesson(value: lesson.wrappedValue)
-				realmEnv.delete(realmEnv.objects(Lesson.self).filter("_id == %@", lesson.wrappedValue._id))
+				let store = Exam(value: exam.wrappedValue)
+				realmEnv.delete(realmEnv.objects(Exam.self).filter("_id == %@", exam.wrappedValue._id))
 				let student = realmEnv.objects(Student.self).filter("_id == %@", model.student._id).first!
-				ObservedRealmObject(wrappedValue: student).projectedValue.lessons.append(model.toRealm(lesson: store))
+				ObservedRealmObject(wrappedValue: student).projectedValue.exams.append(model.toRealm(exam: store))
 			}
 		}
 	}
 	
-	static func delete(lesson: Lesson){
+	static func delete(exam: Exam){
 		try! realmEnv.write{
-			realmEnv.delete(realmEnv.objects(Lesson.self).filter("_id == %@", lesson._id))
+			realmEnv.delete(realmEnv.objects(Exam.self).filter("_id == %@", exam._id))
 		}
 	}
 }
@@ -75,6 +62,7 @@ class ExamModel: ObservableObject{
 		topics = exam.topics
 		date = exam.date
 		grade = exam.grade
+		student = exam.student.first ?? Student()
 		return self
 	}
 	func toRealm(exam: Exam)->Exam{

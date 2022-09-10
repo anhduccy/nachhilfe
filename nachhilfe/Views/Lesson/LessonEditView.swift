@@ -27,14 +27,52 @@ struct LessonEditView: View {
 	@Binding var isPresented: Bool
 	let type: EditViewTypes
 	
+	@ObservedResults(Student.self) var students
 	@ObservedRealmObject var selectedLesson: Lesson
 	@ObservedObject var model: LessonModel
+	
+	var dateFormatter: DateFormatter {
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateFormat = "dd. MMMM. YYYY"
+		dateFormatter.locale = Locale(identifier: "de_DE")
+		return dateFormatter
+	}
 		
 	var body: some View {
 		ZStack{
 			VStack{
 				HStack{
-					StudentPickerLarge("Stunde", model: model)
+					Menu(content: {
+						ForEach(students, id:\.self){ student in
+							Button(action: {
+								model.student = student
+							}, label: {
+								HStack{
+									Text(student.surname + " " + student.name)
+									if model.student._id == student._id {
+										Image(systemName: "checkmark")
+											.resizable()
+											.scaledToFit()
+											.frame(width: 15)
+									}
+								}
+							})
+						}
+					}, label: {
+						VStack(spacing: 0){
+							if model.student.surname == "" && model.student.name == ""{
+								LeftText("Stunde hinzufügen", font: .title, fontWeight: .bold)
+									.foregroundColor(model.student.color.color)
+								LeftText("Tippe um Auszuwählen", font: .callout)
+									.foregroundColor(.gray)
+							} else {
+								LeftText("\(model.student.surname) \(model.student.name)", font: .title, fontWeight: .bold)
+									.foregroundColor(model.student.color.color)
+								LeftText("Stunde vom \(dateFormatter.string(from: model.date))", font: .callout)
+									.foregroundColor(.gray)
+							}
+						}
+					})
 					Spacer()
 					VStack(spacing: 3){
 						Image(systemName: model.isDone ? "checkmark.circle.fill" : "checkmark.circle")
