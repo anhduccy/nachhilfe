@@ -47,7 +47,7 @@ struct LessonList: View{
             ScrollView(.vertical, showsIndicators: false){
                 VStack(spacing: 10) {
                     if selectedStudent == nil{
-                        ForEach(showAllLessons ? lessons.filter (NSPredicate(value: true)) : lessons.filter("isPayed == false || isDone == false"), id: \.self){ lesson in
+                        ForEach(showAllLessons ? lessons.filter(NSPredicate(value: true)) : lessons.filter("isPayed == false || isDone == false"), id: \.self){ lesson in
                             LessonListItem(selectedLesson: $selectedLesson, lesson: lesson, showLessonEditView: $showLessonEditView, all: true)
                                 .onTapGesture {
                                     withAnimation{

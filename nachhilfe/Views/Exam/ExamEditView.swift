@@ -31,7 +31,7 @@ struct ExamEditView: View {
 	
 	var dateFormatter: DateFormatter {
 		let dateFormatter = DateFormatter()
-		dateFormatter.dateFormat = "dd. MMMM. YYYY"
+		dateFormatter.dateFormat = "dd. MMMM YYYY"
 		dateFormatter.locale = Locale(identifier: "de_DE")
 		return dateFormatter
 	}
@@ -80,7 +80,7 @@ struct ExamEditView: View {
 					VStack(spacing: 35){
 						HStack{
 							Icon(systemName: "calendar", color: model.student.color.color)
-							DatePicker(selection: $model.date, displayedComponents: [.date, .hourAndMinute], label: {})
+							DatePicker(selection: $model.date, displayedComponents: [.date], label: {})
 								.datePickerStyle(.compact)
 						}
 						VStack(spacing: 0){
@@ -90,7 +90,7 @@ struct ExamEditView: View {
 										Circle().fill(model.grade == grade ? model.student.color.color : .gray)
 											.opacity(model.grade == grade ? 0.2 : 0.5)
 										Text("\(grade)")
-											.foregroundColor( model.grade == grade ? model.student.color.color ? .white)
+											.foregroundColor( model.grade == grade ? model.student.color.color : .white)
 									}.onTapGesture {
 										if grade != model.grade{
 											model.grade = grade

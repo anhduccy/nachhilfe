@@ -18,12 +18,13 @@ class Exam: Object, ObjectKeyIdentifiable{
 	static func add(model: ExamModel){
 		try! realmEnv.write{
 			let student: Student = realmEnv.objects(Student.self).filter("_id == %@", model.student._id).first!
+			model.date = setExamDate(model.date)
 			student.exams.append(model.toRealm(exam: Exam()))
 		}
 	}
 	static func update(exam: ObservedRealmObject<Exam>.Wrapper, model: ExamModel){
 		if exam.wrappedValue.student.first!._id == model.student._id{
-			exam.date.wrappedValue = model.date
+			exam.date.wrappedValue = setExamDate(model.date)
 			exam.grade.wrappedValue = model.grade
 			exam.topics.wrappedValue = model.topics
 		} else {
@@ -35,11 +36,15 @@ class Exam: Object, ObjectKeyIdentifiable{
 			}
 		}
 	}
-	
 	static func delete(exam: Exam){
 		try! realmEnv.write{
 			realmEnv.delete(realmEnv.objects(Exam.self).filter("_id == %@", exam._id))
 		}
+	}
+	static func setExamDate(_ date: Date)->Date{
+		let startOfDate = Calendar.current.startOfDay(for: date)
+		let newDate = startOfDate.addingTimeInterval(86399)
+		return newDate
 	}
 }
 

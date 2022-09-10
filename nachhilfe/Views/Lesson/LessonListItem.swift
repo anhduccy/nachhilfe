@@ -16,19 +16,18 @@ struct LessonListItem: View{
     let all: Bool
     
     var dateFormatter: DateFormatter {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "dd.MM.YYYY"
-            dateFormatter.locale = Locale(identifier: "de_DE")
-            return dateFormatter
-        }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.YYYY"
+        dateFormatter.locale = Locale(identifier: "de_DE")
+        return dateFormatter
+    }
 
     var body: some View{
         ZStack {
             if selectedLesson?._id == lesson._id && showLessonEditView{
                 RoundedRectangle(cornerRadius: 10).foregroundColor(lesson.student.first!.color.color)
                     .opacity(0.1)
-                    .cornerRadius(10)
-                    .shadow(color: .teal, radius: 1.5)
+                    .shadow(radius: 1.5)
             } else {
                 RoundedRectangle(cornerRadius: 10).fill(appearance == .dark ? Color.init(red: 30/255, green: 30/255, blue: 30/255) : Color.white)
                     .shadow(radius: 1.5)
