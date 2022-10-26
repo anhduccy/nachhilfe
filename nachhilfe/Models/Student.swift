@@ -63,8 +63,7 @@ class Student: Object, ObjectKeyIdentifiable{
 	static func runDelete(student: Student){
 		let studentObj = realmEnv.objects(Student.self).filter("_id == %@", student._id).first!
 			for exam in studentObj.exams{
-				print(exam)
-				//delete exams
+				Exam.delete(exam: exam)
 			}
 			for lesson in studentObj.lessons{
 				Lesson.delete(lesson: lesson)
@@ -81,7 +80,7 @@ class StudentModel: ObservableObject{
         schoolClass = ""
         payment = 0
         color = .teal
-    }
+    }  
     @Published var _id: ObjectId
     @Published var surname: String
     @Published var name: String

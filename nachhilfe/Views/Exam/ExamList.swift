@@ -45,26 +45,42 @@ struct ExamList: View {
 			ScrollView(.vertical, showsIndicators: false) {
 				VStack(spacing: 10) {
 					if selectedStudent == nil {
-						ForEach(showAllExams ? exams.filter(NSPredicate(value: true)) : exams.filter(NSPredicate(format: "date > %@ || grade == -1", Date() as CVarArg)), id: \.self){ exam in
-							ExamListItem(selectedExam: $selectedExam, exam: exam, showExamEditView: $showExamEditView, all: true)
-								.onTapGesture {
-									withAnimation{
-										selectedExam = exam
-										editViewType = .edit
-										showExamEditView = true
+						if exams.isEmpty{
+							LeftText("Keine Klausuren eingetragen")
+								.foregroundColor(.gray)
+						} else if exams.filter(NSPredicate(format: "date > %@ || grade == -1", Date() as CVarArg)).isEmpty && !showAllExams{
+							LeftText("Alle Klausuren erledigt")
+								.foregroundColor(.gray)
+						} else {
+							ForEach(showAllExams ? exams.filter(NSPredicate(value: true)) : exams.filter(NSPredicate(format: "date > %@ || grade == -1", Date() as CVarArg)), id: \.self){ exam in
+								ExamListItem(selectedExam: $selectedExam, exam: exam, showExamEditView: $showExamEditView, all: true)
+									.onTapGesture {
+										withAnimation{
+											selectedExam = exam
+											editViewType = .edit
+											showExamEditView = true
+										}
 									}
-								}
+							}
 						}
 					} else {
-						ForEach(showAllExams ? selectedStudent!.exams.filter(NSPredicate(value: true)) : selectedStudent!.exams.filter(NSPredicate(format: "date > %@ || grade == -1", Date() as CVarArg)), id: \.self){ exam in
-							ExamListItem(selectedExam: $selectedExam, exam: exam, showExamEditView: $showExamEditView, all: false)
-								.onTapGesture {
-									withAnimation{
-										selectedExam = exam
-										editViewType = .edit
-										showExamEditView = true
+						if exams.isEmpty{
+							LeftText("Keine Klausuren eingetragen")
+								.foregroundColor(.gray)
+						} else if selectedStudent!.exams.filter(NSPredicate(format: "date > %@ || grade == -1", Date() as CVarArg)).isEmpty && !showAllExams{
+							LeftText("Alle Klausuren erledigt")
+								.foregroundColor(.gray)
+						} else {
+							ForEach(showAllExams ? selectedStudent!.exams.filter(NSPredicate(value: true)) : selectedStudent!.exams.filter(NSPredicate(format: "date > %@ || grade == -1", Date() as CVarArg)), id: \.self){ exam in
+								ExamListItem(selectedExam: $selectedExam, exam: exam, showExamEditView: $showExamEditView, all: false)
+									.onTapGesture {
+										withAnimation{
+											selectedExam = exam
+											editViewType = .edit
+											showExamEditView = true
+										}
 									}
-								}
+							}
 						}
 					}
 				}.padding([.leading, .trailing])

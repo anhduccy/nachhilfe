@@ -15,6 +15,8 @@ struct LessonListItem: View{
     @Binding var showLessonEditView: Bool
     let all: Bool
     
+    @State var showAlert: Bool = false
+    
     var dateFormatter: DateFormatter {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd.MM.YYYY"
@@ -33,7 +35,7 @@ struct LessonListItem: View{
                     .shadow(radius: 1.5)
             }
             
-            HStack {
+            HStack(spacing: 15) {
                 VStack(alignment: .leading, spacing: 0) {
                     HStack(spacing: 5){
                         Text(dateFormatter.string(from: lesson.date))
@@ -43,26 +45,12 @@ struct LessonListItem: View{
                                 .font(.callout.bold())
                                 .foregroundColor(lesson.student.first?.color.color ?? .teal)
                         }
+                        if lesson.notes != ""{
+                            Image(systemName: "note.text")
+                                .font(.callout)
+                                .foregroundColor(.gray)
+                        }
                     }
-                    VStack(alignment: .leading){
-                        if lesson.isPayed && lesson.isDone{
-                            Text("Stunde erledigt und bezahlt")
-                                .foregroundColor(.gray)
-                        }
-                        if lesson.isPayed && !lesson.isDone{
-                            Text("Vorzahlung, Stunde nicht erledigt")
-                                .foregroundColor(.red)
-                        }
-                        if !lesson.isPayed && lesson.isDone{
-                            Text("Stunde erledigt, Zahlung ausstehend")
-                                .foregroundColor(.red)
-                        }
-                        if !lesson.isPayed && !lesson.isDone{
-                            Text("Stunde nicht erledigt, Zahlung ausstehend")
-                                .foregroundColor(.gray)
-                        }
-                        
-                    }.font(.footnote)
                     if lesson.content != ""{
                         LeftText(lesson.content, font: .footnote).foregroundColor(.gray)
                             .padding(.top, 5)
@@ -70,41 +58,61 @@ struct LessonListItem: View{
                     }
                 }
                 Spacer()
-                if lesson.notes != ""{
-                    Image(systemName: "note.text")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 17.5)
-                        .foregroundColor(.gray)
-                }
-                HStack(spacing: 5){
-                    Image(systemName: lesson.isDone ? "checkmark.circle.fill" : "checkmark.circle")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 25)
-                        .onTapGesture {
-                            withAnimation{
-                                try! realmEnv.write{
-                                    $lesson.isDone.wrappedValue.toggle()
-                                }
+                
+                HStack(spacing: 10){
+                    if lesson.isDone && !lesson.isPayed || !lesson.isDone && lesson.isPayed{
+                        Image(systemName: "info.circle")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 18)
+                            .foregroundColor(.red)
+                            .onTapGesture{
+                                showAlert.toggle()
                             }
-                        }
-                        .foregroundColor(lesson.isDone ? lesson.student.first!.color.color : .gray)
-                        .opacity(lesson.isDone ? 1 : 0.5)
+                            .popover(isPresented: $showAlert){
+                                VStack{
+                                    if lesson.isPayed && !lesson.isDone{
+                                        Text("Vorzahlung, Stunde nicht erledigt")
+                                    }
+                                    if !lesson.isPayed && lesson.isDone{
+                                        Text("Stunde erledigt, Zahlung ausstehend")
+                                    }
+                                }.font(.footnote)
+                                    .foregroundColor(.red)
+                                    .padding()
+                            }
+                        
+                    }
                     
-                    Image(systemName: lesson.isPayed ? "eurosign.circle.fill" : "eurosign.circle")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 25)
-                        .onTapGesture {
-                            withAnimation{
-                                try! realmEnv.write{
-                                    $lesson.isPayed.wrappedValue.toggle()
+                    HStack(spacing: 5){
+                        Image(systemName: lesson.isDone ? "checkmark.circle.fill" : "checkmark.circle")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 25)
+                            .onTapGesture {
+                                withAnimation{
+                                    try! realmEnv.write{
+                                        $lesson.isDone.wrappedValue.toggle()
+                                    }
                                 }
                             }
-                        }
-                        .foregroundColor(lesson.isPayed ? .green : .gray)
-                        .opacity(lesson.isPayed ? 1 : 0.5)
+                            .foregroundColor(lesson.isDone ? lesson.student.first!.color.color : .gray)
+                            .opacity(lesson.isDone ? 1 : 0.5)
+                        
+                        Image(systemName: lesson.isPayed ? "eurosign.circle.fill" : "eurosign.circle")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 25)
+                            .onTapGesture {
+                                withAnimation{
+                                    try! realmEnv.write{
+                                        $lesson.isPayed.wrappedValue.toggle()
+                                    }
+                                }
+                            }
+                            .foregroundColor(lesson.isPayed ? .green : .gray)
+                            .opacity(lesson.isPayed ? 1 : 0.5)
+                    }
                 }
             }.padding()
         }

@@ -44,29 +44,46 @@ struct LessonList: View{
             }.padding([.leading, .trailing])
                 .padding(.bottom, -5)
             
+            
             ScrollView(.vertical, showsIndicators: false){
                 VStack(spacing: 10) {
                     if selectedStudent == nil{
-                        ForEach(showAllLessons ? lessons.filter(NSPredicate(value: true)) : lessons.filter("isPayed == false || isDone == false"), id: \.self){ lesson in
-                            LessonListItem(selectedLesson: $selectedLesson, lesson: lesson, showLessonEditView: $showLessonEditView, all: true)
-                                .onTapGesture {
-                                    withAnimation{
-                                        selectedLesson = lesson
-                                        editViewType = .edit
-                                        showLessonEditView = true
+                        if lessons.isEmpty{
+                            LeftText("Keine Nachhilfestunden eingetragen")
+                                .foregroundColor(.gray)
+                        } else if lessons.filter("isPayed == false || isDone == false").isEmpty && !showAllLessons{
+                            LeftText("Alle Nachhilfestunden erledigt")
+                                .foregroundColor(.gray)
+                        } else {
+                            ForEach(showAllLessons ? lessons.filter(NSPredicate(value: true)) : lessons.filter("isPayed == false || isDone == false"), id: \.self){ lesson in
+                                LessonListItem(selectedLesson: $selectedLesson, lesson: lesson, showLessonEditView: $showLessonEditView, all: true)
+                                    .onTapGesture {
+                                        withAnimation{
+                                            selectedLesson = lesson
+                                            editViewType = .edit
+                                            showLessonEditView = true
+                                        }
                                     }
-                                }
+                            }
                         }
                     } else {
-                        ForEach(showAllLessons ? selectedStudent!.lessons.filter(NSPredicate(value: true)) : selectedStudent!.lessons.filter("isPayed == false || isDone == false"), id: \.self){ lesson in
-                            LessonListItem(selectedLesson: $selectedLesson, lesson: lesson, showLessonEditView: $showLessonEditView, all: false)
-                                .onTapGesture {
-                                    withAnimation{
-                                        selectedLesson = lesson
-                                        editViewType = .edit
-                                        showLessonEditView = true
+                        if selectedStudent!.lessons.isEmpty{
+                            LeftText("Keine Nachhilfestunden eingetragen")
+                                .foregroundColor(.gray)
+                        } else if selectedStudent!.lessons.filter("isPayed == false || isDone == false").isEmpty && !showAllLessons{
+                            LeftText("Alle Nachhilfestunden erledigt")
+                                .foregroundColor(.gray)
+                        } else {
+                            ForEach(showAllLessons ? selectedStudent!.lessons.filter(NSPredicate(value: true)) : selectedStudent!.lessons.filter("isPayed == false || isDone == false"), id: \.self){ lesson in
+                                LessonListItem(selectedLesson: $selectedLesson, lesson: lesson, showLessonEditView: $showLessonEditView, all: false)
+                                    .onTapGesture {
+                                        withAnimation{
+                                            selectedLesson = lesson
+                                            editViewType = .edit
+                                            showLessonEditView = true
+                                        }
                                     }
-                                }
+                            }
                         }
                     }
                 }.padding([.leading, .trailing])

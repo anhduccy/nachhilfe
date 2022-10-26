@@ -42,6 +42,10 @@ struct ExamListItem: View {
 						Text((exam.student.first?.surname ?? "Klausur") + " " + (exam.student.first?.name ?? "gelöscht"))
 							.foregroundColor(exam.student.first?.color.color ?? .teal)
 					}
+					if !exam.topics.isEmpty{
+						Image(systemName: "note.text")
+							.foregroundColor(.gray)
+					}
 				}.font(.body.bold())
 				Spacer()
 				if exam.grade == -1{
