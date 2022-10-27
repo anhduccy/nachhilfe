@@ -10,6 +10,7 @@ import Realm
 import RealmSwift
 
 struct StudentEditView: View {
+	@Environment(\.colorScheme) var appearance
     init(type: EditViewTypes, student: Student?, isPresented: Binding<Bool>){
         self.type = type
         _isPresented = isPresented
@@ -32,6 +33,12 @@ struct StudentEditView: View {
     var body: some View {
         HStack(alignment: .top){
             ZStack{
+				RoundedRectangle(cornerRadius: 20)
+					.foregroundColor(appearance == .dark ? .black : .white)
+				RoundedRectangle(cornerRadius: 20)
+					.foregroundColor(model.color.color)
+					.opacity(appearance == .dark ? 0.3 : 1)
+				
                 VStack(spacing: 20){
                     HStack(alignment: .top){
                         if type == .add{
@@ -110,9 +117,7 @@ struct StudentEditView: View {
                 }
                 .padding()
             }
-            .background(model.color.color)
-            .cornerRadius(20)
-            .foregroundColor(.white)
+			.foregroundColor(.white)
             .frame(width: 350)
             .shadow(radius: 5)
             

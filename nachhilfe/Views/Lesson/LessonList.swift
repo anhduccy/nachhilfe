@@ -14,7 +14,7 @@ struct LessonList: View{
     @Binding var showLessonEditView: Bool
     @Binding var editViewType: EditViewTypes
 
-    @ObservedResults(Lesson.self, sortDescriptor: SortDescriptor(keyPath: "date", ascending: false)) var lessons
+    @ObservedResults(Lesson.self) var lessons
     @State var selectedStudent: Student? = nil
     
     @State var showAllLessons: Bool = false
@@ -55,7 +55,7 @@ struct LessonList: View{
                             LeftText("Alle Nachhilfestunden erledigt")
                                 .foregroundColor(.gray)
                         } else {
-                            ForEach(showAllLessons ? lessons.filter(NSPredicate(value: true)) : lessons.filter("isPayed == false || isDone == false"), id: \.self){ lesson in
+                            ForEach(lessons(showAllLessons: showAllLessons), id: \.self){ lesson in
                                 LessonListItem(selectedLesson: $selectedLesson, lesson: lesson, showLessonEditView: $showLessonEditView, all: true)
                                     .onTapGesture {
                                         withAnimation{
@@ -74,7 +74,7 @@ struct LessonList: View{
                             LeftText("Alle Nachhilfestunden erledigt")
                                 .foregroundColor(.gray)
                         } else {
-                            ForEach(showAllLessons ? selectedStudent!.lessons.filter(NSPredicate(value: true)) : selectedStudent!.lessons.filter("isPayed == false || isDone == false"), id: \.self){ lesson in
+                            ForEach(selectedStudent_lessons(showAllLessons: showAllLessons), id: \.self){ lesson in
                                 LessonListItem(selectedLesson: $selectedLesson, lesson: lesson, showLessonEditView: $showLessonEditView, all: false)
                                     .onTapGesture {
                                         withAnimation{
@@ -91,5 +91,23 @@ struct LessonList: View{
             }
             Spacer()
         }
+    }
+    private func lessons(showAllLessons: Bool)->Results<Lesson>{
+        let lessons = lessons.sorted(byKeyPath: "date", ascending: false)
+        if showAllLessons {
+            return lessons.filter(NSPredicate(value: true))
+        } else {
+            return lessons.filter("isPayed == false || isDone == false")
+        }
+    }
+    
+    private func selectedStudent_lessons(showAllLessons: Bool) -> Results<Lesson>{
+        let lessons = selectedStudent!.lessons.sorted(byKeyPath: "date", ascending: false)
+        if showAllLessons {
+            return lessons.filter(NSPredicate(value: true))
+        } else {
+            return lessons.filter("isPayed == false || isDone == false")
+        }
+        
     }
 }
