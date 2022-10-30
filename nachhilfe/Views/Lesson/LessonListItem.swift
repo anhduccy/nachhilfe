@@ -61,11 +61,7 @@ struct LessonListItem: View{
                 
                 HStack(spacing: 10){
                     if lesson.isDone && !lesson.isPayed || !lesson.isDone && lesson.isPayed{
-                        Image(systemName: "info.circle")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 18)
-                            .foregroundColor(.red)
+                        Icon(systemName: "info.circle", color: .red, size: 18)
                             .onTapGesture{
                                 showAlert.toggle()
                             }
@@ -85,10 +81,7 @@ struct LessonListItem: View{
                     }
                     
                     HStack(spacing: 5){
-                        Image(systemName: lesson.isDone ? "checkmark.circle.fill" : "checkmark.circle")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 25)
+                        InteractiveIcon(image: lesson.isDone ? "checkmark.circle.fill" : "checkmark.circle", bool: $lesson.isDone, color: lesson.student.first!.color.color)
                             .onTapGesture {
                                 withAnimation{
                                     try! realmEnv.write{
@@ -96,22 +89,13 @@ struct LessonListItem: View{
                                     }
                                 }
                             }
-                            .foregroundColor(lesson.isDone ? lesson.student.first!.color.color : .gray)
-                            .opacity(lesson.isDone ? 1 : 0.5)
                         
-                        Image(systemName: lesson.isPayed ? "eurosign.circle.fill" : "eurosign.circle")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 25)
+                        InteractiveIcon(image: lesson.isPayed ? "eurosign.circle.fill" : "eurosign.circle", bool: $lesson.isPayed, color: .green)
                             .onTapGesture {
                                 withAnimation{
-                                    try! realmEnv.write{
-                                        $lesson.isPayed.wrappedValue.toggle()
-                                    }
+                                    $lesson.isPayed.wrappedValue.toggle()
                                 }
                             }
-                            .foregroundColor(lesson.isPayed ? .green : .gray)
-                            .opacity(lesson.isPayed ? 1 : 0.5)
                     }
                 }
             }.padding()

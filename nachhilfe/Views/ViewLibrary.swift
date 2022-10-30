@@ -79,6 +79,20 @@ struct Icon: View{
     }
 }
 
+struct InteractiveIcon: View{
+    let image: String
+    @Binding var bool: Bool
+    let color: Color
+    var body: some View{
+        Image(systemName: image)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 25)
+            .foregroundColor(bool ? color : .gray)
+            .opacity(bool ? 1 : 0.5)
+    }
+}
+
 struct GlassBackground: View {
     let width: CGFloat
     let height: CGFloat
@@ -96,12 +110,14 @@ struct GlassBackground: View {
 
 //Navigation header for LessonView and ExamView
 struct ViewHeader: View{
-    init(_ section: String, action: @escaping ()->()){
+    init(_ section: String, color: Color = .teal, action: @escaping ()->()){
         self.section = section
         self.action = action
+        self.color = color
     }
     let section: String
     let action: () -> ()
+    let color: Color
     var body: some View{
         VStack(spacing: 0){
             HStack(alignment: .bottom, spacing: 10){
@@ -112,11 +128,11 @@ struct ViewHeader: View{
                         action()
                     }
                 }, label: {
-                    Icon(systemName: "plus")
+                    Icon(systemName: "plus", color: color)
                 })
             }
             LeftText(section, font: .title2, fontWeight: .bold)
-                .foregroundColor(.teal)
+                .foregroundColor(color)
         }
     }
 }

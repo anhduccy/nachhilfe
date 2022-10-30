@@ -24,7 +24,11 @@ struct NavigatorView: View{
 				if !students.isEmpty{
 					Section("Alle Nachhilfeschüler", content: {
 						ForEach(students.sorted(byKeyPath: "surname"), id: \.self){ student in
-							NavigationLink(destination: StudentView(student: student), label: {Label("\(student.surname) \(student.name)", systemImage: "person.fill")})
+							NavigationLink(destination: StudentView(student: student), label: {
+								Label(title: {Text("\(student.surname) \(student.name)")}, icon: {
+									Image(systemName: "person")
+										.foregroundColor(student.color.color)
+								})})
 						}
 					})
 				}
