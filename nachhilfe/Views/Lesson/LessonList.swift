@@ -10,24 +10,41 @@ import RealmSwift
 
 //Lesson List with all lessons + student filter option with the "all" case
 struct LessonList: View{
+    @ObservedResults(Lesson.self) var lessons
+    
+    init(selectedStudent: Student? = nil, selectedLesson: Binding<Lesson?>, showLessonEditView: Binding <Bool>, editViewType: Binding<EditViewTypes>, allStudents: Bool){
+        if selectedStudent == nil{
+            _selectedStudent = State(wrappedValue: selectedStudent)
+            
+        } else {
+            _selectedStudent = State(wrappedValue: realmEnv.objects(Student.self).filter("_id == %@", selectedStudent!._id).first!)
+        }
+        _selectedLesson = selectedLesson
+        _showLessonEditView = showLessonEditView
+        _editViewType = editViewType
+        self.allStudents = allStudents
+    }
+    
+    @State var selectedStudent: Student?
+
     @Binding var selectedLesson: Lesson?
     @Binding var showLessonEditView: Bool
     @Binding var editViewType: EditViewTypes
+    let allStudents: Bool
 
-    @ObservedResults(Lesson.self) var lessons
-    @State var selectedStudent: Student? = nil
-    
     @State var showAllLessons: Bool = false
     
     var body: some View{
         VStack {
             HStack(spacing: 12.5){
-                if selectedStudent == nil {
-                    Text("Alle")
-                        .font(.title3.weight(.bold))
-                } else {
-                    Text(selectedStudent!.surname + " " + selectedStudent!.name)
-                        .font(.title3.weight(.bold))
+                if allStudents {
+                    if selectedStudent == nil {
+                        Text("Alle")
+                            .font(.title3.weight(.bold))
+                    } else {
+                        Text(selectedStudent!.surname + " " + selectedStudent!.name)
+                            .font(.title3.weight(.bold))
+                    }
                 }
                 Spacer()
                 Button(action: {
@@ -35,12 +52,13 @@ struct LessonList: View{
                         showAllLessons.toggle()
                     }
                 }, label: {
-                    Text(showAllLessons ? "Erledigte Stunden ausblenden" : "Alle Stunden einblenden")
+                    Text(showAllLessons ? "Erledigte ausblenden" : "Alle anzeigen")
                         .font(.body.weight(.regular))
                         .foregroundColor(.teal)
                 })
-                
-                StudentPickerSmall(selectedStudent: $selectedStudent)
+                if allStudents{
+                    StudentPickerSmall(selectedStudent: $selectedStudent)
+                }
             }.padding([.leading, .trailing])
                 .padding(.bottom, -5)
             
@@ -108,6 +126,5 @@ struct LessonList: View{
         } else {
             return lessons.filter("isPayed == false || isDone == false")
         }
-        
     }
 }

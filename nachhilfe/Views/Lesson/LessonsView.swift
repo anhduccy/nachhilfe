@@ -23,7 +23,7 @@ struct LessonsView: View {
 						editViewType = .add
 						showLessonEditView = true
 					}
-					LessonList(selectedLesson: $selectedLesson, showLessonEditView: $showLessonEditView, editViewType: $editViewType)
+					LessonList(selectedLesson: $selectedLesson, showLessonEditView: $showLessonEditView, editViewType: $editViewType, allStudents: true)
 					Spacer()
 				}.padding()
 				if showLessonEditView {

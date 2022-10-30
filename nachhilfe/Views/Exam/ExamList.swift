@@ -34,7 +34,7 @@ struct ExamList: View {
 						showAllExams.toggle()
 					}
 				}, label: {
-					Text(showAllExams ? "Erledigte Klausuren ausblenden" : "Alle Klausuren einblenden")
+					Text(showAllExams ? "Erledigte ausblenden" : "Alle einblenden")
 						.font(.body.weight(.regular))
 						.foregroundColor(.teal)
 				})

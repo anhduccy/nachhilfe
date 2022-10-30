@@ -13,3 +13,10 @@ class Global: ObservableObject{
     }
     @Published var username: String
 }
+
+public func toggleSidebar() { // 2
+    #if os(iOS)
+    #else
+    NSApp.keyWindow?.firstResponder?.tryToPerform(#selector(NSSplitViewController.toggleSidebar(_:)), with: nil)
+    #endif
+}
