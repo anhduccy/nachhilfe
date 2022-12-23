@@ -129,7 +129,6 @@ struct LessonEditView: View {
 									Spacer()
 									VStack(alignment: .trailing){
 										Text("Anfällig: " + calculatePayment())
-										Text("Übernommen: " + calculatePaymentCorona())
 									}.font(.caption)
 								}
 							}.foregroundColor(.gray)
@@ -192,14 +191,6 @@ struct LessonEditView: View {
 		}
 	}
 	private func calculatePayment()->String{
-		let perHour = Double(model.student.payment)
-		let perMinute = perHour/60.00
-		let payment = perMinute * Double(model.duration)
-		let paymentPrivate = payment/2
-		let paymentRounded = String(format: "%.2f", paymentPrivate)
-		return paymentRounded + "€"
-	}
-	private func calculatePaymentCorona()->String{
 		let perHour = Double(model.student.payment)
 		let perMinute = perHour/60.00
 		let payment = perMinute * Double(model.duration)

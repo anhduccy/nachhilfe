@@ -61,7 +61,7 @@ struct LessonListItem: View{
                 
                 HStack(spacing: 10){
                     if lesson.isDone && !lesson.isPayed || !lesson.isDone && lesson.isPayed{
-                        Icon(systemName: "info.circle", color: .red, size: 18)
+                        Icon(systemName: "info.circle", color: .red, size: 20)
                             .onTapGesture{
                                 showAlert.toggle()
                             }
@@ -81,7 +81,7 @@ struct LessonListItem: View{
                     }
                     
                     HStack(spacing: 5){
-                        InteractiveIcon(image: lesson.isDone ? "checkmark.circle.fill" : "checkmark.circle", bool: $lesson.isDone, color: lesson.student.first!.color.color)
+                        InteractiveIcon(image: lesson.isDone ? "checkmark.circle.fill" : "checkmark.circle", bool: $lesson.isDone, color: lesson.student.first?.color.color ?? .teal)
                             .onTapGesture {
                                 withAnimation{
                                     try! realmEnv.write{

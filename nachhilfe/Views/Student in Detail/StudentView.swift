@@ -84,6 +84,7 @@ struct StudentView: View{
     @State var selectedLesson: Lesson? = nil
     @State var showLessonEditView: Bool = false
     @State var editViewType: EditViewTypes = .add
+    @State var showStudentEditView: Bool = false
     
     @State var showAllLessons: Bool = false
         
@@ -91,15 +92,25 @@ struct StudentView: View{
         HStack{
             GeometryReader{ geo in
                 VStack(spacing: 15){
-                    ViewHeader("\(student.surname) \(student.name)", color: student.color.color){
-                        selectedLesson = nil
-                        editViewType = .add
-                        showLessonEditView = true
+                    HStack{
+                        ViewHeader("\(student.surname) \(student.name)", color: student.color.color){
+                            selectedLesson = nil
+                            editViewType = .add
+                            showLessonEditView = true
+                        }
+                        
+                        Button(action: {showStudentEditView.toggle()}, label: {
+                            Icon(systemName: "info.circle", color: student.color.color)
+                        })
+                        .padding([.leading, .trailing], 10)
+                        .popover(isPresented: $showStudentEditView){
+                            StudentEditView(type: .edit, student: student, isPresented: $showStudentEditView)
+                        }
                     }
                     HStack{
                         VStack{
                             if !student.lessons.filter("date<%@", Date() as CVarArg).isEmpty{
-                                LessonCard(title: "Letzte Nachhilfestunde", lesson: student.lessons.sorted(byKeyPath: "date", ascending: false).filter("date<%@", Date() as CVarArg).first!, selectedLesson: $selectedLesson, showLessonEditView: $showLessonEditView, width: geo.size.width/2, height: 125)
+                                LessonCard(title: "Letzte Nachhilfestunde", lesson: student.lessons.sorted(byKeyPath: "date", ascending: false).filter("date<%@", Date() as CVarArg).first!, selectedLesson: $selectedLesson, showLessonEditView: $showLessonEditView, width: geo.size.width/2, height: 135)
                                     .onTapGesture {
                                         withAnimation{
                                             selectedLesson = student.lessons.sorted(byKeyPath: "date", ascending: false).filter("date<%@", Date() as CVarArg).first!
@@ -110,7 +121,7 @@ struct StudentView: View{
                                     }
                             }
                             if !student.lessons.filter("date>%@", Date() as CVarArg).isEmpty{
-                                LessonCard(title: "Nächste Nachhilfestunde", lesson: student.lessons.filter("date>%@", Date() as CVarArg).first!, selectedLesson: $selectedLesson, showLessonEditView: $showLessonEditView, width: geo.size.width/2, height: 125)
+                                LessonCard(title: "Nächste Nachhilfestunde", lesson: student.lessons.filter("date>%@", Date() as CVarArg).first!, selectedLesson: $selectedLesson, showLessonEditView: $showLessonEditView, width: geo.size.width/2, height: 135)
                                     .onTapGesture {
                                         withAnimation{
                                             selectedLesson = student.lessons.sorted(byKeyPath: "date", ascending: false).filter("date>%@", Date() as CVarArg).first!

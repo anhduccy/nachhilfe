@@ -9,11 +9,9 @@
 /* Begin PBXBuildFile section */
 		7922F91228A2E5650068879D /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7922F91128A2E5650068879D /* LoginView.swift */; };
 		7922F91428A2E5C60068879D /* Privacy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7922F91328A2E5C60068879D /* Privacy.swift */; };
-		7922F91628A2E6160068879D /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7922F91528A2E6160068879D /* HomeView.swift */; };
 		7922F91828A2E6360068879D /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7922F91728A2E6360068879D /* Global.swift */; };
 		7922F91A28A2F1C40068879D /* ViewLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7922F91928A2F1C40068879D /* ViewLibrary.swift */; };
 		7922F91C28A2F3A40068879D /* StudentEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7922F91B28A2F3A30068879D /* StudentEditView.swift */; };
-		7944906328A9633000884758 /* StudentCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7944906228A9633000884758 /* StudentCard.swift */; };
 		7944906628A9635E00884758 /* NavigatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7944906528A9635E00884758 /* NavigatorView.swift */; };
 		7944906B28A963F700884758 /* LessonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7944906A28A963F700884758 /* LessonsView.swift */; };
 		7944906D28A9673900884758 /* LessonEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7944906C28A9673900884758 /* LessonEditView.swift */; };
@@ -39,11 +37,9 @@
 /* Begin PBXFileReference section */
 		7922F91128A2E5650068879D /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		7922F91328A2E5C60068879D /* Privacy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Privacy.swift; sourceTree = "<group>"; };
-		7922F91528A2E6160068879D /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		7922F91728A2E6360068879D /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		7922F91928A2F1C40068879D /* ViewLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewLibrary.swift; sourceTree = "<group>"; };
 		7922F91B28A2F3A30068879D /* StudentEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentEditView.swift; sourceTree = "<group>"; usesTabs = 1; };
-		7944906228A9633000884758 /* StudentCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentCard.swift; sourceTree = "<group>"; };
 		7944906528A9635E00884758 /* NavigatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatorView.swift; sourceTree = "<group>"; usesTabs = 1; };
 		7944906A28A963F700884758 /* LessonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonsView.swift; sourceTree = "<group>"; usesTabs = 1; };
 		7944906C28A9673900884758 /* LessonEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonEditView.swift; sourceTree = "<group>"; usesTabs = 1; };
@@ -85,7 +81,6 @@
 			children = (
 				7922F91928A2F1C40068879D /* ViewLibrary.swift */,
 				7944906728A9637200884758 /* ContentView */,
-				7944906828A9639B00884758 /* Home */,
 				7944906428A9634000884758 /* Student */,
 				7944906928A963CF00884758 /* Lesson */,
 				79EA248F28CCEE9A0069F491 /* Exam */,
@@ -97,7 +92,6 @@
 		7944906428A9634000884758 /* Student */ = {
 			isa = PBXGroup;
 			children = (
-				7944906228A9633000884758 /* StudentCard.swift */,
 				7922F91B28A2F3A30068879D /* StudentEditView.swift */,
 			);
 			path = Student;
@@ -111,14 +105,6 @@
 				7922F91128A2E5650068879D /* LoginView.swift */,
 			);
 			path = ContentView;
-			sourceTree = "<group>";
-		};
-		7944906828A9639B00884758 /* Home */ = {
-			isa = PBXGroup;
-			children = (
-				7922F91528A2E6160068879D /* HomeView.swift */,
-			);
-			path = Home;
 			sourceTree = "<group>";
 		};
 		7944906928A963CF00884758 /* Lesson */ = {
@@ -292,12 +278,10 @@
 				795BC64D28A2DDD3004A9840 /* nachhilfeApp.swift in Sources */,
 				7944906B28A963F700884758 /* LessonsView.swift in Sources */,
 				79BDED2C290DC7D30070C8AF /* StudentView.swift in Sources */,
-				7922F91628A2E6160068879D /* HomeView.swift in Sources */,
 				7922F91428A2E5C60068879D /* Privacy.swift in Sources */,
 				79EA249128CCF8350069F491 /* LessonList.swift in Sources */,
 				795BC66428A2DFC0004A9840 /* Lesson.swift in Sources */,
 				7944906628A9635E00884758 /* NavigatorView.swift in Sources */,
-				7944906328A9633000884758 /* StudentCard.swift in Sources */,
 				79EA249528CCFA8B0069F491 /* ExamList.swift in Sources */,
 				79EA248E28CCEE920069F491 /* ExamView.swift in Sources */,
 				79C1000028A41E620049DAD3 /* Enums.swift in Sources */,
@@ -451,7 +435,7 @@
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -492,7 +476,7 @@
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 2;

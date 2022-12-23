@@ -12,8 +12,9 @@ import RealmSwift
 struct NavigatorView: View{
 	@ObservedResults(Student.self) var students
 	
-	@State var selectedView: ViewTypes? = .home
+	@State var selectedView: ViewTypes? = .lessons
 	@State var selectedStudent: Student? = nil
+	@State var showStudentEditView: Bool = false
 	
 	var body: some View{
 		NavigationSplitView(sidebar: {
@@ -27,21 +28,30 @@ struct NavigatorView: View{
 							NavigationLink(destination: StudentView(student: student), label: {
 								Label(title: {Text("\(student.surname) \(student.name)")}, icon: {
 									Image(systemName: "person")
-										.foregroundColor(student.color.color)
-								})})
+								})
+							})
 						}
 					})
 				}
 			}
 		}, detail: {
 			switch selectedView {
-			case .lessons:
-				LessonsView()
 			case .exams:
 				ExamView()
 			default:
-				HomeView()
+				LessonsView()
 			}
-		})
+		}).toolbar{
+			ToolbarItem{
+				Button(action: {
+					showStudentEditView.toggle()
+				}, label: {
+					Image(systemName: "plus")
+				}).sheet(isPresented: $showStudentEditView){
+					StudentEditView(type: .add, student: nil, isPresented: $showStudentEditView)
+				}
+			}
+		}
 	}
 }
+

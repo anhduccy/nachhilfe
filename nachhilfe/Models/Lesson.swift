@@ -44,8 +44,12 @@ class Lesson: Object, ObjectKeyIdentifiable{
     }
     
     static func delete(lesson: Lesson){
-        try! realmEnv.write{
+        if realmEnv.isInWriteTransaction{
             realmEnv.delete(realmEnv.objects(Lesson.self).filter("_id == %@", lesson._id))
+        } else {
+            try! realmEnv.write{
+                realmEnv.delete(realmEnv.objects(Lesson.self).filter("_id == %@", lesson._id))
+            }
         }
     }
 }

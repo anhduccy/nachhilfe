@@ -37,8 +37,12 @@ class Exam: Object, ObjectKeyIdentifiable{
 		}
 	}
 	static func delete(exam: Exam){
-		try! realmEnv.write{
+		if realmEnv.isInWriteTransaction{
 			realmEnv.delete(realmEnv.objects(Exam.self).filter("_id == %@", exam._id))
+		} else {
+			try! realmEnv.write{
+				realmEnv.delete(realmEnv.objects(Exam.self).filter("_id == %@", exam._id))
+			}
 		}
 	}
 	static func setExamDate(_ date: Date)->Date{
