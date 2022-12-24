@@ -10,11 +10,15 @@ import Realm
 import RealmSwift
 
 struct LessonEditView: View {
-	init(type: EditViewTypes, lesson: Lesson?, isPresented: Binding<Bool>){
+	init(type: EditViewTypes, lesson: Lesson?, student: Student? = nil, isPresented: Binding<Bool>){
 		_isPresented = isPresented
 		self.type = type
 		if type == .add{
-			self.model = LessonModel()
+			let internModel = LessonModel()
+			if student != nil{
+				internModel.student = student!
+			}
+			self.model = internModel
 			self.selectedLesson = Lesson()
 		} else {
 			self.model = LessonModel().toLayer(lesson: lesson!)

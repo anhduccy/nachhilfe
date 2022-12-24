@@ -32,6 +32,7 @@
 		79EA249328CCF8660069F491 /* LessonListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79EA249228CCF8660069F491 /* LessonListItem.swift */; };
 		79EA249528CCFA8B0069F491 /* ExamList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79EA249428CCFA8B0069F491 /* ExamList.swift */; };
 		79EA249728CD18620069F491 /* ExamEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79EA249628CD18620069F491 /* ExamEditView.swift */; };
+		79F1219A2957375F0019D455 /* LessonCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79F121992957375F0019D455 /* LessonCard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +62,7 @@
 		79EA249228CCF8660069F491 /* LessonListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonListItem.swift; sourceTree = "<group>"; };
 		79EA249428CCFA8B0069F491 /* ExamList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamList.swift; sourceTree = "<group>"; usesTabs = 1; };
 		79EA249628CD18620069F491 /* ExamEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamEditView.swift; sourceTree = "<group>"; usesTabs = 1; };
+		79F121992957375F0019D455 /* LessonCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonCard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +116,7 @@
 				79EA249028CCF8350069F491 /* LessonList.swift */,
 				79EA249228CCF8660069F491 /* LessonListItem.swift */,
 				7944906C28A9673900884758 /* LessonEditView.swift */,
+				79F121992957375F0019D455 /* LessonCard.swift */,
 			);
 			path = Lesson;
 			sourceTree = "<group>";
@@ -268,6 +271,7 @@
 				7922F91228A2E5650068879D /* LoginView.swift in Sources */,
 				79EA249328CCF8660069F491 /* LessonListItem.swift in Sources */,
 				7922F91C28A2F3A40068879D /* StudentEditView.swift in Sources */,
+				79F1219A2957375F0019D455 /* LessonCard.swift in Sources */,
 				79AB800928CD36520055078D /* ExamListItem.swift in Sources */,
 				795BC64F28A2DDD3004A9840 /* ContentView.swift in Sources */,
 				795BC66628A2E077004A9840 /* Exam.swift in Sources */,
