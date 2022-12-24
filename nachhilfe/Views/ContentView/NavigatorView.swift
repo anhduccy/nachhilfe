@@ -33,7 +33,17 @@ struct NavigatorView: View{
 						}
 					})
 				}
-			}
+			}.toolbar{
+				ToolbarItem{
+				 Button(action: {
+					 showStudentEditView.toggle()
+				 }, label: {
+					 Image(systemName: "person.crop.circle.badge.plus")
+				 }).popover(isPresented: $showStudentEditView){
+					 StudentEditView(type: .add, student: nil, isPresented: $showStudentEditView)
+				 }
+			 }
+		 }
 		}, detail: {
 			switch selectedView {
 			case .exams:
@@ -41,17 +51,7 @@ struct NavigatorView: View{
 			default:
 				LessonsView()
 			}
-		}).toolbar{
-			ToolbarItem{
-				Button(action: {
-					showStudentEditView.toggle()
-				}, label: {
-					Image(systemName: "plus")
-				}).sheet(isPresented: $showStudentEditView){
-					StudentEditView(type: .add, student: nil, isPresented: $showStudentEditView)
-				}
-			}
-		}
+		})
 	}
 }
 

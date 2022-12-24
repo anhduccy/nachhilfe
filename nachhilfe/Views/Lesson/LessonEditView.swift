@@ -64,7 +64,7 @@ struct LessonEditView: View {
 						}
 					}, label: {
 						VStack(spacing: 0){
-							if model.student.surname == "" && model.student.name == ""{
+							if model.student.surname.isEmpty && model.student.name.isEmpty{
 								LeftText("Stunde hinzufügen", font: .title, fontWeight: .bold)
 									.foregroundColor(model.student.color.color)
 								LeftText("Tippe um Auszuwählen", font: .callout)
@@ -72,8 +72,13 @@ struct LessonEditView: View {
 							} else {
 								LeftText("\(model.student.surname) \(model.student.name)", font: .title, fontWeight: .bold)
 									.foregroundColor(model.student.color.color)
-								LeftText("Stunde vom \(dateFormatter.string(from: model.date))", font: .callout)
-									.foregroundColor(.gray)
+								if type == .add{
+									LeftText("Stunde hinzufügen", font: .callout)
+										.foregroundColor(.gray)
+								} else {
+									LeftText("Stunde am \(dateFormatter.string(from: model.date))", font: .callout)
+										.foregroundColor(.gray)
+								}
 							}
 						}
 					})

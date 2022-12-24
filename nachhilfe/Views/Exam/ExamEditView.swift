@@ -9,11 +9,15 @@ import SwiftUI
 import RealmSwift
 
 struct ExamEditView: View {
-	init(type: EditViewTypes, exam: Exam?, isPresented: Binding<Bool>){
+	init(type: EditViewTypes, exam: Exam?, student: Student? = nil, isPresented: Binding<Bool>){
 		_isPresented = isPresented
 		self.type = type
 		if type == .add{
-			self.model = ExamModel()
+			let internModel = ExamModel()
+			if student != nil{
+				internModel.student = student!
+			}
+			self.model = internModel
 			self.selectedExam = Exam()
 		} else{
 			self.model = ExamModel().toLayer(exam: exam!)
@@ -61,7 +65,7 @@ struct ExamEditView: View {
 						}
 					}, label: {
 						VStack(spacing: 0){
-							if model.student.surname == "" && model.student.name == ""{
+							if model.student.surname.isEmpty && model.student.name.isEmpty{
 								LeftText("Klausur hinzufügen", font: .title, fontWeight: .bold)
 									.foregroundColor(model.student.color.color)
 								LeftText("Tippe um Auszuwählen", font: .callout)
@@ -69,8 +73,13 @@ struct ExamEditView: View {
 							} else {
 								LeftText("\(model.student.surname) \(model.student.name)", font: .title, fontWeight: .bold)
 									.foregroundColor(model.student.color.color)
-								LeftText("Klausur vom \(dateFormatter.string(from: model.date))", font: .callout)
-									.foregroundColor(.gray)
+								if type == .add{
+									LeftText("Klausur hinzufügen", font: .callout)
+										.foregroundColor(.gray)
+								} else {
+									LeftText("Klausur am \(dateFormatter.string(from: model.date))", font: .callout)
+										.foregroundColor(.gray)
+								}
 							}
 						}
 					})

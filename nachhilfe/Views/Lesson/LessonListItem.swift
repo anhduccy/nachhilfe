@@ -39,19 +39,17 @@ struct LessonListItem: View{
                 VStack(alignment: .leading, spacing: 0) {
                     HStack(spacing: 5){
                         Text(dateFormatter.string(from: lesson.date))
-                            .font(.callout.bold())
                         if all{
                             Text((lesson.student.first?.surname ?? "Stunde") + " " + (lesson.student.first?.name ?? "gelöscht"))
-                                .font(.callout.bold())
                                 .foregroundColor(lesson.student.first?.color.color ?? .teal)
                         }
-                        if lesson.notes != ""{
-                            Image(systemName: "note.text")
-                                .font(.callout)
+                        if !lesson.notes.isEmpty{
+                            Image(systemName: "text.alignleft")
+                                .font(.footnote)
                                 .foregroundColor(.gray)
                         }
-                    }
-                    if lesson.content != ""{
+                    }.font(.callout.bold())
+                    if lesson.content.isEmpty{
                         LeftText(lesson.content, font: .footnote).foregroundColor(.gray)
                             .padding(.top, 5)
                             .lineLimit(2)

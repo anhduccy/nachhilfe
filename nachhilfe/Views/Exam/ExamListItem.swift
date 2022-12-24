@@ -36,17 +36,18 @@ struct ExamListItem: View {
 			}
 			
 			HStack(spacing: 20){
-				HStack(spacing: 7.5){
+				HStack(spacing: 5){
 					Text(dateFormatter.string(from: exam.date))
 					if all{
 						Text((exam.student.first?.surname ?? "Klausur") + " " + (exam.student.first?.name ?? "gelöscht"))
 							.foregroundColor(exam.student.first?.color.color ?? .teal)
 					}
 					if !exam.topics.isEmpty{
-						Image(systemName: "note.text")
+						Image(systemName: "text.alignleft")
+							.font(.footnote)
 							.foregroundColor(.gray)
 					}
-				}.font(.body.bold())
+				}.font(.callout.bold())
 				Spacer()
 				if exam.grade == -1{
 					Text("--").font(.title.weight(.heavy))

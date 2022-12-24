@@ -32,7 +32,7 @@ struct StudentEditView: View {
         
     var body: some View {
 		ZStack{
-			VStack(spacing: 20){
+			VStack(spacing: 10){
 				HStack(alignment: .top){
 					if type == .add{
 						Text("Neue/r Schüler/in").font(.title.weight(.bold))
@@ -48,6 +48,15 @@ struct StudentEditView: View {
 						Image(systemName: "xmark")
 					})
 				}
+				HStack{
+					ForEach(Student.Colors.allCases, id: \.self){ color in
+						Button(action: {
+							model.color = color
+						}, label: {
+							Circle().fill(color.color)
+						})
+					}
+				}.frame(maxHeight: 30)
 				
 				ScrollView(.vertical, showsIndicators: false){
 					HStack(spacing: 10){
@@ -76,29 +85,14 @@ struct StudentEditView: View {
 					
 					HStack(spacing: 10){
 						Icon(systemName: "banknote", color: model.color.color)
-						TextField("Bezahlung", value: $model.payment, format: .number)
+						TextField("Bezahlung", value: $model.payment, format: .currency(code: "EUR"))
 							.keyboardType(.decimalPad)
 							.textFieldStyle(.plain)
-						Text("€")
 					}
 					.font(.title2.bold())
 					
 					Spacer().ignoresSafeArea(.keyboard)
 				}
-				
-				ZStack{
-					RoundedRectangle(cornerRadius: 20).foregroundColor(model.color.color).opacity(0.3)
-						.padding([.leading, .trailing], -5)
-					HStack{
-						ForEach(Student.Colors.allCases, id: \.self){ color in
-							Button(action: {
-								model.color = color
-							}, label: {
-								Circle().fill(color.color)
-							})
-						}
-					}
-				}.frame(maxHeight: 30)
 				
 				HStack{
 					Button("Abbrechen"){
@@ -132,6 +126,6 @@ struct StudentEditView: View {
 			.padding()
 		}
 		.foregroundColor(model.color.color)
-		.frame(width: 400, height: 400)
+		.frame(width: 400, height: 320)
 	}
 }

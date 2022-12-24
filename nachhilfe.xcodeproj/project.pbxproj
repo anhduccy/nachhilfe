@@ -33,6 +33,7 @@
 		79EA249528CCFA8B0069F491 /* ExamList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79EA249428CCFA8B0069F491 /* ExamList.swift */; };
 		79EA249728CD18620069F491 /* ExamEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79EA249628CD18620069F491 /* ExamEditView.swift */; };
 		79F1219A2957375F0019D455 /* LessonCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79F121992957375F0019D455 /* LessonCard.swift */; };
+		79F1219C29575C6E0019D455 /* ExamCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79F1219B29575C6E0019D455 /* ExamCard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +64,7 @@
 		79EA249428CCFA8B0069F491 /* ExamList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamList.swift; sourceTree = "<group>"; usesTabs = 1; };
 		79EA249628CD18620069F491 /* ExamEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamEditView.swift; sourceTree = "<group>"; usesTabs = 1; };
 		79F121992957375F0019D455 /* LessonCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonCard.swift; sourceTree = "<group>"; };
+		79F1219B29575C6E0019D455 /* ExamCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamCard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,7 +88,6 @@
 				7944906428A9634000884758 /* Student */,
 				7944906928A963CF00884758 /* Lesson */,
 				79EA248F28CCEE9A0069F491 /* Exam */,
-				79BDED2D290DC7F10070C8AF /* Student in Detail */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -94,6 +95,7 @@
 		7944906428A9634000884758 /* Student */ = {
 			isa = PBXGroup;
 			children = (
+				79BDED2B290DC7D30070C8AF /* StudentView.swift */,
 				7922F91B28A2F3A30068879D /* StudentEditView.swift */,
 			);
 			path = Student;
@@ -172,14 +174,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		79BDED2D290DC7F10070C8AF /* Student in Detail */ = {
-			isa = PBXGroup;
-			children = (
-				79BDED2B290DC7D30070C8AF /* StudentView.swift */,
-			);
-			path = "Student in Detail";
-			sourceTree = "<group>";
-		};
 		79EA248F28CCEE9A0069F491 /* Exam */ = {
 			isa = PBXGroup;
 			children = (
@@ -187,6 +181,7 @@
 				79EA249428CCFA8B0069F491 /* ExamList.swift */,
 				79AB800828CD36520055078D /* ExamListItem.swift */,
 				79EA249628CD18620069F491 /* ExamEditView.swift */,
+				79F1219B29575C6E0019D455 /* ExamCard.swift */,
 			);
 			path = Exam;
 			sourceTree = "<group>";
@@ -282,6 +277,7 @@
 				795BC64D28A2DDD3004A9840 /* nachhilfeApp.swift in Sources */,
 				7944906B28A963F700884758 /* LessonsView.swift in Sources */,
 				79BDED2C290DC7D30070C8AF /* StudentView.swift in Sources */,
+				79F1219C29575C6E0019D455 /* ExamCard.swift in Sources */,
 				7922F91428A2E5C60068879D /* Privacy.swift in Sources */,
 				79EA249128CCF8350069F491 /* LessonList.swift in Sources */,
 				795BC66428A2DFC0004A9840 /* Lesson.swift in Sources */,
