@@ -94,19 +94,21 @@ struct SalesView: View {
                         Spacer()
                     }.padding()
                         .frame(width: geo.size.width/2)
-                    ZStack{
-                        Chart{
-                            BarMark(x: .value("Monate", MonthNavigator.getMonth(input: selectedMonth) + " " + MonthNavigator.getYear(input: selectedMonth)) , y: .value("Umsatz", salesTotal(selectedMonth)))
-                                .foregroundStyle(by: .value("Ausgewählter Monat", "Ausgewählt"))
-                            ForEach(1...3, id: \.self){ data in
-                                BarMark(x: .value("Monate", MonthNavigator.getMonth(input: selectedMonth-data)  + " " + MonthNavigator.getYear(input: selectedMonth-data)) , y: .value("Umsatz", salesTotal(selectedMonth-data)))
-                                    .foregroundStyle(by: .value("Ausgewählter Monat", "Vergangen"))
+                    if !showAllSales{
+                        ZStack{
+                            Chart{
+                                BarMark(x: .value("Monate", MonthNavigator.getMonth(input: selectedMonth) + " " + MonthNavigator.getYear(input: selectedMonth)) , y: .value("Umsatz", salesTotal(selectedMonth)))
+                                    .foregroundStyle(by: .value("Ausgewählter Monat", "Ausgewählt"))
+                                ForEach(1...3, id: \.self){ data in
+                                    BarMark(x: .value("Monate", MonthNavigator.getMonth(input: selectedMonth-data)  + " " + MonthNavigator.getYear(input: selectedMonth-data)) , y: .value("Umsatz", salesTotal(selectedMonth-data)))
+                                        .foregroundStyle(by: .value("Ausgewählter Monat", "Vergangen"))
+                                }
                             }
-                        }
-                        .chartForegroundStyleScale([
-                            "Vergangen": .teal, "Ausgewählt": .blue
-                        ])
-                    }.padding().frame(width: geo.size.width/2.25)
+                            .chartForegroundStyleScale([
+                                "Vergangen": .teal, "Ausgewählt": .blue
+                            ])
+                        }.padding().frame(width: geo.size.width/2.25)
+                    }
                 }
             }.padding()
         }
