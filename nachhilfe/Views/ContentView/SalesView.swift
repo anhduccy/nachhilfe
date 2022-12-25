@@ -43,57 +43,48 @@ struct SalesView: View {
     @State var showAllSales: Bool = false
     @State var selectedMonth: Int = MonthNavigator.getCurrentMonth(date: Date())
     
+    var navigationBar: (some View){
+        return
+            HStack(spacing: 10){
+                if showAllSales{
+                    Text("Gesamtumsatz").font(.title2.bold())
+                } else {
+                    HStack(spacing: 3){
+                        Button(action: {
+                            selectedMonth -= 1
+                        }, label: {
+                            Icon2(systemName: "chevron.backward", size: 27.5)
+                        })
+                        
+                        Button(action: {
+                            selectedMonth += 1
+                        }, label: {
+                            Icon2(systemName: "chevron.forward", size: 27.5)
+                        })
+                    }
+                    Text(MonthNavigator.getMonth(input: selectedMonth) + " " + MonthNavigator.getYear(input: selectedMonth)).font(.title2.bold())
+                }
+                Spacer()
+                Button(showAllSales ? "Monatlich anzeigen" : "Gesamthistorie anzeigen"){
+                    withAnimation{
+                        showAllSales.toggle()
+                    }
+                }.foregroundColor(.teal)
+            }
+    }
+    
     var body: some View {
         GeometryReader{ geo in
-            VStack{
+            VStack(spacing: 20){
                 ViewHeader("Umsatzhistorie", hasButton: false, action: {})
+                
+                if showAllSales{
+                    navigationBar.frame(width: geo.size.width/2)
+                } else {
+                    navigationBar
+                }
+                
                 HStack{
-                    VStack(spacing: 20){
-                        HStack(spacing: 10){
-                            if showAllSales{
-                                Text("Gesamt").font(.title2.bold())
-                            } else {
-                                HStack(spacing: 3){
-                                    Button(action: {
-                                        selectedMonth -= 1
-                                    }, label: {
-                                        Icon2(systemName: "chevron.backward", size: 27.5)
-                                    })
-                                    
-                                    Button(action: {
-                                        selectedMonth += 1
-                                    }, label: {
-                                        Icon2(systemName: "chevron.forward", size: 27.5)
-                                    })
-                                }
-                                Text(MonthNavigator.getMonth(input: selectedMonth) + " " + MonthNavigator.getYear(input: selectedMonth)).font(.title2.bold())
-                            }
-                            
-                            Spacer()
-                            
-                            Button(showAllSales ? "Monate" : "Gesamt"){
-                                showAllSales.toggle()
-                            }.foregroundColor(.teal)
-                        }
-                        
-                        VStack(spacing: 7.5){
-                            ForEach(students, id: \.self){ student in
-                                HStack{
-                                    Text(student.surname + " " + student.name)
-                                    Spacer()
-                                    Text(salesPerStudent(student, selectedMonth: selectedMonth).formatted(.currency(code: "EUR")))
-                                }.font(.body)
-                            }
-                            Divider()
-                            HStack{
-                                Text("Gesamt")
-                                Spacer()
-                                Text(salesTotal(selectedMonth).formatted(.currency(code: "EUR")))
-                            }.font(.body.weight(.bold))
-                        }
-                        Spacer()
-                    }.padding()
-                        .frame(width: geo.size.width/2)
                     if !showAllSales{
                         ZStack{
                             Chart{
@@ -101,14 +92,32 @@ struct SalesView: View {
                                     .foregroundStyle(by: .value("Ausgewählter Monat", "Ausgewählt"))
                                 ForEach(1...3, id: \.self){ data in
                                     BarMark(x: .value("Monate", MonthNavigator.getMonth(input: selectedMonth-data)  + " " + MonthNavigator.getYear(input: selectedMonth-data)) , y: .value("Umsatz", salesTotal(selectedMonth-data)))
-                                        .foregroundStyle(by: .value("Ausgewählter Monat", "Vergangen"))
+                                        .foregroundStyle(by: .value("Ausgewählter Monat", "Vergangene"))
                                 }
                             }
                             .chartForegroundStyleScale([
-                                "Vergangen": .teal, "Ausgewählt": .blue
+                                "Ausgewählt": .blue, "Vergangene": .teal
                             ])
-                        }.padding().frame(width: geo.size.width/2.25)
+                        }.padding()
+                            .frame(width: geo.size.width/2.25)
                     }
+                    VStack(spacing: 7.5){
+                        ForEach(students, id: \.self){ student in
+                            HStack{
+                                Text(student.surname + " " + student.name)
+                                Spacer()
+                                Text(salesPerStudent(student, selectedMonth: selectedMonth).formatted(.currency(code: "EUR")))
+                            }.font(.body)
+                        }
+                        Divider()
+                        HStack{
+                            Text("Gesamt")
+                            Spacer()
+                            Text(salesTotal(selectedMonth).formatted(.currency(code: "EUR")))
+                        }.font(.body.weight(.bold))
+                        Spacer()
+                    }.padding()
+                    .frame(width: geo.size.width/2)
                 }
             }.padding()
         }
