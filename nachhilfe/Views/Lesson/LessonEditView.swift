@@ -41,6 +41,13 @@ struct LessonEditView: View {
 		dateFormatter.locale = Locale(identifier: "de_DE")
 		return dateFormatter
 	}
+	
+	var payment: String{
+		let perHour = Double(model.student.payment)
+		let perMinute = perHour/60.00
+		let payment = perMinute * Double(model.duration)
+		return payment.formatted(.currency(code: "EUR"))
+	}
 		
 	var body: some View {
 		ZStack{
@@ -137,7 +144,7 @@ struct LessonEditView: View {
 								HStack{
 									Spacer()
 									VStack(alignment: .trailing){
-										Text("Anfällig: " + calculatePayment())
+										Text("Anfällig: " + payment)
 									}.font(.caption)
 								}
 							}.foregroundColor(.gray)
@@ -198,13 +205,6 @@ struct LessonEditView: View {
 			}
 			.padding(20)
 		}
-	}
-	private func calculatePayment()->String{
-		let perHour = Double(model.student.payment)
-		let perMinute = perHour/60.00
-		let payment = perMinute * Double(model.duration)
-		let paymentRounded = String(format: "%.2f", payment)
-		return paymentRounded + "€"
 	}
 }
 

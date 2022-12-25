@@ -41,7 +41,7 @@ class MonthNavigator{
 struct SalesView: View {
     @ObservedResults(Student.self) var students
     @State var showAllSales: Bool = false
-    @State var selectedMonth: Int = MonthNavigator.getCurrentMonth(date: Date())
+    @State var selectedMonth: Int = MonthNavigator.getCurrentMonth()
     
     var navigationBar: (some View){
         return
@@ -62,6 +62,7 @@ struct SalesView: View {
                             Icon2(systemName: "chevron.forward", size: 27.5)
                         })
                     }
+                    Button(action: {selectedMonth = MonthNavigator.getCurrentMonth()}, label: {Icon(systemName: "calendar")})
                     Text(MonthNavigator.getMonth(input: selectedMonth) + " " + MonthNavigator.getYear(input: selectedMonth)).font(.title2.bold())
                 }
                 Spacer()
@@ -88,11 +89,14 @@ struct SalesView: View {
                     if !showAllSales{
                         ZStack{
                             Chart{
-                                BarMark(x: .value("Monate", MonthNavigator.getMonth(input: selectedMonth) + " " + MonthNavigator.getYear(input: selectedMonth)) , y: .value("Umsatz", salesTotal(selectedMonth)))
-                                    .foregroundStyle(by: .value("Ausgewählter Monat", "Ausgewählt"))
-                                ForEach(1...3, id: \.self){ data in
-                                    BarMark(x: .value("Monate", MonthNavigator.getMonth(input: selectedMonth-data)  + " " + MonthNavigator.getYear(input: selectedMonth-data)) , y: .value("Umsatz", salesTotal(selectedMonth-data)))
-                                        .foregroundStyle(by: .value("Ausgewählter Monat", "Vergangene"))
+                                ForEach(0...3, id: \.self){ data in
+                                    BarMark(x: .value("Monate", MonthNavigator.getMonth(input: selectedMonth-3+data)  + " " + MonthNavigator.getYear(input: selectedMonth-3+data)) , y: .value("Umsatz", salesTotal(selectedMonth-3+data)))
+                                        .annotation{
+                                            Text(salesTotal(selectedMonth-3+data).formatted(.currency(code: "EUR")))
+                                                .font(.callout)
+                                                .underline(data == 3 ? true : false)
+                                        }
+                                        .foregroundStyle(by: data == 3 ? .value("Ausgewählter Monat", "Ausgewählt") : .value("Ausgewählter Monat", "Vergangene"))
                                 }
                             }
                             .chartForegroundStyleScale([

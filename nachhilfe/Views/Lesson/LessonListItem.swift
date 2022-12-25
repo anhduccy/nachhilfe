@@ -49,7 +49,7 @@ struct LessonListItem: View{
                                 .foregroundColor(.gray)
                         }
                     }.font(.callout.bold())
-                    if lesson.content.isEmpty{
+                    if !lesson.content.isEmpty{
                         LeftText(lesson.content, font: .footnote).foregroundColor(.gray)
                             .padding(.top, 5)
                             .lineLimit(2)
