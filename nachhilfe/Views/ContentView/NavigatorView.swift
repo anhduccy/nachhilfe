@@ -48,6 +48,8 @@ struct NavigatorView: View{
 			switch selectedView {
 			case .exams:
 				ExamView()
+			case .salesHistory:
+				SalesView()
 			default:
 				LessonsView()
 			}

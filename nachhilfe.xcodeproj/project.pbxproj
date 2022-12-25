@@ -24,6 +24,7 @@
 		795BC66128A2DE8A004A9840 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 795BC66028A2DE8A004A9840 /* RealmSwift */; };
 		795BC66428A2DFC0004A9840 /* Lesson.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795BC66328A2DFC0004A9840 /* Lesson.swift */; };
 		795BC66628A2E077004A9840 /* Exam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795BC66528A2E077004A9840 /* Exam.swift */; };
+		797CF47A295863D9005CD3CE /* SalesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797CF479295863D8005CD3CE /* SalesView.swift */; };
 		79AB800928CD36520055078D /* ExamListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79AB800828CD36520055078D /* ExamListItem.swift */; };
 		79BDED2C290DC7D30070C8AF /* StudentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79BDED2B290DC7D30070C8AF /* StudentView.swift */; };
 		79C1000028A41E620049DAD3 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C1FFFF28A41E620049DAD3 /* Enums.swift */; };
@@ -54,6 +55,7 @@
 		795BC65B28A2DE3D004A9840 /* Student.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Student.swift; sourceTree = "<group>"; usesTabs = 1; };
 		795BC66328A2DFC0004A9840 /* Lesson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lesson.swift; sourceTree = "<group>"; };
 		795BC66528A2E077004A9840 /* Exam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exam.swift; sourceTree = "<group>"; usesTabs = 1; };
+		797CF479295863D8005CD3CE /* SalesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalesView.swift; sourceTree = "<group>"; };
 		7992FC1D28B6926400E8F8AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		79AB800828CD36520055078D /* ExamListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamListItem.swift; sourceTree = "<group>"; usesTabs = 1; };
 		79BDED2B290DC7D30070C8AF /* StudentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentView.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 			children = (
 				795BC64E28A2DDD3004A9840 /* ContentView.swift */,
 				7944906528A9635E00884758 /* NavigatorView.swift */,
+				797CF479295863D8005CD3CE /* SalesView.swift */,
 				7922F91128A2E5650068879D /* LoginView.swift */,
 			);
 			path = ContentView;
@@ -284,6 +287,7 @@
 				7944906628A9635E00884758 /* NavigatorView.swift in Sources */,
 				79EA249528CCFA8B0069F491 /* ExamList.swift in Sources */,
 				79EA248E28CCEE920069F491 /* ExamView.swift in Sources */,
+				797CF47A295863D9005CD3CE /* SalesView.swift in Sources */,
 				79C1000028A41E620049DAD3 /* Enums.swift in Sources */,
 				7922F91828A2E6360068879D /* Global.swift in Sources */,
 			);

@@ -12,7 +12,7 @@ enum EditViewTypes{
 }
 
 enum ViewTypes: CaseIterable{
-    case lessons, exams
+    case lessons, exams, salesHistory
     
     var name: String{
         switch self {
@@ -20,6 +20,9 @@ enum ViewTypes: CaseIterable{
             return "Nachhilfestunden"
 		case .exams:
 			return "Klausuren"
+		case .salesHistory:
+			return "Umsatzhistorie"
+			
         }
     }
     
@@ -29,6 +32,8 @@ enum ViewTypes: CaseIterable{
             return "clock"
 		case .exams:
 			return "doc"
+		case .salesHistory:
+			return "eurosign"
         }
     }
 } 
