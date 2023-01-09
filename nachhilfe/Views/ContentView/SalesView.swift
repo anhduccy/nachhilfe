@@ -89,18 +89,32 @@ struct SalesView: View {
                     if !showAllSales{
                         ZStack{
                             Chart{
-                                ForEach(0...3, id: \.self){ data in
-                                    BarMark(x: .value("Monate", MonthNavigator.getMonth(input: selectedMonth-3+data)  + " " + MonthNavigator.getYear(input: selectedMonth-3+data)) , y: .value("Umsatz", salesTotal(selectedMonth-3+data)))
-                                        .annotation{
-                                            Text(salesTotal(selectedMonth-3+data).formatted(.currency(code: "EUR")))
-                                                .font(.callout)
-                                                .underline(data == 3 ? true : false)
-                                        }
-                                        .foregroundStyle(by: data == 3 ? .value("Ausgewählter Monat", "Ausgewählt") : .value("Ausgewählter Monat", "Vergangene"))
+                                let data: [SalesPosition] = [
+                                    .init(name: "\(MonthNavigator.getMonth(input: selectedMonth-3)  + " " + MonthNavigator.getYear(input: selectedMonth-3))", betrag: salesPayed(selectedMonth-3), color: "Gezahlt"),
+                                    .init(name: "\(MonthNavigator.getMonth(input: selectedMonth-3)  + " " + MonthNavigator.getYear(input: selectedMonth-3))", betrag: salesTotal(selectedMonth-3)-salesPayed(selectedMonth-3), color: "Noch nicht gezahlt"),
+                                    
+                                    .init(name: "\(MonthNavigator.getMonth(input: selectedMonth-2)  + " " + MonthNavigator.getYear(input: selectedMonth-2))", betrag: salesPayed(selectedMonth-2), color: "Gezahlt"),
+                                    .init(name: "\(MonthNavigator.getMonth(input: selectedMonth-2)  + " " + MonthNavigator.getYear(input: selectedMonth-2))", betrag: salesTotal(selectedMonth-2)-salesPayed(selectedMonth-2), color: "Noch nicht gezahlt"),
+                                    
+                                    .init(name: "\(MonthNavigator.getMonth(input: selectedMonth-1)  + " " + MonthNavigator.getYear(input: selectedMonth-1))", betrag: salesPayed(selectedMonth-1), color: "Gezahlt"),
+                                    .init(name: "\(MonthNavigator.getMonth(input: selectedMonth-1)  + " " + MonthNavigator.getYear(input: selectedMonth-1))", betrag: salesTotal(selectedMonth-1)-salesPayed(selectedMonth-1), color: "Noch nicht gezahlt"),
+                                    
+                                    
+                                    .init(name: "\(MonthNavigator.getMonth(input: selectedMonth)  + " " + MonthNavigator.getYear(input: selectedMonth))", betrag: salesPayed(selectedMonth), color: "Ausgewählt"),
+                                    .init(name: "\(MonthNavigator.getMonth(input: selectedMonth)  + " " + MonthNavigator.getYear(input: selectedMonth))", betrag: salesTotal(selectedMonth)-salesPayed(selectedMonth), color: "Noch nicht gezahlt")
+                                ]
+                                ForEach(data) { pos in
+                                    BarMark(x: .value("Monate", pos.name),
+                                            y: .value("Umsatz", pos.betrag)
+                                    )
+                                    .foregroundStyle(by: .value("Beschreibung", pos.color))
+                                    .annotation(position: .overlay, alignment: .center){
+                                        
+                                        AmountText(betrag: pos.betrag)
+                                    }
                                 }
-                            }
-                            .chartForegroundStyleScale([
-                                "Ausgewählt": .blue, "Vergangene": .teal
+                            }.chartForegroundStyleScale([
+                                "Noch nicht gezahlt": .red, "Gezahlt": .teal, "Ausgewählt": .blue
                             ])
                         }.padding()
                             .frame(width: geo.size.width/2.25)
@@ -126,13 +140,19 @@ struct SalesView: View {
             }.padding()
         }
     }
-    func salesPerStudent(_ student: Student, selectedMonth: Int)->Double{
+    func salesPerStudent(_ student: Student, selectedMonth: Int, showAll: Bool = true)->Double{
         var sales = 0.0
         let costsPerMinute = Double(student.payment)/60.0
         if !showAllSales{
             let startOfMonth = MonthNavigator.getDateFromComponents(month: selectedMonth).startOfMonth()
             let endOfMonth = MonthNavigator.getDateFromComponents(month: selectedMonth).endOfMonth()
-            for lesson in student.lessons.filter("date > %@ && date < %@", startOfMonth as CVarArg, endOfMonth as CVarArg){
+            var filter = ""
+            if showAll{
+                filter = "date > %@ && date < %@"
+            } else {
+                filter = "date > %@ && date < %@ && isPayed = true"
+            }
+            for lesson in student.lessons.filter(filter, startOfMonth as CVarArg, endOfMonth as CVarArg){
                 sales += costsPerMinute * Double(lesson.duration)
             }
         } else {
@@ -142,6 +162,7 @@ struct SalesView: View {
         }
         return sales
     }
+    
     func salesTotal(_ selectedMonth: Int)->Double{
         var sales = 0.0
         for student in students{
@@ -149,6 +170,31 @@ struct SalesView: View {
         }
         return sales
     }
+    func salesPayed(_ selectedMonth: Int)->Double{
+        var sales = 0.0
+        for student in students{
+            sales += salesPerStudent(student, selectedMonth: selectedMonth, showAll: false)
+        }
+        return sales
+    }
+}
+
+struct AmountText: View{
+    let betrag: Double
+    var body: some View{
+        if betrag != 0.0{
+            Text(betrag.formatted(.currency(code: "EUR")))
+                    .foregroundColor(.white)
+                    .font(.callout)
+        }
+    }
+}
+
+struct SalesPosition: Identifiable{
+    var name: String
+    var betrag: Double
+    var id: UUID = UUID()
+    var color: String
 }
 
 extension Date {
