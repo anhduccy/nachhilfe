@@ -111,12 +111,11 @@ struct LessonList: View{
         }
     }
     private func lessons(showAllLessons: Bool)->Results<Lesson>{
-        var lessonsIntern = lessons
+        var lessons = lessons.sorted(byKeyPath: "date", ascending: false)
         if showAllLessons {
-            lessonsIntern = lessonsIntern.sorted(byKeyPath: "date", ascending: false)
-            return lessonsIntern.filter(NSPredicate(value: true))
+            return lessons.filter(NSPredicate(value: true))
         } else {
-            lessonsIntern = lessons.sorted(byKeyPath: "date", ascending: true)
+            lessons = lessons.sorted(byKeyPath: "date", ascending: true)
             return lessons.filter("isPayed == false || isDone == false")
         }
     }

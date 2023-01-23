@@ -98,7 +98,7 @@ struct StudentView: View{
                                             LessonCard(title: "Nächste Nachhilfestunde", lesson: student.lessons.filter("date>%@", Date() as CVarArg).first!, selectedLesson: $selectedLesson, showLessonEditView: $showLessonEditView, width: geo.size.width/2, height: 120)
                                                 .onTapGesture {
                                                     withAnimation{
-                                                        selectedLesson = student.lessons.sorted(byKeyPath: "date", ascending: false).filter("date>%@", Date() as CVarArg).first!
+                                                        selectedLesson = student.lessons.sorted(byKeyPath: "date", ascending: true).filter("date>%@", Date() as CVarArg).first!
                                                         
                                                         editViewType = .edit
                                                         showLessonEditView = true
