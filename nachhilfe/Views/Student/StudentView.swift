@@ -71,7 +71,7 @@ struct StudentView: View{
                                             ExamCard(title: "Nächste Klausur", exam: student.exams.sorted(byKeyPath: "date", ascending: false).filter("date>%@", Date() as CVarArg).first!, selectedExam: $selectedExam, showExamEditView: $showExamEditView, width: geo.size.width/2, height: 70, color: student.color.color)
                                                 .onTapGesture{
                                                     withAnimation{
-                                                        selectedExam  = student.exams.sorted(byKeyPath: "date", ascending: false).filter("date>%@", Date() as CVarArg).first!
+                                                        selectedExam  = student.exams.sorted(byKeyPath: "date", ascending: true).filter("date>%@", Date() as CVarArg).first!
                                                         editViewType = .edit
                                                         showLessonEditView = false
                                                         showExamEditView = true
@@ -181,10 +181,11 @@ struct StudentView: View{
         }
     }
     private func lessons()->Results<Lesson>{
-        let studentLessons = student.lessons.sorted(byKeyPath: "date", ascending: false)
+        var studentLessons = student.lessons.sorted(byKeyPath: "date", ascending: false)
         if showAllLessons {
             return studentLessons.filter(NSPredicate(value: true))
         } else {
+            studentLessons = student.lessons.sorted(byKeyPath: "date", ascending: true)
             return studentLessons.filter("isPayed == false || isDone == false")
         }
     }
