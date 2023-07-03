@@ -19,7 +19,7 @@ struct StudentEditView: View {
             self.model = StudentModel()
             self.student = Student()
         } else {
-            self.model = StudentModel().toLayer(student: student!)
+			self.model = StudentModel().toLayer(student: student!)
             self.student = student!
         }
     }
