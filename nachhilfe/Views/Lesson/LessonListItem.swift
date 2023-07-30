@@ -9,8 +9,8 @@ import SwiftUI
 import RealmSwift
 
 struct LessonListItem: View{
+    @EnvironmentObject var globalVC: GlobalVC
     @Environment(\.colorScheme) var appearance
-    @Binding var selectedLesson: Lesson?
     @ObservedRealmObject var lesson: Lesson
     @Binding var showLessonEditView: Bool
     let all: Bool
@@ -26,7 +26,7 @@ struct LessonListItem: View{
 
     var body: some View{
         ZStack {
-            if selectedLesson?._id == lesson._id && showLessonEditView{
+            if globalVC.selectedLesson?._id == lesson._id && showLessonEditView{
                 RoundedRectangle(cornerRadius: 10).foregroundColor(lesson.student.first!.color.color)
                     .opacity(0.1)
                     .shadow(radius: 1.5)

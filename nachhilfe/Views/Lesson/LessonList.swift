@@ -10,24 +10,21 @@ import RealmSwift
 
 //Lesson List with all lessons + student filter option with the "all" case
 struct LessonList: View{
+    @EnvironmentObject var globalVC: GlobalVC
     @ObservedResults(Lesson.self) var lessons
     
-    init(selectedStudent: Student? = nil, selectedLesson: Binding<Lesson?>, showLessonEditView: Binding <Bool>, editViewType: Binding<EditViewTypes>, allStudents: Bool){
+    init(selectedStudent: Student? = nil, showLessonEditView: Binding <Bool>, editViewType: Binding<EditViewTypes>, allStudents: Bool){
         if selectedStudent == nil{
             _selectedStudent = State(wrappedValue: selectedStudent)
-            
         } else {
             _selectedStudent = State(wrappedValue: realmEnv.objects(Student.self).filter("_id == %@", selectedStudent!._id).first!)
         }
-        _selectedLesson = selectedLesson
         _showLessonEditView = showLessonEditView
         _editViewType = editViewType
         self.allStudents = allStudents
     }
     
     @State var selectedStudent: Student?
-
-    @Binding var selectedLesson: Lesson?
     @Binding var showLessonEditView: Bool
     @Binding var editViewType: EditViewTypes
     let allStudents: Bool
@@ -62,7 +59,6 @@ struct LessonList: View{
             }.padding([.leading, .trailing])
                 .padding(.bottom, -5)
             
-            
             ScrollView(.vertical, showsIndicators: false){
                 VStack(spacing: 10) {
                     if selectedStudent == nil{
@@ -74,10 +70,10 @@ struct LessonList: View{
                                 .foregroundColor(.gray)
                         } else {
                             ForEach(lessons(showAllLessons: showAllLessons), id: \.self){ lesson in
-                                LessonListItem(selectedLesson: $selectedLesson, lesson: lesson, showLessonEditView: $showLessonEditView, all: true)
+                                LessonListItem(lesson: lesson, showLessonEditView: $showLessonEditView, all: true)
                                     .onTapGesture {
                                         withAnimation{
-                                            selectedLesson = lesson
+                                            globalVC.setSelectedLesson(with: lesson)
                                             editViewType = .edit
                                             showLessonEditView = true
                                         }
@@ -93,10 +89,10 @@ struct LessonList: View{
                                 .foregroundColor(.gray)
                         } else {
                             ForEach(selectedStudent_lessons(showAllLessons: showAllLessons), id: \.self){ lesson in
-                                LessonListItem(selectedLesson: $selectedLesson, lesson: lesson, showLessonEditView: $showLessonEditView, all: false)
+                                LessonListItem(lesson: lesson, showLessonEditView: $showLessonEditView, all: false)
                                     .onTapGesture {
                                         withAnimation{
-                                            selectedLesson = lesson
+                                            globalVC.setSelectedLesson(with: lesson)
                                             editViewType = .edit
                                             showLessonEditView = true
                                         }

@@ -10,21 +10,16 @@ import RealmSwift
 import Realm
 
 struct StudentView: View{
+    @EnvironmentObject var globalVC: GlobalVC
     @ObservedRealmObject var student: Student
-
-    //Lessons
-    @State var selectedLesson: Lesson? = nil
-    @State var showLessonEditView: Bool = false
-    
-    //Exams
-    @State var selectedExam: Exam? = nil
-    @State var showExamEditView: Bool = false
-    
-    @State var showStudentEditView: Bool = false
 
     @State var editViewType: EditViewTypes = .add
     @State var showAllLessons: Bool = false
-        
+
+    @State var showStudentEditView: Bool = false
+    @State var showLessonEditView: Bool = false
+    @State var showExamEditView: Bool = false
+
     var body: some View{
         HStack{
             GeometryReader{ geo in
@@ -37,14 +32,14 @@ struct StudentView: View{
                                 Menu(content: {
                                     Button(action: {
                                         withAnimation{
-                                            selectedLesson = nil
+                                            globalVC.setSelectedLesson(with: nil)
                                             editViewType = .add
                                             showLessonEditView = true
                                         }
                                     }, label: {Label("Nachhilfestunde hinzufügen", systemImage: "clock")})
                                     Button(action: {
                                         withAnimation{
-                                            selectedExam = nil
+                                            globalVC.setSelectedExam(with: nil)
                                             editViewType = .add
                                             showExamEditView = true
                                         }
@@ -68,10 +63,10 @@ struct StudentView: View{
                                 if !student.exams.isEmpty {
                                     VStack{
                                         if !student.exams.filter("date>%@", Date() as CVarArg).isEmpty{
-                                            ExamCard(title: "Nächste Klausur", exam: student.exams.sorted(byKeyPath: "date", ascending: false).filter("date>%@", Date() as CVarArg).first!, selectedExam: $selectedExam, showExamEditView: $showExamEditView, width: geo.size.width/2, height: 70, color: student.color.color)
+                                            ExamCard(title: "Nächste Klausur", exam: student.exams.sorted(byKeyPath: "date", ascending: false).filter("date>%@", Date() as CVarArg).first!, showExamEditView: $showExamEditView, width: geo.size.width/2, height: 70, color: student.color.color)
                                                 .onTapGesture{
                                                     withAnimation{
-                                                        selectedExam  = student.exams.sorted(byKeyPath: "date", ascending: true).filter("date>%@", Date() as CVarArg).first!
+                                                        globalVC.selectedExam  = student.exams.sorted(byKeyPath: "date", ascending: true).filter("date>%@", Date() as CVarArg).first!
                                                         editViewType = .edit
                                                         showLessonEditView = false
                                                         showExamEditView = true
@@ -79,10 +74,10 @@ struct StudentView: View{
                                                 }
                                         }
                                         if !student.exams.filter("date<%@", Date() as CVarArg).isEmpty{
-                                            ExamCard(title: "Letzte Klausur", exam: student.exams.sorted(byKeyPath: "date", ascending: false).filter("date<%@", Date() as CVarArg).first!, selectedExam: $selectedExam, showExamEditView: $showExamEditView, width: geo.size.width/2, height: 70, color: .white)
+                                            ExamCard(title: "Letzte Klausur", exam: student.exams.sorted(byKeyPath: "date", ascending: false).filter("date<%@", Date() as CVarArg).first!, showExamEditView: $showExamEditView, width: geo.size.width/2, height: 70, color: .white)
                                                 .onTapGesture{
                                                     withAnimation{
-                                                        selectedExam  = student.exams.sorted(byKeyPath: "date", ascending: false).filter("date<%@", Date() as CVarArg).first!
+                                                        globalVC.selectedExam  = student.exams.sorted(byKeyPath: "date", ascending: false).filter("date<%@", Date() as CVarArg).first!
                                                         editViewType = .edit
                                                         showLessonEditView = false
                                                         showExamEditView = true
@@ -95,10 +90,10 @@ struct StudentView: View{
                                 if !student.lessons.isEmpty {
                                     VStack{
                                         if !student.lessons.filter("date>%@", Date() as CVarArg).isEmpty{
-                                            LessonCard(title: "Nächste Nachhilfestunde", lesson: student.lessons.filter("date>%@", Date() as CVarArg).first!, selectedLesson: $selectedLesson, showLessonEditView: $showLessonEditView, width: geo.size.width/2, height: 120)
+                                            LessonCard(title: "Nächste Nachhilfestunde", lesson: student.lessons.filter("date>%@", Date() as CVarArg).first!, showLessonEditView: $showLessonEditView, width: geo.size.width/2, height: 120)
                                                 .onTapGesture {
                                                     withAnimation{
-                                                        selectedLesson = student.lessons.sorted(byKeyPath: "date", ascending: true).filter("date>%@", Date() as CVarArg).first!
+                                                        globalVC.setSelectedLesson(with: student.lessons.sorted(byKeyPath: "date", ascending: true).filter("date>%@", Date() as CVarArg).first!)
                                                         
                                                         editViewType = .edit
                                                         showLessonEditView = true
@@ -107,10 +102,10 @@ struct StudentView: View{
                                                 }
                                         }
                                         if !student.lessons.filter("date<%@", Date() as CVarArg).isEmpty{
-                                            LessonCard(title: "Letzte Nachhilfestunde", lesson: student.lessons.sorted(byKeyPath: "date", ascending: false).filter("date<%@", Date() as CVarArg).first!, selectedLesson: $selectedLesson, showLessonEditView: $showLessonEditView, width: geo.size.width/2, height: 120)
+                                            LessonCard(title: "Letzte Nachhilfestunde", lesson: student.lessons.sorted(byKeyPath: "date", ascending: false).filter("date<%@", Date() as CVarArg).first!, showLessonEditView: $showLessonEditView, width: geo.size.width/2, height: 120)
                                                 .onTapGesture {
                                                     withAnimation{
-                                                        selectedLesson = student.lessons.sorted(byKeyPath: "date", ascending: false).filter("date<%@", Date() as CVarArg).first!
+                                                        globalVC.setSelectedLesson(with: student.lessons.sorted(byKeyPath: "date", ascending: false).filter("date<%@", Date() as CVarArg).first!)
                                                         
                                                         editViewType = .edit
                                                         showLessonEditView = true
@@ -147,10 +142,10 @@ struct StudentView: View{
                                             .foregroundColor(.gray)
                                     } else {
                                         ForEach(lessons(), id: \.self){ lesson in
-                                            LessonListItem(selectedLesson: $selectedLesson, lesson: lesson, showLessonEditView: $showLessonEditView, all: false)
+                                            LessonListItem(lesson: lesson, showLessonEditView: $showLessonEditView, all: false)
                                                 .onTapGesture {
                                                     withAnimation{
-                                                        selectedLesson = lesson
+                                                        globalVC.setSelectedLesson(with: lesson)
                                                         editViewType = .edit
                                                         showLessonEditView = true
                                                     }
@@ -169,13 +164,13 @@ struct StudentView: View{
             
             if showLessonEditView {
                 Divider()
-                LessonEditView(type: editViewType, lesson: selectedLesson, student: student, isPresented: $showLessonEditView)
+                LessonEditView(type: editViewType, lesson: globalVC.selectedLesson, student: student, isPresented: $showLessonEditView)
                     .frame(width: 350)
             }
             
             if showExamEditView {
                 Divider()
-                ExamEditView(type: editViewType, exam: selectedExam, student: student, isPresented: $showExamEditView)
+                ExamEditView(type: editViewType, exam: globalVC.selectedExam, student: student, isPresented: $showExamEditView)
                     .frame(width: 350)
             }
         }

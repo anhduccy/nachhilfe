@@ -13,7 +13,6 @@ struct NavigatorView: View{
 	@ObservedResults(Student.self) var students
 	
 	@State var selectedView: ViewTypes? = .lessons
-	@State var selectedStudent: Student? = nil
 	@State var showStudentEditView: Bool = false
 	
 	var body: some View{

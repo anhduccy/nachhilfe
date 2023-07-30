@@ -9,10 +9,10 @@ import SwiftUI
 import RealmSwift
 
 struct ExamListItem: View {
+	@EnvironmentObject var globalVC: GlobalVC
 	@Environment(\.colorScheme) var appearance
-	@Binding var selectedExam: Exam?
 	@ObservedRealmObject var exam: Exam
-	@Binding var showExamEditView: Bool
+	@Binding var isPresented: Bool
 	let all: Bool
 	
 	var dateFormatter: DateFormatter {
@@ -24,7 +24,7 @@ struct ExamListItem: View {
 	
 	var body: some View {
 		ZStack{
-			if selectedExam?._id == exam._id && showExamEditView{
+			if globalVC.selectedExam?._id == exam._id && isPresented{
 				RoundedRectangle(cornerRadius: 10)
 					.foregroundColor(exam.student.first!.color.color)
 					.opacity(0.1)

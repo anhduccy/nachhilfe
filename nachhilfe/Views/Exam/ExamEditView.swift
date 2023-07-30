@@ -18,10 +18,10 @@ struct ExamEditView: View {
 				internModel.student = student!
 			}
 			self.model = internModel
-			self.selectedExam = Exam()
+			self.exam = Exam()
 		} else{
 			self.model = ExamModel().toLayer(exam: exam!)
-			self.selectedExam = exam!
+			self.exam = exam!
 		}
 		
 	}
@@ -30,7 +30,7 @@ struct ExamEditView: View {
     let type: EditViewTypes
 	
 	@ObservedResults(Student.self) var students
-    @ObservedRealmObject var selectedExam: Exam
+    @ObservedRealmObject var exam: Exam
 	@ObservedObject var model: ExamModel
 	
 	var dateFormatter: DateFormatter {
@@ -138,7 +138,7 @@ struct ExamEditView: View {
 						Button(action: {
 							withAnimation{
 								isPresented = false
-								Exam.delete(exam: selectedExam)
+								Exam.delete(exam: exam)
 							}
 						}, label: {
 							Image(systemName: "trash")
@@ -151,7 +151,7 @@ struct ExamEditView: View {
 							if type == .add{
 								Exam.add(model: model)
 							} else if type == .edit{
-								Exam.update(exam: $selectedExam, model: model)
+								Exam.update(exam: $exam, model: model)
 							}
 							isPresented = false
 						}

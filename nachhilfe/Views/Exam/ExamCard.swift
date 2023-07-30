@@ -9,10 +9,10 @@ import SwiftUI
 import RealmSwift
 
 struct ExamCard: View{
+    @EnvironmentObject var globalVC: GlobalVC
     @Environment(\.colorScheme) var appearance
     let title: String
     @ObservedRealmObject var exam: Exam
-    @Binding var selectedExam: Exam?
     @Binding var showExamEditView: Bool
     let width: CGFloat
     let height: CGFloat
@@ -22,10 +22,9 @@ struct ExamCard: View{
     let backgroundColorDark: Color
     let selectedColor: Color
     
-    init(title: String, exam: Exam, selectedExam: Binding<Exam?>, showExamEditView: Binding<Bool>, width: CGFloat, height: CGFloat, color: Color){
+    init(title: String, exam: Exam, showExamEditView: Binding<Bool>, width: CGFloat, height: CGFloat, color: Color){
         self.title = title
         self.exam = exam
-        _selectedExam = selectedExam
         _showExamEditView = showExamEditView
         self.width = width
         self.height = height
@@ -52,7 +51,7 @@ struct ExamCard: View{
         
     var body: some View{
         ZStack(alignment: .center){
-            if selectedExam?._id == exam._id && showExamEditView{
+            if globalVC.selectedExam?._id == exam._id && showExamEditView{
                 RoundedRectangle(cornerRadius: 10).foregroundColor(selectedColor)
                     .opacity(0.15)
                     .shadow(radius: 1.5)
@@ -74,7 +73,7 @@ struct ExamCard: View{
                     }
                     
                     Text(dateFormatter.string(from: exam.date)).font(.callout.bold())
-                        .foregroundColor(appearance == .dark ? .white : (backgroundColor == .white) ? .black : (selectedExam?._id == exam._id && showExamEditView) ? .black : .white)
+                        .foregroundColor(appearance == .dark ? .white : (backgroundColor == .white) ? .black : (globalVC.selectedExam?._id == exam._id && showExamEditView) ? .black : .white)
                 }
                 Spacer()
                 if exam.grade == -1{
@@ -83,7 +82,7 @@ struct ExamCard: View{
                     Text("\(exam.grade)").font(.title.weight(.heavy))
                 }
             }.padding([.leading, .trailing])
-                .foregroundColor((selectedExam?._id == exam._id && showExamEditView) ? exam.student.first!.color.color : foregroundColor)
+                .foregroundColor((globalVC.selectedExam?._id == exam._id && showExamEditView) ? exam.student.first!.color.color : foregroundColor)
         }.frame(width: width, height: height)
     }
 }

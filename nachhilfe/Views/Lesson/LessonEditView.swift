@@ -19,10 +19,10 @@ struct LessonEditView: View {
 				internModel.student = student!
 			}
 			self.model = internModel
-			self.selectedLesson = Lesson()
+			self.lesson = Lesson()
 		} else {
 			self.model = LessonModel().toLayer(lesson: lesson!)
-			self.selectedLesson = lesson!
+			self.lesson = lesson!
 		}
 		
 	}
@@ -32,7 +32,7 @@ struct LessonEditView: View {
 	let type: EditViewTypes
 	
 	@ObservedResults(Student.self) var students
-	@ObservedRealmObject var selectedLesson: Lesson
+	@ObservedRealmObject var lesson: Lesson
 	@ObservedObject var model: LessonModel
 	
 	var dateFormatter: DateFormatter {
@@ -181,7 +181,7 @@ struct LessonEditView: View {
 						Button(action: {
 							withAnimation{
 								isPresented = false
-								Lesson.delete(lesson: selectedLesson)
+								Lesson.delete(lesson: lesson)
 							}
 						}, label: {
 							Image(systemName: "trash")
@@ -194,7 +194,7 @@ struct LessonEditView: View {
 							if type == .add{
 								Lesson.add(model: model)
 							} else if type == .edit{
-								Lesson.update(lesson: $selectedLesson, model: model)
+								Lesson.update(lesson: $lesson, model: model)
 							}
 							isPresented = false
 						}

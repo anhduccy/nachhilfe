@@ -22,6 +22,7 @@ struct ContentView: View {
                         .onAppear{
                             realmEnv = try! Realm(configuration: user.configuration(partitionValue: user.id))
                         }
+                        .environmentObject(GlobalVC())
                 } else {
                     Text("Der Inhalt konnte nicht geladen werden")
                         .foregroundColor(.gray)

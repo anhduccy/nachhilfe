@@ -10,7 +10,7 @@ import Realm
 import RealmSwift
 
 struct LessonsView: View {
-	@State var selectedLesson: Lesson? = nil
+	@EnvironmentObject var globalVC: GlobalVC
 	@State var showLessonEditView: Bool = false
 	@State var editViewType: EditViewTypes = .add
 	
@@ -19,16 +19,16 @@ struct LessonsView: View {
 			HStack{
 				VStack{
 					ViewHeader("Nachhilfestunden"){
-						selectedLesson = nil
+						globalVC.setSelectedLesson(with: nil)
 						editViewType = .add
 						showLessonEditView = true
 					}
-					LessonList(selectedLesson: $selectedLesson, showLessonEditView: $showLessonEditView, editViewType: $editViewType, allStudents: true)
+					LessonList(showLessonEditView: $showLessonEditView, editViewType: $editViewType, allStudents: true)
 					Spacer()
 				}.padding()
 				if showLessonEditView {
 					Divider()
-					LessonEditView(type: editViewType, lesson: selectedLesson, isPresented: $showLessonEditView)
+					LessonEditView(type: editViewType, lesson: globalVC.selectedLesson, isPresented: $showLessonEditView)
 						.frame(width: 350)
 				}
 			}

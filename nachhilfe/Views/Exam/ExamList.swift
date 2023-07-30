@@ -9,7 +9,7 @@ import SwiftUI
 import RealmSwift
 
 struct ExamList: View {
-	@Binding var selectedExam: Exam?
+	@EnvironmentObject var globalVC: GlobalVC
 	@Binding var showExamEditView: Bool
 	@Binding var editViewType: EditViewTypes
 	
@@ -53,10 +53,10 @@ struct ExamList: View {
 								.foregroundColor(.gray)
 						} else {
 							ForEach(showAllExams ? exams.filter(NSPredicate(value: true)) : exams.filter(NSPredicate(format: "date > %@ || grade == -1", Date() as CVarArg)), id: \.self){ exam in
-								ExamListItem(selectedExam: $selectedExam, exam: exam, showExamEditView: $showExamEditView, all: true)
+								ExamListItem(exam: exam, isPresented: $showExamEditView, all: true)
 									.onTapGesture {
 										withAnimation{
-											selectedExam = exam
+											globalVC.setSelectedExam(with: exam)
 											editViewType = .edit
 											showExamEditView = true
 										}
@@ -72,10 +72,10 @@ struct ExamList: View {
 								.foregroundColor(.gray)
 						} else {
 							ForEach(showAllExams ? selectedStudent!.exams.filter(NSPredicate(value: true)) : selectedStudent!.exams.filter(NSPredicate(format: "date > %@ || grade == -1", Date() as CVarArg)), id: \.self){ exam in
-								ExamListItem(selectedExam: $selectedExam, exam: exam, showExamEditView: $showExamEditView, all: false)
+								ExamListItem(exam: exam, isPresented: $showExamEditView, all: false)
 									.onTapGesture {
 										withAnimation{
-											selectedExam = exam
+											globalVC.setSelectedExam(with: exam)
 											editViewType = .edit
 											showExamEditView = true
 										}

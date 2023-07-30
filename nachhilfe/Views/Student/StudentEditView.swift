@@ -27,7 +27,7 @@ struct StudentEditView: View {
     let type: EditViewTypes
     @ObservedRealmObject var student: Student
     @Binding var isPresented: Bool
-    @ObservedResults(Student.self) var students
+	@ObservedResults(Student.self) var students
     @ObservedObject var model: StudentModel
         
     var body: some View {

@@ -9,7 +9,7 @@ import SwiftUI
 import RealmSwift
 
 struct ExamView: View {
-	@State var selectedExam: Exam? = nil
+	@EnvironmentObject var globalVC: GlobalVC
 	@State var showExamEditView: Bool = false
 	@State var editViewType: EditViewTypes = .add
 	var body: some View {
@@ -17,16 +17,16 @@ struct ExamView: View {
 			HStack{
 				VStack{
 					ViewHeader("Klassenarbeiten & Klausuren"){
-						selectedExam = nil
+						globalVC.setSelectedExam(with: nil)
 						editViewType = .add
 						showExamEditView = true
 					}
-					ExamList(selectedExam: $selectedExam, showExamEditView: $showExamEditView, editViewType: $editViewType)
+					ExamList(showExamEditView: $showExamEditView, editViewType: $editViewType)
 					Spacer()
 				}.padding()
 				if showExamEditView{
 					Divider()
-					ExamEditView(type: editViewType, exam: selectedExam, isPresented:  $showExamEditView)
+					ExamEditView(type: editViewType, exam: globalVC.selectedExam, isPresented:  $showExamEditView)
 						.frame(width: 350)
 					 
 				}
