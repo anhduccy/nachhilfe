@@ -105,7 +105,7 @@ struct SalesView: View {
                                 ]
                                 ForEach(data) { pos in
                                     BarMark(x: .value("Monate", pos.name),
-                                            y: .value("Umsatz", pos.betrag)
+                                            y: .value("Umsatz", pos.betrag + 0)
                                     )
                                     .foregroundStyle(by: .value("Beschreibung", pos.color))
                                     .annotation(position: .overlay, alignment: .center){
@@ -116,6 +116,7 @@ struct SalesView: View {
                             }.chartForegroundStyleScale([
                                 "Noch nicht gezahlt": .red, "Gezahlt": .teal, "Ausgewählt": .blue
                             ])
+                            .chartYScale(domain: 0...300)
                         }.padding()
                             .frame(width: geo.size.width/2.25)
                     }

@@ -78,8 +78,7 @@ struct StudentView: View{
                             }
                             
                             StudentLessonList(student: student, geo: geo, editViewType: $editViewType, showAllLessons: $showAllLessons, showLessonEditView: $showLessonEditView)
-                                .frame(width: geo.size.width/2)
-                                .padding([.trailing])
+                                .frame(width: geo.size.width/2.05)
                         }
                     }
                 }
