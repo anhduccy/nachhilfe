@@ -14,7 +14,6 @@ struct ExamCard: View{
     let title: String
     @ObservedRealmObject var exam: Exam
     @Binding var showExamEditView: Bool
-    let width: CGFloat
     let height: CGFloat
     
     let foregroundColor: Color
@@ -22,11 +21,10 @@ struct ExamCard: View{
     let backgroundColorDark: Color
     let selectedColor: Color
     
-    init(title: String, exam: Exam, showExamEditView: Binding<Bool>, width: CGFloat, height: CGFloat, color: Color){
+    init(title: String, exam: Exam, showExamEditView: Binding<Bool>, height: CGFloat, color: Color){
         self.title = title
         self.exam = exam
         _showExamEditView = showExamEditView
-        self.width = width
         self.height = height
         
         if color == .white{
@@ -83,6 +81,6 @@ struct ExamCard: View{
                 }
             }.padding([.leading, .trailing])
                 .foregroundColor((globalVC.selectedExam?._id == exam._id && showExamEditView) ? exam.student.first!.color.color : foregroundColor)
-        }.frame(width: width, height: height)
+        }.frame(height: height)
     }
 }

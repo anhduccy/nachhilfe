@@ -14,7 +14,6 @@ struct LessonCard: View{
     let title: String
     @ObservedRealmObject var lesson: Lesson
     @Binding var showLessonEditView: Bool
-    let width: CGFloat
     let height: CGFloat
     
     var dateFormatter: DateFormatter {
@@ -79,6 +78,6 @@ struct LessonCard: View{
             }
             .padding()
             .foregroundColor(appearance == .dark ? .white : .black)
-        }.frame(width: width, height: height)
+        }.frame(height: height)
     }
 }
