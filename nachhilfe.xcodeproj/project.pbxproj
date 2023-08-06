@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		790B0C372A805DB30044F9EA /* StudentOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B0C362A805DB30044F9EA /* StudentOverview.swift */; };
+		790B0C392A805DE10044F9EA /* StudentLessonList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B0C382A805DE10044F9EA /* StudentLessonList.swift */; };
 		7922F91228A2E5650068879D /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7922F91128A2E5650068879D /* LoginView.swift */; };
 		7922F91428A2E5C60068879D /* Privacy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7922F91328A2E5C60068879D /* Privacy.swift */; };
 		7922F91828A2E6360068879D /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7922F91728A2E6360068879D /* Global.swift */; };
@@ -38,6 +40,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		790B0C362A805DB30044F9EA /* StudentOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentOverview.swift; sourceTree = "<group>"; };
+		790B0C382A805DE10044F9EA /* StudentLessonList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentLessonList.swift; sourceTree = "<group>"; };
 		7922F91128A2E5650068879D /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		7922F91328A2E5C60068879D /* Privacy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Privacy.swift; sourceTree = "<group>"; };
 		7922F91728A2E6360068879D /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
@@ -98,6 +102,8 @@
 			isa = PBXGroup;
 			children = (
 				79BDED2B290DC7D30070C8AF /* StudentView.swift */,
+				790B0C382A805DE10044F9EA /* StudentLessonList.swift */,
+				790B0C362A805DB30044F9EA /* StudentOverview.swift */,
 				7922F91B28A2F3A30068879D /* StudentEditView.swift */,
 			);
 			path = Student;
@@ -274,10 +280,12 @@
 				795BC64F28A2DDD3004A9840 /* ContentView.swift in Sources */,
 				795BC66628A2E077004A9840 /* Exam.swift in Sources */,
 				79EA249728CD18620069F491 /* ExamEditView.swift in Sources */,
+				790B0C372A805DB30044F9EA /* StudentOverview.swift in Sources */,
 				7944906D28A9673900884758 /* LessonEditView.swift in Sources */,
 				795BC65C28A2DE3D004A9840 /* Student.swift in Sources */,
 				7922F91A28A2F1C40068879D /* ViewLibrary.swift in Sources */,
 				795BC64D28A2DDD3004A9840 /* nachhilfeApp.swift in Sources */,
+				790B0C392A805DE10044F9EA /* StudentLessonList.swift in Sources */,
 				7944906B28A963F700884758 /* LessonsView.swift in Sources */,
 				79BDED2C290DC7D30070C8AF /* StudentView.swift in Sources */,
 				79F1219C29575C6E0019D455 /* ExamCard.swift in Sources */,
