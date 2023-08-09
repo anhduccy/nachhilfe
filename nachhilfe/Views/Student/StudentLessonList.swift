@@ -21,6 +21,7 @@ struct StudentLessonList: View{
         VStack{
             HStack{
                 Text("Nachhilfestunden").font(.title3.weight(.bold))
+                Text("Klausuren").font(.title3)
                 Spacer()
                 Button(showAllLessons ? "Erledigte ausblenden" : "Alle anzeigen"){
                     withAnimation{

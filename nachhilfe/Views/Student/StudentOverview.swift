@@ -91,7 +91,7 @@ struct ExamLineGraph: View{
     init(student: Student){
         var array: [Exam] = []
         var index = 0
-        for exam in student.exams.filter("date<%@", Date() as CVarArg){
+        for exam in student.exams.filter("date<%@", Date() as CVarArg).sorted(byKeyPath: "date"){
             if index < 5{
                 if exam.grade != -1 {
                     array.append(exam)

@@ -6,30 +6,7 @@
 //
 
 import SwiftUI
-import UIKit
-import Combine
 import RealmSwift
-
-
-/// Publisher to read keyboard changes.
-protocol KeyboardReadable {
-    var keyboardPublisher: AnyPublisher<Bool, Never> { get }
-}
-
-extension KeyboardReadable {
-    var keyboardPublisher: AnyPublisher<Bool, Never> {
-        Publishers.Merge(
-            NotificationCenter.default
-                .publisher(for: UIResponder.keyboardWillShowNotification)
-                .map { _ in true },
-            
-            NotificationCenter.default
-                .publisher(for: UIResponder.keyboardWillHideNotification)
-                .map { _ in false }
-        )
-        .eraseToAnyPublisher()
-    }
-}
 
 
 struct LeftText: View{
@@ -120,20 +97,6 @@ struct InteractiveIcon: View{
     }
 }
 
-struct GlassBackground: View {
-    let width: CGFloat
-    let height: CGFloat
-    let color: Color
-
-    var body: some View {
-        ZStack{
-            Rectangle().foregroundColor(color)
-        }
-        .opacity(0.2)
-        .cornerRadius(15)
-        .frame(width: width, height: height)
-    }
-}
 
 //Navigation header for LessonView and ExamView
 struct ViewHeader: View{
@@ -165,42 +128,5 @@ struct ViewHeader: View{
             LeftText(section, font: .title2, fontWeight: .bold)
                 .foregroundColor(color)
         }
-    }
-}
-
-//Student-Picker for LessonList and ExamList
-struct StudentPickerSmall: View{
-    @ObservedResults(Student.self) var students
-    @Binding var selectedStudent: Student?
-    
-    var body: some View{
-        Menu(content: {
-            Button(action: {
-                selectedStudent = nil
-            }, label: {
-                HStack{
-                    Text("Alle")
-                    if selectedStudent == nil{
-                        Image(systemName: "checkmark")
-                    }
-                }
-            })
-            
-            ForEach(students, id: \.self){ student in
-                Button(action: {
-                    selectedStudent = student
-                }, label: {
-                    HStack{
-                        Text(student.surname + " " + student.name)
-                        if selectedStudent == student{
-                            Image(systemName: "checkmark")
-                        }
-                    }
-                })
-            }
-        }, label: {
-            Text("Schüler/in wählen").font(.body.weight(.regular))
-                .foregroundColor(.teal)
-        })
     }
 }

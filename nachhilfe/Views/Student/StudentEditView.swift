@@ -88,23 +88,26 @@ struct StudentEditView: View {
 					}
 				}
 				
-				Section{
-					HStack{
-						Icon(systemName: "trash", color: .red)
-						Button("Löschen"){
-							showAlert.toggle()
-						}.alert("Löschen bestätigen", isPresented: $showAlert, actions: {
-							Button("Abbrechen", role: .cancel){
+				if type == .edit {
+					Section{
+						HStack{
+							Icon(systemName: "trash", color: .red)
+							Button("Löschen"){
 								showAlert.toggle()
-							}
-							Button("Löschen", role: .destructive){
-								isPresented.toggle()
-								Student.delete(student: student)
-							}
-						}, message: {Text("Möchtest du wirklich \(model.surname) \(model.name) löschen? Alle Nachhilfestunden und Klausuren werden gelöscht")})
-						.foregroundColor(.red)
+							}.alert("Löschen bestätigen", isPresented: $showAlert, actions: {
+								Button("Abbrechen", role: .cancel){
+									showAlert.toggle()
+								}
+								Button("Löschen", role: .destructive){
+									isPresented.toggle()
+									Student.delete(student: student)
+								}
+							}, message: {Text("Möchtest du wirklich \(model.surname) \(model.name) löschen? Alle Nachhilfestunden und Klausuren werden gelöscht")})
+							.foregroundColor(.red)
+						}
 					}
 				}
+				
 				Section{
 					HStack{
 						Icon(systemName: "door.left.hand.open", color: .gray)
@@ -113,16 +116,18 @@ struct StudentEditView: View {
 						}.foregroundColor(.gray)
 					}
 					
-					HStack{
-						Icon(systemName: "square.and.arrow.down", color: model.color.color)
-						Button("Speichern"){
-							if type == .add{
-								Student.add(students: $students, model: model)
-							} else {
-								Student.update(student: $student, model: model)
-							}
-							isPresented.toggle()
-						}.foregroundColor(model.color.color)
+					if model.surname != "" && model.name != "" {
+						HStack{
+							Icon(systemName: "square.and.arrow.down", color: model.color.color)
+							Button("Speichern"){
+								if type == .add{
+									Student.add(students: $students, model: model)
+								} else {
+									Student.update(student: $student, model: model)
+								}
+								isPresented.toggle()
+							}.foregroundColor(model.color.color)
+						}
 					}
 				}
 			}.navigationTitle(type == .add ? Text("Schüler hinzufügen") : Text("\(model.surname) \(model.name)"))
