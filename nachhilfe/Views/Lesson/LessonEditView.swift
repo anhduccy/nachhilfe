@@ -27,7 +27,7 @@ struct LessonEditView: View {
 				comps.minute = minutes
 				
 				var nextWeekday = cal.nextDate(after: Date(), matching: comps, matchingPolicy: .nextTimePreservingSmallerComponents) ?? Date()
-				while !realmEnv.objects(Lesson.self).filter("date == %@", nextWeekday).isEmpty{
+				while !student!.lessons.filter("date == %@", nextWeekday).isEmpty{
 					nextWeekday = nextWeekday.addingTimeInterval(60*60*24*7)
 				}
 				internModel.date = nextWeekday
@@ -49,6 +49,8 @@ struct LessonEditView: View {
 	@ObservedResults(Student.self) var students
 	@ObservedRealmObject var lesson: Lesson
 	@ObservedObject var model: LessonModel
+	
+	@State var showAlert: Bool = false
 	
 	var dateFormatter: DateFormatter {
 		let dateFormatter = DateFormatter()
@@ -204,18 +206,29 @@ struct LessonEditView: View {
 						})
 					}
 					Spacer()
-					Button("Speichern"){
-						withAnimation{
-							if type == .add{
-								Lesson.add(model: model)
-							} else if type == .edit{
-								Lesson.update(lesson: $lesson, model: model)
+					
+					Button(action: {
+						if model.student.lessons.filter("date == %@", model.date).isEmpty{
+							withAnimation{
+								if type == .add{
+									Lesson.add(model: model)
+								} else if type == .edit{
+									Lesson.update(lesson: $lesson, model: model)
+								}
+								isPresented = false
 							}
-							isPresented = false
+						} else {
+							showAlert.toggle()
 						}
-					}.bold()
-						.disabled(model.student.surname == "" && model.student.name == "")
-						.foregroundColor(model.student.surname == "" && model.student.name == "" ? .gray : model.student.color.color)
+					}, label: {
+						Text("Speichern").bold()
+							.foregroundColor(model.student.surname == "" && model.student.name == "" ? .gray : model.student.color.color)
+					}).alert("Für \(model.student.surname) \(model.student.name) ist bereits eine Stunde für diesen Zeitpunkt eingetragen", isPresented: $showAlert, actions: {
+						Button("OK", role: .cancel){
+							   showAlert.toggle()
+						   }
+					   })
+					.disabled(model.student.surname == "" && model.student.name == "")
 				}
 			}
 			.padding(20)

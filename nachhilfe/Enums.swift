@@ -11,6 +11,10 @@ enum EditViewTypes{
     case add, edit
 }
 
+enum StudentListTypes{
+	case lessons, exams
+}
+
 enum ViewTypes: CaseIterable{
     case salesHistory
     

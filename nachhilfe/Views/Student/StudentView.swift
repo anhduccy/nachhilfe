@@ -64,7 +64,7 @@ struct StudentView: View{
                                 
                                 Divider()
                                 
-                                StudentLessonList(student: student, geo: geo, editViewType: $editViewType, showAllLessons: $showAllLessons, showLessonEditView: $showLessonEditView)
+                                StudentList(student: student, geo: geo, editViewType: $editViewType, showAll: $showAllLessons, showLessonEditView: $showLessonEditView, showExamEditView: $showExamEditView)
                                     .padding(.top)
                             }
                         }
@@ -78,7 +78,7 @@ struct StudentView: View{
                                 }
                             }
                             
-                            StudentLessonList(student: student, geo: geo, editViewType: $editViewType, showAllLessons: $showAllLessons, showLessonEditView: $showLessonEditView)
+                            StudentList(student: student, geo: geo, editViewType: $editViewType, showAll: $showAllLessons, showLessonEditView: $showLessonEditView, showExamEditView: $showExamEditView)
                                 .frame(width: geo.size.width/2.05)
                         }
                     }
