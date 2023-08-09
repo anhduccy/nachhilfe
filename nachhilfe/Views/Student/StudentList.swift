@@ -24,13 +24,13 @@ struct StudentList: View{
 
     var body: some View{
         VStack{
-            HStack{
+            HStack(alignment: .bottom){
                 Button(action: {
                     withAnimation{
                         listMode = .lessons
                     }
                 }, label: {
-                    Text("Nachhilfestunden").font(.title3)
+                    Text("Nachhilfestunden")
                         .fontWeight(listMode == .lessons ? .bold : .regular)
                 }).foregroundColor(listMode == .lessons ? student.color.color : .gray)
                 
@@ -39,7 +39,7 @@ struct StudentList: View{
                         listMode = .exams
                     }
                 }, label: {
-                    Text("Klausuren").font(.title3)
+                    Text("Klausuren")
                         .fontWeight(listMode == .exams ? .bold : .regular)
                 }).foregroundColor(listMode == .exams ? student.color.color : .gray)
                 

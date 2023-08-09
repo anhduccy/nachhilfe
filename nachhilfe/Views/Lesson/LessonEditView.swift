@@ -218,14 +218,14 @@ struct LessonEditView: View {
 								isPresented = false
 							}
 						} else {
-							showAlert.toggle()
+							showAlert = true
 						}
 					}, label: {
 						Text("Speichern").bold()
 							.foregroundColor(model.student.surname == "" && model.student.name == "" ? .gray : model.student.color.color)
-					}).alert("Für \(model.student.surname) \(model.student.name) ist bereits eine Stunde für diesen Zeitpunkt eingetragen", isPresented: $showAlert, actions: {
+					}).alert("Eine Stunde ist bereits für \(model.student.surname) \(model.student.name) zu diesem Zeitpunkt eingetragen", isPresented: $showAlert, actions: {
 						Button("OK", role: .cancel){
-							   showAlert.toggle()
+							   showAlert = false
 						   }
 					   })
 					.disabled(model.student.surname == "" && model.student.name == "")

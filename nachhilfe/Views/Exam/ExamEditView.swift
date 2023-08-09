@@ -42,6 +42,8 @@ struct ExamEditView: View {
 	
 	let columns: [GridItem] = Array(repeating: GridItem(.flexible()), count: 8)
 	@State var placeholderText: String = "Themen eingeben"
+	
+	@State var showAlert: Bool = false
 	    
     var body: some View {
 		ZStack{
@@ -146,18 +148,29 @@ struct ExamEditView: View {
 						})
 					}
 					Spacer()
-					Button("Speichern"){
-						withAnimation{
-							if type == .add{
-								Exam.add(model: model)
-							} else if type == .edit{
-								Exam.update(exam: $exam, model: model)
+					Button(action: {
+						if model.student.exams.filter("date == %@", model.date).isEmpty {
+							withAnimation{
+								if type == .add{
+									Exam.add(model: model)
+								} else if type == .edit{
+									Exam.update(exam: $exam, model: model)
+								}
+								isPresented = false
 							}
-							isPresented = false
+						} else {
+							showAlert = true
 						}
-					}.bold()
-						.disabled(model.student.surname.isEmpty && model.student.name.isEmpty)
-						.foregroundColor(model.student.surname.isEmpty && model.student.name.isEmpty ? .gray : model.student.color.color)
+					}, label: {
+						Text("Speichern")
+							.bold()
+							.foregroundColor(model.student.surname.isEmpty && model.student.name.isEmpty ? .gray : model.student.color.color)
+					}).alert("Eine Klausur ist bereits für \(model.student.surname) \(model.student.name) an diesem Tag eingetragen", isPresented: $showAlert, actions: {
+						Button("OK", role: .cancel){
+							showAlert = false
+						}
+					})
+					.disabled(model.student.surname.isEmpty && model.student.name.isEmpty)
 				}
 			}
 		}
