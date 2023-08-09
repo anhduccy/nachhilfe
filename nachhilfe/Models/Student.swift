@@ -14,6 +14,7 @@ class Student: Object, ObjectKeyIdentifiable{
     @Persisted var name: String
     @Persisted var schoolClass: String
     @Persisted var payment: Int
+	@Persisted var weekday: Weekdays
     @Persisted var color: Colors
     @Persisted var lessons: RealmSwift.List<Lesson>
     @Persisted var exams: RealmSwift.List<Exam>
@@ -39,6 +40,22 @@ class Student: Object, ObjectKeyIdentifiable{
             }
         }
     }
+	
+	enum Weekdays: Int, PersistableEnum{
+		case mon, tue, wed, thu, fri, sat, sun
+		
+		var name: String{
+			switch self {
+			case .mon: return "Montag"
+			case .tue: return "Dienstag"
+			case .wed: return "Mittwoch"
+			case .thu: return "Donnerstag"
+			case .fri: return "Freitag"
+			case .sat: return "Samstag"
+			case .sun: return "Sonntag"
+			}
+		}
+	}
     
     static func add(students: ObservedResults<Student>, model: StudentModel){
         students.append(model.toRealm(student: Student()))
@@ -49,6 +66,7 @@ class Student: Object, ObjectKeyIdentifiable{
         student.name.wrappedValue = model.name
         student.schoolClass.wrappedValue = model.schoolClass
         student.payment.wrappedValue = model.payment
+		student.weekday.wrappedValue = model.weekday
         student.color.wrappedValue = model.color
     }
     static func delete(student: Student){
@@ -80,12 +98,14 @@ class StudentModel: ObservableObject{
         schoolClass = ""
         payment = 0
         color = .teal
+		weekday = .mon
     }  
     @Published var _id: ObjectId
     @Published var surname: String
     @Published var name: String
     @Published var schoolClass: String
     @Published var payment: Int
+	@Published var weekday: Student.Weekdays
     @Published var color: Student.Colors
     
     func toLayer(student: Student)->StudentModel{
@@ -93,6 +113,7 @@ class StudentModel: ObservableObject{
         surname = student.surname
         name = student.name
         schoolClass = student.schoolClass
+		weekday = student.weekday
         payment = student.payment
         color = student.color
         return self
@@ -102,6 +123,7 @@ class StudentModel: ObservableObject{
         student.name = name
         student.schoolClass = schoolClass
         student.payment = payment
+		student.weekday = weekday
         student.color = color
         return student
     }

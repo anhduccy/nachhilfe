@@ -38,12 +38,12 @@ struct NavigatorView: View{
 					 showStudentEditView.toggle()
 				 }, label: {
 					 Image(systemName: "person.crop.circle.badge.plus")
-				 }).popover(isPresented: $showStudentEditView){
+				 }).sheet(isPresented: $showStudentEditView){
 					 StudentEditView(type: .add, student: nil, isPresented: $showStudentEditView)
 				 }
 			 }
 		 }
-		}, detail: {
+		}, detail:{
 			switch selectedView {
 			case .exams:
 				ExamView()

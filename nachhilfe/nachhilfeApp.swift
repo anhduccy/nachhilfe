@@ -14,6 +14,7 @@ var realmEnv = try! Realm(configuration: .defaultConfiguration)
 
 @main
 struct nachhilfeApp: SwiftUI.App {
+    let migrator = Migrator()
     var body: some Scene {
         WindowGroup {
             ContentView()

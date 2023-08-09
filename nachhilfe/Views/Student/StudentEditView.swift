@@ -29,103 +29,97 @@ struct StudentEditView: View {
     @Binding var isPresented: Bool
 	@ObservedResults(Student.self) var students
     @ObservedObject var model: StudentModel
+	
+	@State var showAlert: Bool = false
         
     var body: some View {
-		ZStack{
-			VStack(spacing: 10){
-				HStack(alignment: .top){
-					if type == .add{
-						Text("Neue/r Schüler/in").font(.title.weight(.bold))
-					} else if type == .edit{
-						Text("Dein/e Schüler/in").font(.title.weight(.bold))
-					}
-					Spacer()
-					Button(action: {
-						withAnimation{
-							isPresented.toggle()
+		NavigationView{
+			Form{
+				Section("Farben"){
+					HStack{
+						Spacer()
+						ForEach(Student.Colors.allCases, id: \.self){ color in
+							Button(action: {
+								model.color = color
+							}, label: {
+								Circle().fill(color.color)
+							}).buttonStyle(.borderless)
 						}
-					}, label: {
-						Image(systemName: "xmark")
-					})
+						Spacer()
+					}.padding(.trailing)
+						.frame(height: 30)
 				}
-				HStack{
-					ForEach(Student.Colors.allCases, id: \.self){ color in
-						Button(action: {
-							model.color = color
-						}, label: {
-							Circle().fill(color.color)
-						})
-					}
-				}.frame(maxHeight: 30)
 				
-				ScrollView(.vertical, showsIndicators: false){
-					HStack(spacing: 10){
-						ZStack{
-							RoundedRectangle(cornerRadius: 100).foregroundColor(model.color.color).opacity(0.2)
-								.frame(width: 30, height: 70)
-							Image(systemName: "person.text.rectangle")
-								.resizable()
-								.scaledToFit()
-								.frame(width: 15)
-						}
-						VStack(spacing: 0){
-							TextField("Vorname", text: $model.surname)
-							TextField("Nachname", text: $model.name)
-						}
-						.textFieldStyle(.plain)
-						.font(.title2.bold())
+				Section("Personalien"){
+					HStack{
+						Icon(systemName: "person.text.rectangle", color: model.color.color)
+						TextField("Vorname", text: $model.surname).foregroundColor(model.color.color)
 					}
-					
-					HStack(spacing: 10){
-						Icon(systemName: "graduationcap.fill", color: model.color.color)
-						TextField("Klasse", text: $model.schoolClass)
-							.textFieldStyle(.plain)
-							.font(.title2.bold())
+					HStack{
+						Icon(systemName: "person.text.rectangle", color: model.color.color)
+						TextField("Nachname", text: $model.name).foregroundColor(model.color.color)
 					}
-					
-					HStack(spacing: 10){
-						Icon(systemName: "banknote", color: model.color.color)
+					HStack{
+						Icon(systemName: "graduationcap", color: model.color.color)
+						TextField("Klasse", text: $model.schoolClass).foregroundColor(model.color.color)
+					}
+				}
+				
+				Section("Standard-Nachhilfestunde"){
+					HStack{
+						Icon(systemName: "calendar", color: model.color.color)
+						Picker(selection: $model.weekday, label: Text("Standard-Wochentag")){
+							ForEach(Student.Weekdays.allCases, id: \.self){ weekday in
+								Text(weekday.name).tag(weekday)
+							}
+						}.foregroundColor(model.color.color)
+					}
+					HStack{
+						Icon(systemName: "eurosign", color: model.color.color)
 						TextField("Bezahlung", value: $model.payment, format: .currency(code: "EUR"))
 							.keyboardType(.decimalPad)
-							.textFieldStyle(.plain)
+							.foregroundColor(model.color.color)
 					}
-					.font(.title2.bold())
-					
-					Spacer().ignoresSafeArea(.keyboard)
 				}
 				
-				HStack{
-					Button("Abbrechen"){
-						isPresented.toggle()
-					}
-					Spacer()
-					if type == .edit{
-						Button(action: {
-							withAnimation{
+				Section{
+					HStack{
+						Icon(systemName: "trash", color: .red)
+						Button("Löschen"){
+							showAlert.toggle()
+						}.alert("Löschen bestätigen", isPresented: $showAlert, actions: {
+							Button("Abbrechen", role: .cancel){
+								showAlert.toggle()
+							}
+							Button("Löschen", role: .destructive){
 								isPresented.toggle()
 								Student.delete(student: student)
 							}
-						}, label: {
-							Image(systemName: "trash")
-								.foregroundColor(model.color.color)
-						})
+						}, message: {Text("Möchtest du wirklich \(model.surname) \(model.name) löschen? Alle Nachhilfestunden und Klausuren werden gelöscht")})
+						.foregroundColor(.red)
 					}
-					Spacer()
-					Button("Speichern"){
-						if type == .add{
-							Student.add(students: $students, model: model)
-						} else {
-							Student.update(student: $student, model: model)
-						}
-						withAnimation{
-							isPresented.toggle()
-						}
-					}.bold()
 				}
-			}
-			.padding()
+				Section{
+					HStack{
+						Icon(systemName: "door.left.hand.open", color: .gray)
+						Button("Abbrechen"){
+							isPresented.toggle()
+						}.foregroundColor(.gray)
+					}
+					
+					HStack{
+						Icon(systemName: "square.and.arrow.down", color: model.color.color)
+						Button("Speichern"){
+							if type == .add{
+								Student.add(students: $students, model: model)
+							} else {
+								Student.update(student: $student, model: model)
+							}
+							isPresented.toggle()
+						}.foregroundColor(model.color.color)
+					}
+				}
+			}.navigationTitle(type == .add ? Text("Schüler hinzufügen") : Text("\(model.surname) \(model.name)"))
 		}
-		.foregroundColor(model.color.color)
-		.frame(width: 400, height: 320)
 	}
 }

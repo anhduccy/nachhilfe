@@ -52,7 +52,7 @@ struct StudentView: View{
                             Icon(systemName: "info.circle", color: student.color.color)
                         })
                         .padding([.leading, .trailing], 5)
-                        .popover(isPresented: $showStudentEditView){
+                        .sheet(isPresented: $showStudentEditView){
                             StudentEditView(type: .edit, student: student, isPresented: $showStudentEditView)
                         }
                     }
