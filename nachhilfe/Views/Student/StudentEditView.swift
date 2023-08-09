@@ -68,12 +68,18 @@ struct StudentEditView: View {
 				Section("Standard-Nachhilfestunde"){
 					HStack{
 						Icon(systemName: "calendar", color: model.color.color)
-						Picker(selection: $model.weekday, label: Text("Standard-Wochentag")){
+						Picker(selection: $model.weekday, label: Text("Standardwochentag")){
 							ForEach(Student.Weekdays.allCases, id: \.self){ weekday in
 								Text(weekday.name).tag(weekday)
 							}
 						}.foregroundColor(model.color.color)
 					}
+					
+					HStack{
+						Icon(systemName: "clock", color: model.color.color)
+						DatePicker("Standarduhrzeit", selection: $model.defaultTime, displayedComponents: [.hourAndMinute])
+					}
+					
 					HStack{
 						Icon(systemName: "eurosign", color: model.color.color)
 						TextField("Bezahlung", value: $model.payment, format: .currency(code: "EUR"))

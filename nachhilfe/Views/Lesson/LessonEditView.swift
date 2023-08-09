@@ -17,6 +17,21 @@ struct LessonEditView: View {
 			let internModel = LessonModel()
 			if student != nil{
 				internModel.student = student!
+				
+				let cal = Calendar.current
+				var comps = DateComponents()
+				let hour = cal.component(.hour, from: student!.defaultTime)
+				let minutes = cal.component(.minute, from: student!.defaultTime)
+				comps.weekday = student!.weekday.number
+				comps.hour = hour
+				comps.minute = minutes
+				
+				var nextWeekday = cal.nextDate(after: Date(), matching: comps, matchingPolicy: .nextTimePreservingSmallerComponents) ?? Date()
+				while !realmEnv.objects(Lesson.self).filter("date == %@", nextWeekday).isEmpty{
+					nextWeekday = nextWeekday.addingTimeInterval(60*60*24*7)
+				}
+				internModel.date = nextWeekday
+				
 			}
 			self.model = internModel
 			self.lesson = Lesson()

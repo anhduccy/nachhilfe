@@ -14,12 +14,12 @@ class Migrator{
     }
         
     func updateSchema(){
-        let version = 1
+        let version = 3
 
         let config = Realm.Configuration(schemaVersion: UInt64(version)){ migration, oldSchemaVersion in
             if oldSchemaVersion < version {
                 migration.enumerateObjects(ofType: Student.className()){ _, newObject in
-                    newObject!["weekday"] = 0
+                    newObject!["defaultTime"] = Date()
                 }
             }
         }

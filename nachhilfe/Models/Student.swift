@@ -15,6 +15,7 @@ class Student: Object, ObjectKeyIdentifiable{
     @Persisted var schoolClass: String
     @Persisted var payment: Int
 	@Persisted var weekday: Weekdays
+	@Persisted var defaultTime: Date
     @Persisted var color: Colors
     @Persisted var lessons: RealmSwift.List<Lesson>
     @Persisted var exams: RealmSwift.List<Exam>
@@ -55,6 +56,17 @@ class Student: Object, ObjectKeyIdentifiable{
 			case .sun: return "Sonntag"
 			}
 		}
+		var number: Int{
+			switch self {
+			case .mon: return 2
+			case .tue: return 3
+			case .wed: return 4
+			case .thu: return 5
+			case .fri: return 6
+			case .sat: return 7
+			case .sun: return 1
+			}
+		}
 	}
     
     static func add(students: ObservedResults<Student>, model: StudentModel){
@@ -67,6 +79,7 @@ class Student: Object, ObjectKeyIdentifiable{
         student.schoolClass.wrappedValue = model.schoolClass
         student.payment.wrappedValue = model.payment
 		student.weekday.wrappedValue = model.weekday
+		student.defaultTime.wrappedValue = model.defaultTime
         student.color.wrappedValue = model.color
     }
     static func delete(student: Student){
@@ -99,6 +112,7 @@ class StudentModel: ObservableObject{
         payment = 0
         color = .teal
 		weekday = .mon
+		defaultTime = Date().startOfMonth()
     }  
     @Published var _id: ObjectId
     @Published var surname: String
@@ -106,6 +120,7 @@ class StudentModel: ObservableObject{
     @Published var schoolClass: String
     @Published var payment: Int
 	@Published var weekday: Student.Weekdays
+	@Published var defaultTime: Date
     @Published var color: Student.Colors
     
     func toLayer(student: Student)->StudentModel{
@@ -115,6 +130,7 @@ class StudentModel: ObservableObject{
         schoolClass = student.schoolClass
 		weekday = student.weekday
         payment = student.payment
+		defaultTime = student.defaultTime
         color = student.color
         return self
     }
@@ -124,6 +140,7 @@ class StudentModel: ObservableObject{
         student.schoolClass = schoolClass
         student.payment = payment
 		student.weekday = weekday
+		student.defaultTime = defaultTime
         student.color = color
         return student
     }

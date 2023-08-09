@@ -39,7 +39,7 @@ struct LessonCard: View{
                         HStack(spacing: 5){
                             Text(title)
                                 .font(.body.weight(.bold))
-                                .foregroundColor(lesson.student.first!.color.color)
+                                .foregroundColor(lesson.student.first?.color.color ?? .teal)
                             if !lesson.notes.isEmpty{
                                 Image(systemName: "text.alignleft")
                                     .font(.footnote)
