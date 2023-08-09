@@ -50,11 +50,7 @@ class ExamModel: ObservableObject{
     init(){
 		self._id = ObjectId()
 		self.topics = ""
-		
-		let startOfDate  = Calendar.current.startOfDay(for: Date ())
-		let newDate = startOfDate.addingTimeInterval(86399)
-		
-		self.date = newDate
+		self.date = Date()
 		self.grade = -1
 		self.student = Student()
     }

@@ -107,30 +107,26 @@ struct StudentEditView: View {
 						}
 					}
 				}
-				
-				Section{
-					HStack{
-						Icon(systemName: "door.left.hand.open", color: .gray)
+			}.navigationTitle(type == .add ? Text("Schüler hinzufügen") : Text("\(model.surname) \(model.name)"))
+				.toolbar{
+					ToolbarItem(placement: .navigationBarLeading, content: {
 						Button("Abbrechen"){
 							isPresented.toggle()
 						}.foregroundColor(.gray)
-					}
+					})
 					
-					if model.surname != "" && model.name != "" {
-						HStack{
-							Icon(systemName: "square.and.arrow.down", color: model.color.color)
-							Button("Speichern"){
-								if type == .add{
-									Student.add(students: $students, model: model)
-								} else {
-									Student.update(student: $student, model: model)
-								}
-								isPresented.toggle()
-							}.foregroundColor(model.color.color)
-						}
-					}
+					ToolbarItem(placement: .navigationBarTrailing, content: {
+						Button("Speichern"){
+							if type == .add{
+								Student.add(students: $students, model: model)
+							} else {
+								Student.update(student: $student, model: model)
+							}
+							isPresented.toggle()
+						}.bold()
+							.foregroundColor(model.color.color)
+					})
 				}
-			}.navigationTitle(type == .add ? Text("Schüler hinzufügen") : Text("\(model.surname) \(model.name)"))
 		}
 	}
 }

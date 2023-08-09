@@ -208,17 +208,20 @@ struct LessonEditView: View {
 					Spacer()
 					
 					Button(action: {
-						if model.student.lessons.filter("date == %@", model.date).isEmpty{
-							withAnimation{
-								if type == .add{
+						withAnimation{
+							switch type {
+							case .add:
+								if model.student.lessons.filter("date == %@", model.date).isEmpty{
 									Lesson.add(model: model)
-								} else if type == .edit{
+									isPresented = false
+								} else {showAlert = true}
+								
+							case .edit:
+								if model.student.lessons.filter("date == %@", model.date).isEmpty || !model.student.lessons.filter("date == %@ && _id == %@", model.date, model._id).isEmpty{
 									Lesson.update(lesson: $lesson, model: model)
-								}
-								isPresented = false
+									isPresented = false
+								} else {showAlert = true}
 							}
-						} else {
-							showAlert = true
 						}
 					}, label: {
 						Text("Speichern").bold()

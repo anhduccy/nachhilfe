@@ -48,6 +48,7 @@ struct ExamEditView: View {
     var body: some View {
 		ZStack{
 			VStack{
+				Text("\(model._id)")
 				HStack{
 					Menu(content: {
 						ForEach(students, id:\.self){ student in
@@ -149,17 +150,23 @@ struct ExamEditView: View {
 					}
 					Spacer()
 					Button(action: {
-						if model.student.exams.filter("date == %@", model.date).isEmpty {
-							withAnimation{
-								if type == .add{
+						let startOfDate = Calendar.current.startOfDay(for: model.date)
+						let newDate = startOfDate.addingTimeInterval(86399)
+						model.date = newDate
+						withAnimation{
+							switch type {
+							case .add:
+								if model.student.exams.filter("date == %@", model.date).isEmpty{
 									Exam.add(model: model)
-								} else if type == .edit{
+									isPresented = false
+								} else {showAlert = true}
+								
+							case .edit:
+								if !model.student.exams.filter("date == %@ && _id == %@", model.date, model._id).isEmpty || model.student.exams.filter("date == %@", model.date).isEmpty{
 									Exam.update(exam: $exam, model: model)
-								}
-								isPresented = false
+									isPresented = false
+								} else {showAlert = true}
 							}
-						} else {
-							showAlert = true
 						}
 					}, label: {
 						Text("Speichern")
