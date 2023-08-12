@@ -13,7 +13,7 @@ struct LessonListItem: View{
     @Environment(\.colorScheme) var appearance
     @ObservedRealmObject var lesson: Lesson
     @Binding var showLessonEditView: Bool
-    let all: Bool
+    let dateMode: Bool
     
     @State var showAlert: Bool = false
     
@@ -37,9 +37,16 @@ struct LessonListItem: View{
             
             HStack(spacing: 15) {
                 VStack(alignment: .leading, spacing: 0) {
-                    HStack(spacing: 5){
-                        Text(dateFormatter.string(from: lesson.date))
-                        if all{
+                    HStack(spacing: 10){
+                        if dateMode{
+                            Text(dateFormatter.string(from: lesson.date))
+                        } else {
+                            Image(systemName: "clock")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 15)
+                                .foregroundColor(lesson.student.first?.color.color ?? .teal)
+                                .fontWeight(.regular)
                             Text((lesson.student.first?.surname ?? "Stunde") + " " + (lesson.student.first?.name ?? "gelöscht"))
                                 .foregroundColor(lesson.student.first?.color.color ?? .teal)
                         }

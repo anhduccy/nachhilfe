@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		79011D7A2A8847BF005879CC /* CalendarDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79011D792A8847BF005879CC /* CalendarDetailView.swift */; };
+		79011D7D2A8847F8005879CC /* CalendarGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79011D7C2A8847F8005879CC /* CalendarGrid.swift */; };
 		790B0C372A805DB30044F9EA /* StudentOverview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B0C362A805DB30044F9EA /* StudentOverview.swift */; };
 		790B0C392A805DE10044F9EA /* StudentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B0C382A805DE10044F9EA /* StudentList.swift */; };
 		7922F91228A2E5650068879D /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7922F91128A2E5650068879D /* LoginView.swift */; };
@@ -38,6 +40,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		79011D792A8847BF005879CC /* CalendarDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDetailView.swift; sourceTree = "<group>"; };
+		79011D7C2A8847F8005879CC /* CalendarGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarGrid.swift; sourceTree = "<group>"; };
 		790B0C362A805DB30044F9EA /* StudentOverview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentOverview.swift; sourceTree = "<group>"; };
 		790B0C382A805DE10044F9EA /* StudentList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentList.swift; sourceTree = "<group>"; };
 		7922F91128A2E5650068879D /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -82,11 +86,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		79011D7B2A8847D8005879CC /* CalendarView */ = {
+			isa = PBXGroup;
+			children = (
+				79D3D1E42A853C7400D56D19 /* CalendarView.swift */,
+				79011D792A8847BF005879CC /* CalendarDetailView.swift */,
+				79011D7C2A8847F8005879CC /* CalendarGrid.swift */,
+			);
+			path = CalendarView;
+			sourceTree = "<group>";
+		};
 		7922F91028A2E5580068879D /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				7922F91928A2F1C40068879D /* ViewLibrary.swift */,
 				7944906728A9637200884758 /* ContentView */,
+				79011D7B2A8847D8005879CC /* CalendarView */,
 				7944906428A9634000884758 /* Student */,
 				7944906928A963CF00884758 /* Lesson */,
 				79EA248F28CCEE9A0069F491 /* Exam */,
@@ -110,7 +125,6 @@
 			children = (
 				795BC64E28A2DDD3004A9840 /* ContentView.swift */,
 				7944906528A9635E00884758 /* NavigatorView.swift */,
-				79D3D1E42A853C7400D56D19 /* CalendarView.swift */,
 				797CF479295863D8005CD3CE /* SalesView.swift */,
 				7922F91128A2E5650068879D /* LoginView.swift */,
 			);
@@ -273,6 +287,7 @@
 				7922F91C28A2F3A40068879D /* StudentEditView.swift in Sources */,
 				79F1219A2957375F0019D455 /* LessonCard.swift in Sources */,
 				79AB800928CD36520055078D /* ExamListItem.swift in Sources */,
+				79011D7A2A8847BF005879CC /* CalendarDetailView.swift in Sources */,
 				795BC64F28A2DDD3004A9840 /* ContentView.swift in Sources */,
 				795BC66628A2E077004A9840 /* Exam.swift in Sources */,
 				79EA249728CD18620069F491 /* ExamEditView.swift in Sources */,
@@ -288,6 +303,7 @@
 				795BC66428A2DFC0004A9840 /* Lesson.swift in Sources */,
 				7944906628A9635E00884758 /* NavigatorView.swift in Sources */,
 				797CF47A295863D9005CD3CE /* SalesView.swift in Sources */,
+				79011D7D2A8847F8005879CC /* CalendarGrid.swift in Sources */,
 				79C1000028A41E620049DAD3 /* Enums.swift in Sources */,
 				7922F91828A2E6360068879D /* Global.swift in Sources */,
 			);

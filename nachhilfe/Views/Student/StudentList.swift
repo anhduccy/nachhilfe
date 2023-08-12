@@ -62,7 +62,7 @@ struct StudentList: View{
                                 .foregroundColor(.gray)
                         } else {
                             ForEach(lessons(), id: \.self){ lesson in
-                                LessonListItem(lesson: lesson, showLessonEditView: $showLessonEditView, all: false)
+                                LessonListItem(lesson: lesson, showLessonEditView: $showLessonEditView, dateMode: false)
                                     .onTapGesture {
                                         withAnimation{
                                             globalVC.setSelectedLesson(with: lesson)
@@ -86,7 +86,7 @@ struct StudentList: View{
                                 .foregroundColor(.gray)
                         } else {
                             ForEach(exams(), id: \.self){ exam in
-                                ExamListItem(exam: exam, isPresented: $showExamEditView, all: false)
+                                ExamListItem(exam: exam, isPresented: $showExamEditView, dateMode: false)
                                     .onTapGesture {
                                         withAnimation{
                                             globalVC.setSelectedExam(with: exam)

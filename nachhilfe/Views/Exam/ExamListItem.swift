@@ -13,7 +13,7 @@ struct ExamListItem: View {
 	@Environment(\.colorScheme) var appearance
 	@ObservedRealmObject var exam: Exam
 	@Binding var isPresented: Bool
-	let all: Bool
+	let dateMode: Bool
 	
 	var dateFormatter: DateFormatter {
 		let dateFormatter = DateFormatter()
@@ -36,8 +36,19 @@ struct ExamListItem: View {
 			}
 			
 			HStack(spacing: 20){
-				HStack(spacing: 5){
-					Text(dateFormatter.string(from: exam.date))
+				HStack(spacing: 10){
+					if dateMode{
+						Text(dateFormatter.string(from: exam.date))
+					} else {
+						Image(systemName: "doc")
+							.resizable()
+							.scaledToFit()
+							.frame(height: 15)
+							.foregroundColor(exam.student.first?.color.color ?? .teal)
+							.fontWeight(.regular)
+						Text("\(exam.student.first?.surname ?? "Stunde") \(exam.student.first?.name ?? "gelöscht")")
+							.foregroundColor(exam.student.first?.color.color ?? .teal)
+					}
 					if !exam.topics.isEmpty{
 						Image(systemName: "text.alignleft")
 							.font(.footnote)
