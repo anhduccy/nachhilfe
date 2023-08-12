@@ -38,7 +38,6 @@ struct ExamListItem: View {
 			HStack(spacing: 20){
 				HStack(spacing: 5){
 					Text(dateFormatter.string(from: exam.date))
-					Text("\(exam._id)")
 					if !exam.topics.isEmpty{
 						Image(systemName: "text.alignleft")
 							.font(.footnote)

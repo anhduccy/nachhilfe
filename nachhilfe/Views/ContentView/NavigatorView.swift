@@ -12,7 +12,7 @@ import RealmSwift
 struct NavigatorView: View{
 	@ObservedResults(Student.self) var students
 	
-	@State var selectedView: ViewTypes? = .salesHistory
+	@State var selectedView: ViewTypes? = .calendar
 	@State var showStudentEditView: Bool = false
 	
 	var body: some View{
@@ -45,8 +45,10 @@ struct NavigatorView: View{
 		 }
 		}, detail:{
 			switch selectedView {
-			default:
+			case .salesHistory:
 				SalesView()
+			default:
+				CalendarView()
 			}
 		})
 	}

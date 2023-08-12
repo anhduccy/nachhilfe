@@ -48,7 +48,6 @@ struct ExamEditView: View {
     var body: some View {
 		ZStack{
 			VStack{
-				Text("\(model._id)")
 				HStack{
 					Menu(content: {
 						ForEach(students, id:\.self){ student in
@@ -181,6 +180,6 @@ struct ExamEditView: View {
 				}
 			}
 		}
-		.padding(20)
+		.padding()
     }
 }

@@ -30,6 +30,7 @@
 		79AB800928CD36520055078D /* ExamListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79AB800828CD36520055078D /* ExamListItem.swift */; };
 		79BDED2C290DC7D30070C8AF /* StudentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79BDED2B290DC7D30070C8AF /* StudentView.swift */; };
 		79C1000028A41E620049DAD3 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C1FFFF28A41E620049DAD3 /* Enums.swift */; };
+		79D3D1E52A853C7400D56D19 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79D3D1E42A853C7400D56D19 /* CalendarView.swift */; };
 		79EA249328CCF8660069F491 /* LessonListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79EA249228CCF8660069F491 /* LessonListItem.swift */; };
 		79EA249728CD18620069F491 /* ExamEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79EA249628CD18620069F491 /* ExamEditView.swift */; };
 		79F1219A2957375F0019D455 /* LessonCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79F121992957375F0019D455 /* LessonCard.swift */; };
@@ -61,6 +62,7 @@
 		79AB800828CD36520055078D /* ExamListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamListItem.swift; sourceTree = "<group>"; usesTabs = 1; };
 		79BDED2B290DC7D30070C8AF /* StudentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentView.swift; sourceTree = "<group>"; };
 		79C1FFFF28A41E620049DAD3 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; usesTabs = 1; };
+		79D3D1E42A853C7400D56D19 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		79EA249228CCF8660069F491 /* LessonListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonListItem.swift; sourceTree = "<group>"; };
 		79EA249628CD18620069F491 /* ExamEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamEditView.swift; sourceTree = "<group>"; usesTabs = 1; };
 		79F121992957375F0019D455 /* LessonCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonCard.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 			children = (
 				795BC64E28A2DDD3004A9840 /* ContentView.swift */,
 				7944906528A9635E00884758 /* NavigatorView.swift */,
+				79D3D1E42A853C7400D56D19 /* CalendarView.swift */,
 				797CF479295863D8005CD3CE /* SalesView.swift */,
 				7922F91128A2E5650068879D /* LoginView.swift */,
 			);
@@ -265,6 +268,7 @@
 			files = (
 				7922F91228A2E5650068879D /* LoginView.swift in Sources */,
 				79EA249328CCF8660069F491 /* LessonListItem.swift in Sources */,
+				79D3D1E52A853C7400D56D19 /* CalendarView.swift in Sources */,
 				795FD0322A83DC7D00C203B4 /* Migrator.swift in Sources */,
 				7922F91C28A2F3A40068879D /* StudentEditView.swift in Sources */,
 				79F1219A2957375F0019D455 /* LessonCard.swift in Sources */,

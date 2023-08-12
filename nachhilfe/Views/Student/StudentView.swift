@@ -20,8 +20,8 @@ struct StudentView: View{
     @State var showExamEditView: Bool = false
 
     var body: some View{
-        HStack{
-            GeometryReader{ geo in
+        GeometryReader{ geo in
+            HStack{
                 VStack(spacing: 15){
                     HStack{
                         VStack(spacing: 0){
@@ -82,20 +82,21 @@ struct StudentView: View{
                                 .frame(width: geo.size.width/2.05)
                         }
                     }
+                }.ignoresSafeArea(.keyboard)
+    
+                if showLessonEditView {
+                    Divider()
+                    LessonEditView(type: editViewType, lesson: globalVC.selectedLesson, student: student, isPresented: $showLessonEditView)
+                        .frame(width: geo.size.width/2.5)
                 }
-            }.padding()
-            
-            if showLessonEditView {
-                Divider()
-                LessonEditView(type: editViewType, lesson: globalVC.selectedLesson, student: student, isPresented: $showLessonEditView)
-                    .frame(width: 350)
-            }
-            
-            if showExamEditView {
-                Divider()
-                ExamEditView(type: editViewType, exam: globalVC.selectedExam, student: student, isPresented: $showExamEditView)
-                    .frame(width: 350)
+                
+                if showExamEditView {
+                    Divider()
+                    ExamEditView(type: editViewType, exam: globalVC.selectedExam, student: student, isPresented: $showExamEditView)
+                        .frame(width: geo.size.width/2.5)
+                }
             }
         }
+        .padding()
     }
 }

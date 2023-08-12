@@ -16,10 +16,12 @@ enum StudentListTypes{
 }
 
 enum ViewTypes: CaseIterable{
-    case salesHistory
+    case calendar, salesHistory
     
     var name: String{
         switch self {
+		case .calendar:
+			return "Kalender"
 		case .salesHistory:
 			return "Umsatzhistorie"
 			
@@ -28,6 +30,8 @@ enum ViewTypes: CaseIterable{
     
     var image: String{
         switch self {
+		case .calendar:
+			return "calendar"
 		case .salesHistory:
 			return "eurosign"
         }

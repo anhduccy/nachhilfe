@@ -21,7 +21,7 @@ class Student: Object, ObjectKeyIdentifiable{
     @Persisted var exams: RealmSwift.List<Exam>
     
     enum Colors: Int, PersistableEnum{
-        case pink, red, orange, yellow, green, mint, cyan, teal, blue, indigo, purple, brown, gray, black
+        case pink, red, orange, yellow, green, mint, cyan, teal, blue, indigo, purple, brown
         var color: Color{
             switch self{
             case .pink: return .pink
@@ -36,8 +36,6 @@ class Student: Object, ObjectKeyIdentifiable{
             case .indigo: return .indigo
             case .purple: return .purple
             case .brown: return .brown
-            case .gray: return .gray
-            case .black: return .black
             }
         }
     }

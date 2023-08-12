@@ -166,7 +166,6 @@ struct LessonEditView: View {
 								}
 							}.foregroundColor(.gray)
 						}
-						Spacer()
 						VStack{
 							VStack(spacing: 5) {
 								LeftText("Inhalt der Nachhilfestunde", font: .title3, fontWeight: .bold)
@@ -228,13 +227,13 @@ struct LessonEditView: View {
 							.foregroundColor(model.student.surname == "" && model.student.name == "" ? .gray : model.student.color.color)
 					}).alert("Eine Stunde ist bereits für \(model.student.surname) \(model.student.name) zu diesem Zeitpunkt eingetragen", isPresented: $showAlert, actions: {
 						Button("OK", role: .cancel){
-							   showAlert = false
-						   }
-					   })
+							showAlert = false
+						}
+					})
 					.disabled(model.student.surname == "" && model.student.name == "")
 				}
 			}
-			.padding(20)
+			.padding()
 		}
 	}
 }
