@@ -140,6 +140,38 @@ struct CalendarDay: View{
     }
 }
 
+struct CalendarDetailView: View{
+    
+    init(selectedDate: Binding<Date>){
+        _selectedDate = selectedDate
+        
+                
+        let startOfDay = Calendar.current.startOfDay(for: selectedDate.wrappedValue)
+        var components = DateComponents()
+        components.day = 1
+        components.second = -1
+        let endOfDay = Calendar.current.date(byAdding: components, to: startOfDay)!
+                
+        self.lessons = realmEnv.objects(Lesson.self).filter("date >= %@ && date <= %@", startOfDay, endOfDay)
+        
+    }
+    
+    @Binding var selectedDate: Date
+    let lessons: Results<Lesson>
+    
+    @State var showLessonEditView: Bool = false
+    
+    
+    var body: some View{
+        VStack{
+            Text("DayView + Lesson-/ExamEditView")
+            ForEach(lessons, id: \.self){ lesson in
+                LessonListItem(lesson: lesson, showLessonEditView: $showLessonEditView, all: false)
+            }
+        }
+    }
+}
+
 class CalendarViewVC{
     static func getMonthAndYear(month: Int)->String{
         let currentMonth = Calendar.current.dateComponents([.month], from: Date()).month
