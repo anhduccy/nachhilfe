@@ -12,7 +12,6 @@ struct LessonListItem: View{
     @EnvironmentObject var globalVC: GlobalVC
     @Environment(\.colorScheme) var appearance
     @ObservedRealmObject var lesson: Lesson
-    @Binding var showLessonEditView: Bool
     let dateMode: Bool
     
     @State var showAlert: Bool = false
@@ -26,7 +25,7 @@ struct LessonListItem: View{
 
     var body: some View{
         ZStack {
-            if globalVC.selectedLesson?._id == lesson._id && showLessonEditView{
+            if globalVC.selectedLesson?._id == lesson._id && globalVC.showLessonEditView{
                 RoundedRectangle(cornerRadius: 10).foregroundColor(lesson.student.first!.color.color)
                     .opacity(0.1)
                     .shadow(radius: 1.5)

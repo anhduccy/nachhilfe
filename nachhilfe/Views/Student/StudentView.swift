@@ -16,8 +16,6 @@ struct StudentView: View{
     @State var showAllLessons: Bool = false
 
     @State var showStudentEditView: Bool = false
-    @State var showLessonEditView: Bool = false
-    @State var showExamEditView: Bool = false
 
     var body: some View{
         GeometryReader{ geo in
@@ -31,16 +29,14 @@ struct StudentView: View{
                                 Menu(content: {
                                     Button(action: {
                                         withAnimation{
-                                            globalVC.setSelectedLesson(with: nil)
+                                            globalVC.setSelectedLesson(with: nil, addMode: true)
                                             editViewType = .add
-                                            showLessonEditView = true
                                         }
                                     }, label: {Label("Nachhilfestunde hinzufügen", systemImage: "clock")})
                                     Button(action: {
                                         withAnimation{
-                                            globalVC.setSelectedExam(with: nil)
+                                            globalVC.setSelectedExam(with: nil, addMode: true)
                                             editViewType = .add
-                                            showExamEditView = true
                                         }
                                     }, label: {Label("Klausur hinzufügen", systemImage: "doc")})
                                 }, label: {Icon(systemName: "plus", color: student.color.color)})
@@ -57,14 +53,14 @@ struct StudentView: View{
                         }
                     }
                     
-                    if showLessonEditView || showExamEditView {
+                    if globalVC.showLessonEditView || globalVC.showExamEditView {
                         ScrollView(.vertical, showsIndicators: false){
                             VStack{
-                                StudentOverview(student: student, geo: geo, editViewType: $editViewType, showLessonEditView: $showLessonEditView, showExamEditView: $showExamEditView)
+                                StudentOverview(student: student, geo: geo, editViewType: $editViewType)
                                 
                                 Divider()
                                 
-                                StudentList(student: student, geo: geo, editViewType: $editViewType, showAll: $showAllLessons, showLessonEditView: $showLessonEditView, showExamEditView: $showExamEditView)
+                                StudentList(student: student, geo: geo, editViewType: $editViewType, showAll: $showAllLessons)
                                     .padding(.top)
                             }
                         }
@@ -72,27 +68,27 @@ struct StudentView: View{
                         HStack{
                             ScrollView(.vertical, showsIndicators: false){
                                 VStack{
-                                    StudentOverview(student: student, geo: geo, editViewType: $editViewType, showLessonEditView: $showLessonEditView, showExamEditView: $showExamEditView)
+                                    StudentOverview(student: student, geo: geo, editViewType: $editViewType)
                                         .frame(width: geo.size.width/2)
                                     Spacer()
                                 }
                             }
                             
-                            StudentList(student: student, geo: geo, editViewType: $editViewType, showAll: $showAllLessons, showLessonEditView: $showLessonEditView, showExamEditView: $showExamEditView)
+                            StudentList(student: student, geo: geo, editViewType: $editViewType, showAll: $showAllLessons)
                                 .frame(width: geo.size.width/2.05)
                         }
                     }
                 }.ignoresSafeArea(.keyboard)
     
-                if showLessonEditView {
+                if globalVC.showLessonEditView {
                     Divider()
-                    LessonEditView(type: editViewType, lesson: globalVC.selectedLesson, student: student, isPresented: $showLessonEditView)
+                    LessonEditView(type: editViewType, lesson: globalVC.selectedLesson, student: student)
                         .frame(width: geo.size.width/2.5)
                 }
                 
-                if showExamEditView {
+                if globalVC.showExamEditView {
                     Divider()
-                    ExamEditView(type: editViewType, exam: globalVC.selectedExam, student: student, isPresented: $showExamEditView)
+                    ExamEditView(type: editViewType, exam: globalVC.selectedExam, student: student)
                         .frame(width: geo.size.width/2.5)
                 }
             }

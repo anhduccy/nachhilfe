@@ -9,14 +9,10 @@ import SwiftUI
 import RealmSwift
 
 struct CalendarView: View {
-    
     @EnvironmentObject var globalVC: GlobalVC
     
     @State var selectedMonth: Int = 0
     @State var selectedDate: Date = Calendar.current.startOfDay(for: Date())
-    
-    @State var showLessonEditView: Bool = false
-    @State var showExamEditView: Bool = false
     
     var body: some View {
         GeometryReader{ geo in
@@ -29,13 +25,13 @@ struct CalendarView: View {
                                 Spacer()
                             }
                             
-                            if !showExamEditView && !showLessonEditView{
+                            if !globalVC.showExamEditView && !globalVC.showLessonEditView{
                                 CalendarGrid(selectedMonth: $selectedMonth, selectedDate: $selectedDate)
                                 Spacer()
                             } else {
                                 ScrollView(.vertical, showsIndicators: false){
                                     CalendarGrid(selectedMonth: $selectedMonth, selectedDate: $selectedDate)
-                                    CalendarDetailView(selectedDate: $selectedDate, showLessonEditView: $showLessonEditView, showExamEditView: $showExamEditView)
+                                    CalendarDetailView(selectedDate: $selectedDate)
                                     Spacer()
                                 }
                             }
@@ -44,16 +40,16 @@ struct CalendarView: View {
                     
                     HStack{
                         Divider()
-                        if !showExamEditView && !showLessonEditView{
-                            CalendarDetailView(selectedDate: $selectedDate, showLessonEditView: $showLessonEditView, showExamEditView: $showExamEditView)
+                        if !globalVC.showExamEditView && !globalVC.showLessonEditView{
+                            CalendarDetailView(selectedDate: $selectedDate)
                         }
                         
-                        if showLessonEditView{
-                            LessonEditView(type: .edit, lesson: globalVC.selectedLesson, isPresented: $showLessonEditView)
+                        if globalVC.showLessonEditView{
+                            LessonEditView(type: .edit, lesson: globalVC.selectedLesson)
                         }
                         
-                        if showExamEditView{
-                                ExamEditView(type: .edit, exam: globalVC.selectedExam, isPresented: $showExamEditView)
+                        if globalVC.showExamEditView{
+                                ExamEditView(type: .edit, exam: globalVC.selectedExam)
                         }
                     }
                 }

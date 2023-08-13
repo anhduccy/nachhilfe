@@ -9,6 +9,7 @@ import SwiftUI
 import RealmSwift
 
 struct CalendarGrid: View{
+    @EnvironmentObject var globalVC: GlobalVC
     let weekdays: [String] = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
     let gridItem: [GridItem] = Array(repeating: GridItem(.flexible()), count: 7)
     
@@ -20,16 +21,31 @@ struct CalendarGrid: View{
             Text(CalendarViewVC.getMonthAndYear(month: selectedMonth))
                 .font(.title3.bold())
             Spacer()
+            
             Button(action: {
                 selectedMonth -= 1
+                globalVC.setSelectedLesson(with: nil)
+                globalVC.setSelectedExam(with: nil)
+                
             }, label: {
                 Icon(systemName: "arrow.left", size: 25)
             })
             
             Button(action: {
                 selectedMonth += 1
+                globalVC.setSelectedLesson(with: nil)
+                globalVC.setSelectedExam(with: nil)
             }, label: {
                 Icon(systemName: "arrow.right", size: 25)
+            })
+            
+            Button(action: {
+                selectedDate = Calendar.current.startOfDay(for: Date())
+                globalVC.setSelectedLesson(with: nil)
+                globalVC.setSelectedExam(with: nil)
+                selectedMonth = 0
+            }, label: {
+                Icon(systemName: "\(Calendar.current.dateComponents([.day], from: Date()).day ?? 1).square.fill", size: 25)
             })
         }
         
@@ -90,9 +106,9 @@ struct CalendarDay: View{
                         .font(.caption2)
                 } else {
                     HStack(spacing: 2){
-                        if lessons.count > 4 {
+                        if lessons.count + exams.count > 4 {
                             HStack(spacing: 3){
-                                Text("\(lessons.count)")
+                                Text("\(lessons.count + exams.count)")
                                     .font(.caption2)
                                     .foregroundColor(.gray)
                                 Circle()
@@ -103,9 +119,14 @@ struct CalendarDay: View{
                         } else {
                             Text("")
                                 .font(.caption2)
+                            ForEach(exams, id: \.self){ exam in
+                                Circle()
+                                    .fill(exam.student.first?.color.color ?? .teal)
+                                    .frame(width: 4, height: 4)
+                            }
                             ForEach(lessons, id: \.self){ lesson in
                                 Circle()
-                                    .fill(Calendar.current.isDateInToday(date) ? .white :  lesson.student.first!.color.color)
+                                    .fill(lesson.student.first?.color.color ?? .teal)
                                     .frame(width: 4, height: 4)
                             }
                             Text("")

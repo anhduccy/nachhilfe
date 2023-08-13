@@ -10,8 +10,7 @@ import Realm
 import RealmSwift
 
 struct LessonEditView: View {
-	init(type: EditViewTypes, lesson: Lesson?, student: Student? = nil, isPresented: Binding<Bool>){
-		_isPresented = isPresented
+	init(type: EditViewTypes, lesson: Lesson?, student: Student? = nil){
 		self.type = type
 		if type == .add{
 			let internModel = LessonModel()
@@ -43,7 +42,7 @@ struct LessonEditView: View {
 	}
 	
 	@Environment(\.colorScheme) var appearance
-	@Binding var isPresented: Bool
+	@EnvironmentObject var globalVC: GlobalVC
 	let type: EditViewTypes
 	
 	@ObservedResults(Student.self) var students
@@ -189,14 +188,14 @@ struct LessonEditView: View {
 				HStack{
 					Button("Abbrechen"){
 						withAnimation{
-							isPresented = false
+							globalVC.setSelectedLesson(with: nil)
 						}
 					}.foregroundColor(.gray)
 					if type == .edit{
 						Spacer()
 						Button(action: {
 							withAnimation{
-								isPresented = false
+								globalVC.setSelectedLesson(with: nil)
 								Lesson.delete(lesson: lesson)
 							}
 						}, label: {
@@ -212,13 +211,13 @@ struct LessonEditView: View {
 							case .add:
 								if model.student.lessons.filter("date == %@", model.date).isEmpty{
 									Lesson.add(model: model)
-									isPresented = false
+									globalVC.setSelectedLesson(with: nil)
 								} else {showAlert = true}
 								
 							case .edit:
 								if model.student.lessons.filter("date == %@", model.date).isEmpty || !model.student.lessons.filter("date == %@ && _id == %@", model.date, model._id).isEmpty{
 									Lesson.update(lesson: $lesson, model: model)
-									isPresented = false
+									globalVC.setSelectedLesson(with: nil)
 								} else {showAlert = true}
 							}
 						}

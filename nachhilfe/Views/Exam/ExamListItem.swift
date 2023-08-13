@@ -12,7 +12,6 @@ struct ExamListItem: View {
 	@EnvironmentObject var globalVC: GlobalVC
 	@Environment(\.colorScheme) var appearance
 	@ObservedRealmObject var exam: Exam
-	@Binding var isPresented: Bool
 	let dateMode: Bool
 	
 	var dateFormatter: DateFormatter {
@@ -24,7 +23,7 @@ struct ExamListItem: View {
 	
 	var body: some View {
 		ZStack{
-			if globalVC.selectedExam?._id == exam._id && isPresented{
+			if globalVC.selectedExam?._id == exam._id && globalVC.showExamEditView{
 				RoundedRectangle(cornerRadius: 10)
 					.foregroundColor(exam.student.first!.color.color)
 					.opacity(0.1)

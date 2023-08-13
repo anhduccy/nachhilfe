@@ -9,8 +9,7 @@ import SwiftUI
 import RealmSwift
 
 struct ExamEditView: View {
-	init(type: EditViewTypes, exam: Exam?, student: Student? = nil, isPresented: Binding<Bool>){
-		_isPresented = isPresented
+	init(type: EditViewTypes, exam: Exam?, student: Student? = nil){
 		self.type = type
 		if type == .add{
 			let internModel = ExamModel()
@@ -26,7 +25,7 @@ struct ExamEditView: View {
 		
 	}
 	@Environment(\.colorScheme) var appearance
-	@Binding var isPresented: Bool
+	@EnvironmentObject var globalVC: GlobalVC
     let type: EditViewTypes
 	
 	@ObservedResults(Student.self) var students
@@ -132,14 +131,14 @@ struct ExamEditView: View {
 				HStack{
 					Button("Abbrechen"){
 						withAnimation{
-							isPresented = false
+							globalVC.setSelectedExam(with: nil)
 						}
 					}.foregroundColor(.gray)
 					if type == .edit{
 						Spacer()
 						Button(action: {
 							withAnimation{
-								isPresented = false
+								globalVC.setSelectedExam(with: nil)
 								Exam.delete(exam: exam)
 							}
 						}, label: {
@@ -157,13 +156,13 @@ struct ExamEditView: View {
 							case .add:
 								if model.student.exams.filter("date == %@", model.date).isEmpty{
 									Exam.add(model: model)
-									isPresented = false
+									globalVC.setSelectedExam(with: nil)
 								} else {showAlert = true}
 								
 							case .edit:
 								if !model.student.exams.filter("date == %@ && _id == %@", model.date, model._id).isEmpty || model.student.exams.filter("date == %@", model.date).isEmpty{
 									Exam.update(exam: $exam, model: model)
-									isPresented = false
+									globalVC.setSelectedExam(with: nil)
 								} else {showAlert = true}
 							}
 						}

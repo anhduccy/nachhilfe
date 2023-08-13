@@ -13,7 +13,6 @@ struct LessonCard: View{
     @Environment(\.colorScheme) var appearance
     let title: String
     @ObservedRealmObject var lesson: Lesson
-    @Binding var showLessonEditView: Bool
     let height: CGFloat
     
     var dateFormatter: DateFormatter {
@@ -25,7 +24,7 @@ struct LessonCard: View{
         
     var body: some View{
         ZStack(alignment: .top){
-            if globalVC.selectedLesson?._id == lesson._id && showLessonEditView{
+            if globalVC.selectedLesson?._id == lesson._id{
                 RoundedRectangle(cornerRadius: 10).foregroundColor(lesson.student.first!.color.color)
                     .opacity(0.15)
                     .shadow(radius: 1.5)

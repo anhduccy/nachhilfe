@@ -26,16 +26,35 @@ class GlobalVC: ObservableObject{
     init(){
         selectedLesson = nil
         selectedExam = nil
+        showLessonEditView = false
+        showExamEditView = false
     }
     
     @Published var selectedLesson: Lesson?
     @Published var selectedExam: Exam?
     
-    func setSelectedLesson(with: Lesson?){
+    @Published var showLessonEditView: Bool
+    @Published var showExamEditView: Bool
+    
+    func setSelectedLesson(with: Lesson?, addMode: Bool = false){
         selectedLesson = with
+        if with != nil || addMode{
+            showLessonEditView = true
+        } else {
+            showLessonEditView = false
+        }
+        showExamEditView = false
+        selectedExam = nil
     }
     
-    func setSelectedExam(with: Exam?){
+    func setSelectedExam(with: Exam?, addMode: Bool = false){
         selectedExam = with
+        if with != nil || addMode{
+            showExamEditView = true
+        } else {
+            showExamEditView = false
+        }
+        showLessonEditView = false
+        selectedLesson = nil
     }
 }

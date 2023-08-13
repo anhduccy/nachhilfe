@@ -15,9 +15,6 @@ struct StudentOverview: View{
     
     let geo: GeometryProxy
     @Binding var editViewType: EditViewTypes
-    @Binding var showLessonEditView: Bool
-    @Binding var showExamEditView: Bool
-
     
     var body: some View{
         VStack(spacing: 25){
@@ -27,24 +24,20 @@ struct StudentOverview: View{
                         ExamLineGraph(student: student)
                     }
                     if !student.exams.filter("date>%@", Date() as CVarArg).isEmpty{
-                        ExamCard(title: "Nächste Klausur", exam: student.exams.sorted(byKeyPath: "date", ascending: false).filter("date>%@", Date() as CVarArg).sorted(byKeyPath: "date", ascending: true).first!, showExamEditView: $showExamEditView, height: 70, color: student.color.color)
+                        ExamCard(title: "Nächste Klausur", exam: student.exams.sorted(byKeyPath: "date", ascending: false).filter("date>%@", Date() as CVarArg).sorted(byKeyPath: "date", ascending: true).first!, height: 70, color: student.color.color)
                             .onTapGesture{
                                 withAnimation{
-                                    globalVC.selectedExam  = student.exams.sorted(byKeyPath: "date", ascending: true).filter("date>%@", Date() as CVarArg).first!
+                                    globalVC.setSelectedExam(with: student.exams.sorted(byKeyPath: "date", ascending: true).filter("date>%@", Date() as CVarArg).first!)
                                     editViewType = .edit
-                                    showLessonEditView = false
-                                    showExamEditView = true
                                 }
                             }
                     }
                     if !student.exams.filter("date<%@", Date() as CVarArg).isEmpty{
-                        ExamCard(title: "Letzte Klausur", exam: student.exams.sorted(byKeyPath: "date", ascending: false).filter("date<%@", Date() as CVarArg).first!, showExamEditView: $showExamEditView, height: 70, color: .white)
+                        ExamCard(title: "Letzte Klausur", exam: student.exams.sorted(byKeyPath: "date", ascending: false).filter("date<%@", Date() as CVarArg).first!, height: 70, color: .white)
                             .onTapGesture{
                                 withAnimation{
-                                    globalVC.selectedExam  = student.exams.sorted(byKeyPath: "date", ascending: false).filter("date<%@", Date() as CVarArg).first!
+                                    globalVC.setSelectedExam(with: student.exams.sorted(byKeyPath: "date", ascending: false).filter("date<%@", Date() as CVarArg).first!)
                                     editViewType = .edit
-                                    showLessonEditView = false
-                                    showExamEditView = true
                                 }
                             }
                     }
@@ -54,26 +47,20 @@ struct StudentOverview: View{
             if !student.lessons.isEmpty {
                 VStack{
                     if !student.lessons.filter("date>%@", Date() as CVarArg).isEmpty{
-                        LessonCard(title: "Nächste Nachhilfestunde", lesson: student.lessons.filter("date>%@", Date() as CVarArg).sorted(byKeyPath: "date", ascending: true).first!, showLessonEditView: $showLessonEditView, height: 120)
+                        LessonCard(title: "Nächste Nachhilfestunde", lesson: student.lessons.filter("date>%@", Date() as CVarArg).sorted(byKeyPath: "date", ascending: true).first!, height: 120)
                             .onTapGesture {
                                 withAnimation{
                                     globalVC.setSelectedLesson(with: student.lessons.sorted(byKeyPath: "date", ascending: true).filter("date>%@", Date() as CVarArg).first!)
-                                    
                                     editViewType = .edit
-                                    showLessonEditView = true
-                                    showExamEditView = false
                                 }
                             }
                     }
                     if !student.lessons.filter("date<%@", Date() as CVarArg).isEmpty{
-                        LessonCard(title: "Letzte Nachhilfestunde", lesson: student.lessons.sorted(byKeyPath: "date", ascending: false).filter("date<%@", Date() as CVarArg).first!, showLessonEditView: $showLessonEditView, height: 120)
+                        LessonCard(title: "Letzte Nachhilfestunde", lesson: student.lessons.sorted(byKeyPath: "date", ascending: false).filter("date<%@", Date() as CVarArg).first!, height: 120)
                             .onTapGesture {
                                 withAnimation{
                                     globalVC.setSelectedLesson(with: student.lessons.sorted(byKeyPath: "date", ascending: false).filter("date<%@", Date() as CVarArg).first!)
-                                    
                                     editViewType = .edit
-                                    showLessonEditView = true
-                                    showExamEditView = false
                                 }
                             }
                     }

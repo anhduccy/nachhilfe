@@ -19,9 +19,6 @@ struct StudentList: View{
     @Binding var editViewType: EditViewTypes
     @Binding var showAll: Bool
     
-    @Binding var showLessonEditView: Bool
-    @Binding var showExamEditView: Bool
-
     var body: some View{
         VStack{
             HStack(alignment: .bottom){
@@ -62,13 +59,11 @@ struct StudentList: View{
                                 .foregroundColor(.gray)
                         } else {
                             ForEach(lessons(), id: \.self){ lesson in
-                                LessonListItem(lesson: lesson, showLessonEditView: $showLessonEditView, dateMode: false)
+                                LessonListItem(lesson: lesson, dateMode: true)
                                     .onTapGesture {
                                         withAnimation{
                                             globalVC.setSelectedLesson(with: lesson)
                                             editViewType = .edit
-                                            showExamEditView = false
-                                            showLessonEditView = true
                                         }
                                     }
                             }
@@ -86,13 +81,11 @@ struct StudentList: View{
                                 .foregroundColor(.gray)
                         } else {
                             ForEach(exams(), id: \.self){ exam in
-                                ExamListItem(exam: exam, isPresented: $showExamEditView, dateMode: false)
+                                ExamListItem(exam: exam, dateMode: true)
                                     .onTapGesture {
                                         withAnimation{
                                             globalVC.setSelectedExam(with: exam)
                                             editViewType = .edit
-                                            showExamEditView = true
-                                            showLessonEditView = false
                                         }
                                     }
                             }

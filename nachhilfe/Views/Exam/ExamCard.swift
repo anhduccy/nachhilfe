@@ -13,7 +13,6 @@ struct ExamCard: View{
     @Environment(\.colorScheme) var appearance
     let title: String
     @ObservedRealmObject var exam: Exam
-    @Binding var showExamEditView: Bool
     let height: CGFloat
     
     let foregroundColor: Color
@@ -21,10 +20,9 @@ struct ExamCard: View{
     let backgroundColorDark: Color
     let selectedColor: Color
     
-    init(title: String, exam: Exam, showExamEditView: Binding<Bool>, height: CGFloat, color: Color){
+    init(title: String, exam: Exam, height: CGFloat, color: Color){
         self.title = title
         self.exam = exam
-        _showExamEditView = showExamEditView
         self.height = height
         
         if color == .white{
@@ -49,7 +47,7 @@ struct ExamCard: View{
         
     var body: some View{
         ZStack(alignment: .center){
-            if globalVC.selectedExam?._id == exam._id && showExamEditView{
+            if globalVC.selectedExam?._id == exam._id{
                 RoundedRectangle(cornerRadius: 10).foregroundColor(selectedColor)
                     .opacity(0.15)
                     .shadow(radius: 1.5)
@@ -71,7 +69,7 @@ struct ExamCard: View{
                     }
                     
                     Text(dateFormatter.string(from: exam.date)).font(.callout.bold())
-                        .foregroundColor(appearance == .dark ? .white : (backgroundColor == .white) ? .black : (globalVC.selectedExam?._id == exam._id && showExamEditView) ? .black : .white)
+                        .foregroundColor(appearance == .dark ? .white : (backgroundColor == .white) ? .black : (globalVC.selectedExam?._id == exam._id) ? .black : .white)
                 }
                 Spacer()
                 if exam.grade == -1{
@@ -80,7 +78,7 @@ struct ExamCard: View{
                     Text("\(exam.grade)").font(.title.weight(.heavy))
                 }
             }.padding([.leading, .trailing])
-                .foregroundColor((globalVC.selectedExam?._id == exam._id && showExamEditView) ? exam.student.first!.color.color : foregroundColor)
+                .foregroundColor((globalVC.selectedExam?._id == exam._id) ? exam.student.first!.color.color : foregroundColor)
         }.frame(height: height)
     }
 }
