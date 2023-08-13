@@ -22,6 +22,13 @@ struct LessonListItem: View{
         dateFormatter.locale = Locale(identifier: "de_DE")
         return dateFormatter
     }
+    
+    var timeFormatter: DateFormatter{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+        dateFormatter.locale = Locale(identifier: "de_DE")
+        return dateFormatter
+    }
 
     var body: some View{
         ZStack {
@@ -63,7 +70,7 @@ struct LessonListItem: View{
                 }
                 Spacer()
                 
-                HStack(spacing: 10){
+                HStack(spacing: 15){
                     if lesson.isDone && !lesson.isPayed || !lesson.isDone && lesson.isPayed{
                         Icon(systemName: "info.circle", color: .red, size: 20)
                             .onTapGesture{
@@ -82,6 +89,12 @@ struct LessonListItem: View{
                                     .padding()
                             }
                         
+                    }
+                    
+                    if !dateMode{
+                        Text(timeFormatter.string(from: lesson.date))
+                            .font(.callout)
+                            .foregroundColor(.gray)
                     }
                     
                     HStack(spacing: 5){
