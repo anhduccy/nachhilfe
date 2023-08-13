@@ -41,11 +41,13 @@ struct StudentList: View{
                 }).foregroundColor(listMode == .exams ? student.color.color : .gray)
                 
                 Spacer()
-                Button(showAll ? "Erledigte ausblenden" : "Alle anzeigen"){
-                    withAnimation{
-                        showAll.toggle()
-                    }
-                }.foregroundColor(student.color.color)
+                if !student.exams.isEmpty || !student.lessons.isEmpty{
+                    Button(showAll ? "Erledigte ausblenden" : "Alle anzeigen"){
+                        withAnimation{
+                            showAll.toggle()
+                        }
+                    }.foregroundColor(student.color.color)
+                }
             }
             
             ScrollView(.vertical, showsIndicators: false){

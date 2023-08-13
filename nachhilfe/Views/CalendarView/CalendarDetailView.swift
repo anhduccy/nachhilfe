@@ -11,8 +11,9 @@ import RealmSwift
 struct CalendarDetailView: View{
     @EnvironmentObject var globalVC: GlobalVC
     
-    init(selectedDate: Binding<Date>){
+    init(type: Binding<EditViewTypes>, selectedDate: Binding<Date>){
         _selectedDate = selectedDate
+        _editViewType = type
                 
         let startOfDay = Calendar.current.startOfDay(for: selectedDate.wrappedValue)
         var components = DateComponents()
@@ -26,6 +27,7 @@ struct CalendarDetailView: View{
     }
     
     @Binding var selectedDate: Date
+    @Binding var editViewType: EditViewTypes
     
     var lessons: Results<Lesson>
     var exams: Results<Exam>
@@ -40,8 +42,25 @@ struct CalendarDetailView: View{
     var body: some View{
         VStack(spacing: 0){
             if !globalVC.showLessonEditView && !globalVC.showExamEditView{
-                LeftText(dateFormatter.string(from: selectedDate), font: .title3, fontWeight: .bold)
-                    .padding([.leading, .trailing, .top])
+                HStack{
+                    Text(dateFormatter.string(from: selectedDate))
+                        .font(.title3.bold())
+                    Spacer()
+                    Menu(content: {
+                        Button(action: {
+                            withAnimation{
+                                editViewType = .add
+                                globalVC.setSelectedLesson(with: nil, addMode: true)
+                            }
+                        }, label: {Label("Nachhilfestunde hinzufügen", systemImage: "clock")})
+                        Button(action: {
+                            withAnimation{
+                                editViewType = .add
+                                globalVC.setSelectedExam(with: nil, addMode: true)
+                            }
+                        }, label: {Label("Klausur hinzufügen", systemImage: "doc")})
+                    }, label: {Icon(systemName: "plus", color: .teal)})
+                }.padding([.leading, .trailing, .top])
             } else {
                 HStack{
                     Text("Ereignisse")
@@ -53,7 +72,7 @@ struct CalendarDetailView: View{
             }
             if lessons.isEmpty{
                 Spacer()
-                Text("Keine Ereignisse an diesem Tag")
+                Text("Keine Nachhilfestunden oder Klausuren an diesem Tag")
                     .foregroundColor(.gray)
                 Spacer()
             } else {
@@ -64,6 +83,7 @@ struct CalendarDetailView: View{
                                 ExamListItem(exam: exam, dateMode: false)
                                     .onTapGesture{
                                         withAnimation{
+                                            editViewType = .edit
                                             globalVC.setSelectedExam(with: exam)
                                         }
                                     }
@@ -75,6 +95,7 @@ struct CalendarDetailView: View{
                                 LessonListItem(lesson: lesson, dateMode: false)
                                     .onTapGesture{
                                         withAnimation{
+                                            editViewType = .edit
                                             globalVC.setSelectedLesson(with: lesson)
                                         }
                                     }

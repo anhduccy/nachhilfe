@@ -25,7 +25,7 @@ struct ExamListItem: View {
 		ZStack{
 			if globalVC.selectedExam?._id == exam._id && globalVC.showExamEditView{
 				RoundedRectangle(cornerRadius: 10)
-					.foregroundColor(exam.student.first!.color.color)
+					.foregroundColor(exam.student.first?.color.color ?? .teal)
 					.opacity(0.1)
 					.shadow(radius: 1.5)
 			} else{

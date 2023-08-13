@@ -9,6 +9,24 @@ import SwiftUI
 import Realm
 import RealmSwift
 
+class AutoFill{
+	static func nextDate(student: Student)->Date{
+		let cal = Calendar.current
+		var comps = DateComponents()
+		let hour = cal.component(.hour, from: student.defaultTime)
+		let minutes = cal.component(.minute, from: student.defaultTime)
+		comps.weekday = student.weekday.number
+		comps.hour = hour
+		comps.minute = minutes
+		
+		var nextWeekday = cal.nextDate(after: Date(), matching: comps, matchingPolicy: .nextTimePreservingSmallerComponents) ?? Date()
+		while !student.lessons.filter("date == %@", nextWeekday).isEmpty{
+			nextWeekday = nextWeekday.addingTimeInterval(60*60*24*7)
+		}
+		return nextWeekday
+	}
+}
+
 struct LessonEditView: View {
 	init(type: EditViewTypes, lesson: Lesson?, student: Student? = nil){
 		self.type = type
@@ -16,21 +34,7 @@ struct LessonEditView: View {
 			let internModel = LessonModel()
 			if student != nil{
 				internModel.student = student!
-				
-				let cal = Calendar.current
-				var comps = DateComponents()
-				let hour = cal.component(.hour, from: student!.defaultTime)
-				let minutes = cal.component(.minute, from: student!.defaultTime)
-				comps.weekday = student!.weekday.number
-				comps.hour = hour
-				comps.minute = minutes
-				
-				var nextWeekday = cal.nextDate(after: Date(), matching: comps, matchingPolicy: .nextTimePreservingSmallerComponents) ?? Date()
-				while !student!.lessons.filter("date == %@", nextWeekday).isEmpty{
-					nextWeekday = nextWeekday.addingTimeInterval(60*60*24*7)
-				}
-				internModel.date = nextWeekday
-				
+				internModel.date = AutoFill.nextDate(student: student!)
 			}
 			self.model = internModel
 			self.lesson = Lesson()
@@ -72,6 +76,7 @@ struct LessonEditView: View {
 					Menu(content: {
 						ForEach(students, id:\.self){ student in
 							Button(action: {
+								model.date = AutoFill.nextDate(student: student)
 								model.student = student
 							}, label: {
 								HStack{

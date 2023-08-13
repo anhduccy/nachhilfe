@@ -11,6 +11,7 @@ import RealmSwift
 struct CalendarView: View {
     @EnvironmentObject var globalVC: GlobalVC
     
+    @State var editViewType: EditViewTypes = .edit
     @State var selectedMonth: Int = 0
     @State var selectedDate: Date = Calendar.current.startOfDay(for: Date())
     
@@ -31,7 +32,7 @@ struct CalendarView: View {
                             } else {
                                 ScrollView(.vertical, showsIndicators: false){
                                     CalendarGrid(selectedMonth: $selectedMonth, selectedDate: $selectedDate)
-                                    CalendarDetailView(selectedDate: $selectedDate)
+                                    CalendarDetailView(type: $editViewType, selectedDate: $selectedDate)
                                     Spacer()
                                 }
                             }
@@ -41,15 +42,15 @@ struct CalendarView: View {
                     HStack{
                         Divider()
                         if !globalVC.showExamEditView && !globalVC.showLessonEditView{
-                            CalendarDetailView(selectedDate: $selectedDate)
+                            CalendarDetailView(type: $editViewType , selectedDate: $selectedDate)
                         }
                         
                         if globalVC.showLessonEditView{
-                            LessonEditView(type: .edit, lesson: globalVC.selectedLesson)
+                            LessonEditView(type: editViewType, lesson: globalVC.selectedLesson)
                         }
                         
                         if globalVC.showExamEditView{
-                                ExamEditView(type: .edit, exam: globalVC.selectedExam)
+                                ExamEditView(type: editViewType, exam: globalVC.selectedExam)
                         }
                     }
                 }

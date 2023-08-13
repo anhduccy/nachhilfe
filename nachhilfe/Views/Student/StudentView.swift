@@ -40,6 +40,7 @@ struct StudentView: View{
                                         }
                                     }, label: {Label("Klausur hinzufügen", systemImage: "doc")})
                                 }, label: {Icon(systemName: "plus", color: student.color.color)})
+
                             }
                             LeftText("\(student.surname) \(student.name)", font: .title2, fontWeight: .bold)
                                 .foregroundColor(student.color.color)
@@ -77,7 +78,7 @@ struct StudentView: View{
                             }
                             
                             StudentList(student: student, geo: geo, editViewType: $editViewType, showAll: $showAllLessons)
-                                .frame(width: geo.size.width/2.05)
+                                .frame(width: !student.lessons.isEmpty || !student.exams.isEmpty ? geo.size.width/2.05 : geo.size.width)
                         }
                     }
                 }.ignoresSafeArea(.keyboard)
