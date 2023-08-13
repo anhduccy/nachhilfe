@@ -34,7 +34,7 @@ struct ExamListItem: View {
 					.shadow(radius: 1.5)
 			}
 			
-			HStack(spacing: 20){
+			HStack(spacing: 15){
 				HStack(spacing: 10){
 					if dateMode{
 						Text(dateFormatter.string(from: exam.date))

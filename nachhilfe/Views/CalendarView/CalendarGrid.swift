@@ -101,7 +101,7 @@ struct CalendarDay: View{
                 Text("\(day)")
                     .foregroundColor(Calendar.current.isDateInToday(date) || selectedDate == date  ? .teal : .primary)
                 
-                if lessons.isEmpty{
+                if !lessons.isEmpty && !exams.isEmpty{
                     Text("")
                         .font(.caption2)
                 } else {

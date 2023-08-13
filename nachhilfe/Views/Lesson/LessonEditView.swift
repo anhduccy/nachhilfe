@@ -199,10 +199,8 @@ struct LessonEditView: View {
 					if type == .edit{
 						Spacer()
 						Button(action: {
-							withAnimation{
-								globalVC.setSelectedLesson(with: nil)
-								Lesson.delete(lesson: lesson)
-							}
+							globalVC.setSelectedLesson(with: nil)
+							Lesson.delete(lesson: lesson)
 						}, label: {
 							Image(systemName: "trash")
 								.foregroundColor(.red)

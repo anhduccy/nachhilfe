@@ -42,7 +42,7 @@ struct CalendarView: View {
                     HStack{
                         Divider()
                         if !globalVC.showExamEditView && !globalVC.showLessonEditView{
-                            CalendarDetailView(type: $editViewType , selectedDate: $selectedDate)
+                            CalendarDetailView(type: $editViewType, selectedDate: $selectedDate)
                         }
                         
                         if globalVC.showLessonEditView{
@@ -50,7 +50,7 @@ struct CalendarView: View {
                         }
                         
                         if globalVC.showExamEditView{
-                                ExamEditView(type: editViewType, exam: globalVC.selectedExam)
+                            ExamEditView(type: editViewType, exam: globalVC.selectedExam)
                         }
                     }
                 }

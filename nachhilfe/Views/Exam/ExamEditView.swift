@@ -137,10 +137,8 @@ struct ExamEditView: View {
 					if type == .edit{
 						Spacer()
 						Button(action: {
-							withAnimation{
-								globalVC.setSelectedExam(with: nil)
-								Exam.delete(exam: exam)
-							}
+							globalVC.setSelectedExam(with: nil)
+							Exam.delete(exam: exam)
 						}, label: {
 							Image(systemName: "trash")
 								.foregroundColor(.red)

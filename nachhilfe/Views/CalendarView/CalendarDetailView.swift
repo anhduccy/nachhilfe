@@ -60,7 +60,7 @@ struct CalendarDetailView: View{
                             }
                         }, label: {Label("Klausur hinzufügen", systemImage: "doc")})
                     }, label: {Icon(systemName: "plus", color: .teal)})
-                }.padding([.leading, .trailing, .top])
+                }.padding()
             } else {
                 HStack{
                     Text("Ereignisse")
@@ -68,9 +68,9 @@ struct CalendarDetailView: View{
                     Spacer()
                     Text("\(lessons.count + exams.count)")
                         .foregroundColor(.gray)
-                }.padding(0)
+                }.padding(.bottom)
             }
-            if lessons.isEmpty{
+            if !lessons.isEmpty && !exams.isEmpty{
                 Spacer()
                 Text("Keine Nachhilfestunden oder Klausuren an diesem Tag")
                     .foregroundColor(.gray)
@@ -78,27 +78,31 @@ struct CalendarDetailView: View{
             } else {
                 ScrollView(.vertical, showsIndicators: false){
                     VStack(spacing: 20){
-                        VStack{
-                            ForEach(exams, id: \.self){ exam in
-                                ExamListItem(exam: exam, dateMode: false)
-                                    .onTapGesture{
-                                        withAnimation{
-                                            editViewType = .edit
-                                            globalVC.setSelectedExam(with: exam)
+                        if !exams.isEmpty{
+                            VStack{
+                                ForEach(exams, id: \.self){ exam in
+                                    ExamListItem(exam: exam, dateMode: false)
+                                        .onTapGesture{
+                                            withAnimation{
+                                                editViewType = .edit
+                                                globalVC.setSelectedExam(with: exam)
+                                            }
                                         }
-                                    }
+                                }
                             }
                         }
                         
-                        VStack{
-                            ForEach(lessons, id: \.self){ lesson in
-                                LessonListItem(lesson: lesson, dateMode: false)
-                                    .onTapGesture{
-                                        withAnimation{
-                                            editViewType = .edit
-                                            globalVC.setSelectedLesson(with: lesson)
+                        if !lessons.isEmpty{
+                            VStack{
+                                ForEach(lessons, id: \.self){ lesson in
+                                    LessonListItem(lesson: lesson, dateMode: false)
+                                        .onTapGesture{
+                                            withAnimation{
+                                                editViewType = .edit
+                                                globalVC.setSelectedLesson(with: lesson)
+                                            }
                                         }
-                                    }
+                                }
                             }
                         }
                     }.padding(5)

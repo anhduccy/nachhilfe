@@ -26,7 +26,7 @@ struct LessonListItem: View{
     var body: some View{
         ZStack {
             if globalVC.selectedLesson?._id == lesson._id && globalVC.showLessonEditView{
-                RoundedRectangle(cornerRadius: 10).foregroundColor(lesson.student.first!.color.color)
+                RoundedRectangle(cornerRadius: 10).foregroundColor(lesson.student.first?.color.color ?? .teal)
                     .opacity(0.1)
                     .shadow(radius: 1.5)
             } else {
