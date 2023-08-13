@@ -17,8 +17,9 @@ class Exam: Object, ObjectKeyIdentifiable{
 	
 	static func add(model: ExamModel){
 		try! realmEnv.write{
-			let student: Student = realmEnv.objects(Student.self).filter("_id == %@", model.student._id).first!
+			let student: Student = realmEnv.object(ofType: Student.self, forPrimaryKey: model.student._id)!
 			student.exams.append(model.toRealm(exam: Exam()))
+			NotificationCenter.scheduleExam(exam: model)
 		}
 	}
 	static func update(exam: ObservedRealmObject<Exam>.Wrapper, model: ExamModel){
@@ -30,12 +31,15 @@ class Exam: Object, ObjectKeyIdentifiable{
 			try! realmEnv.write{
 				let store = Exam(value: exam.wrappedValue)
 				realmEnv.delete(realmEnv.objects(Exam.self).filter("_id == %@", exam.wrappedValue._id))
-				let student = realmEnv.objects(Student.self).filter("_id == %@", model.student._id).first!
+				let student = realmEnv.object(ofType: Student.self, forPrimaryKey: model.student._id)!
 				ObservedRealmObject(wrappedValue: student).projectedValue.exams.append(model.toRealm(exam: store))
 			}
 		}
+		NotificationCenter.deleteNotification(studentID: "\(exam.wrappedValue.student.first!._id)", objID: "\(exam.wrappedValue._id)", type: "exams")
+		NotificationCenter.scheduleExam(exam: model)
 	}
 	static func delete(exam: Exam){
+		NotificationCenter.deleteNotification(studentID: "\(exam.student.first!._id)", objID: "\(exam._id)", type: "exams")
 		if realmEnv.isInWriteTransaction{
 			realmEnv.delete(realmEnv.objects(Exam.self).filter("_id == %@", exam._id))
 		} else {

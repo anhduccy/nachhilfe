@@ -66,11 +66,13 @@ struct StudentView: View{
                         }
                     } else {
                         HStack{
-                            ScrollView(.vertical, showsIndicators: false){
-                                VStack{
-                                    StudentOverview(student: student, geo: geo, editViewType: $editViewType)
-                                        .frame(width: geo.size.width/2)
-                                    Spacer()
+                            if !student.lessons.isEmpty || !student.exams.isEmpty{
+                                ScrollView(.vertical, showsIndicators: false){
+                                    VStack{
+                                        StudentOverview(student: student, geo: geo, editViewType: $editViewType)
+                                            .frame(width: geo.size.width/2)
+                                        Spacer()
+                                    }
                                 }
                             }
                             

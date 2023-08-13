@@ -8,12 +8,15 @@
 import SwiftUI
 import Realm
 import RealmSwift
+import UIKit
 
 struct NavigatorView: View{
 	@ObservedResults(Student.self) var students
 	
 	@State var selectedView: ViewTypes? = .calendar
+	
 	@State var showStudentEditView: Bool = false
+	@State var showSettingsView: Bool = false
 	
 	var body: some View{
 		NavigationSplitView(sidebar: {
@@ -33,15 +36,23 @@ struct NavigatorView: View{
 					})
 				}
 			}.toolbar{
-				ToolbarItem{
-				 Button(action: {
-					 showStudentEditView.toggle()
-				 }, label: {
-					 Image(systemName: "person.crop.circle.badge.plus")
-				 }).sheet(isPresented: $showStudentEditView){
-					 StudentEditView(type: .add, student: nil, isPresented: $showStudentEditView)
-				 }
-			 }
+				ToolbarItemGroup{
+					 Button(action: {
+						 showStudentEditView.toggle()
+					 }, label: {
+						 Image(systemName: "person.crop.circle.badge.plus")
+					 }).sheet(isPresented: $showStudentEditView){
+						 StudentEditView(type: .add, student: nil, isPresented: $showStudentEditView)
+					 }
+				
+					Button(action: {
+						showSettingsView.toggle()
+					}, label: {
+						Image(systemName: "gear")
+					}).sheet(isPresented: $showSettingsView){
+						SettingsView(isPresented: $showSettingsView)
+					}
+				}
 		 }
 		}, detail:{
 			switch selectedView {
@@ -51,6 +62,41 @@ struct NavigatorView: View{
 				CalendarView()
 			}
 		})
+		.onAppear{
+			NotificationCenter.requestPermission()
+		}
 	}
 }
+
+/*FOR DEBUG
+struct NotificationView: View{
+	var body: some View{
+		ForEach(notifications(), id: \.self){ notification in
+			HStack{
+				Text(notification.identifier)
+				Spacer()
+				Text("\(notification.trigger!.value(forKey: "date") as! Date)")
+			}
+		}
+		
+		ForEach(UIApplication.shared.scheduledLocalNotifications!, id: \.self){ not in
+			HStack{
+				Text(not.alertBody!)
+				Spacer()
+				Text("\(not.fireDate ?? Date())")
+			}
+		}
+	}
+	func notifications()->[UNNotificationRequest]{
+		var array: [UNNotificationRequest] = []
+		UNUserNotificationCenter.current().getPendingNotificationRequests{ (notifications) in
+			for notification in notifications {
+				array.append(notification)
+			}
+		}
+		return array
+	}
+}
+ */
+
 

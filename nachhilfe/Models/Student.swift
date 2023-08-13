@@ -90,7 +90,7 @@ class Student: Object, ObjectKeyIdentifiable{
 		}
     }
 	static func runDelete(student: Student){
-		let studentObj = realmEnv.objects(Student.self).filter("_id == %@", student._id).first!
+		let studentObj = realmEnv.object(ofType: Student.self, forPrimaryKey: student._id)!
 			for exam in studentObj.exams{
 				Exam.delete(exam: exam)
 			}

@@ -29,6 +29,8 @@
 		795BC66628A2E077004A9840 /* Exam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795BC66528A2E077004A9840 /* Exam.swift */; };
 		795FD0322A83DC7D00C203B4 /* Migrator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795FD0312A83DC7D00C203B4 /* Migrator.swift */; };
 		797CF47A295863D9005CD3CE /* SalesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797CF479295863D8005CD3CE /* SalesView.swift */; };
+		797EF21C2A8909C900BDB39F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797EF21B2A8909C900BDB39F /* SettingsView.swift */; };
+		797EF21F2A890ADE00BDB39F /* UserNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797EF21E2A890ADE00BDB39F /* UserNotifications.swift */; };
 		79AB800928CD36520055078D /* ExamListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79AB800828CD36520055078D /* ExamListItem.swift */; };
 		79BDED2C290DC7D30070C8AF /* StudentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79BDED2B290DC7D30070C8AF /* StudentView.swift */; };
 		79C1000028A41E620049DAD3 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C1FFFF28A41E620049DAD3 /* Enums.swift */; };
@@ -62,6 +64,8 @@
 		795BC66528A2E077004A9840 /* Exam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exam.swift; sourceTree = "<group>"; usesTabs = 1; };
 		795FD0312A83DC7D00C203B4 /* Migrator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Migrator.swift; sourceTree = "<group>"; };
 		797CF479295863D8005CD3CE /* SalesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalesView.swift; sourceTree = "<group>"; };
+		797EF21B2A8909C900BDB39F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		797EF21E2A890ADE00BDB39F /* UserNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotifications.swift; sourceTree = "<group>"; };
 		7992FC1D28B6926400E8F8AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		79AB800828CD36520055078D /* ExamListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamListItem.swift; sourceTree = "<group>"; usesTabs = 1; };
 		79BDED2B290DC7D30070C8AF /* StudentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentView.swift; sourceTree = "<group>"; };
@@ -102,6 +106,7 @@
 				7922F91928A2F1C40068879D /* ViewLibrary.swift */,
 				7944906728A9637200884758 /* ContentView */,
 				79011D7B2A8847D8005879CC /* CalendarView */,
+				797EF21D2A8909D900BDB39F /* SalesView */,
 				7944906428A9634000884758 /* Student */,
 				7944906928A963CF00884758 /* Lesson */,
 				79EA248F28CCEE9A0069F491 /* Exam */,
@@ -124,9 +129,9 @@
 			isa = PBXGroup;
 			children = (
 				795BC64E28A2DDD3004A9840 /* ContentView.swift */,
-				7944906528A9635E00884758 /* NavigatorView.swift */,
-				797CF479295863D8005CD3CE /* SalesView.swift */,
+				797EF21B2A8909C900BDB39F /* SettingsView.swift */,
 				7922F91128A2E5650068879D /* LoginView.swift */,
+				7944906528A9635E00884758 /* NavigatorView.swift */,
 			);
 			path = ContentView;
 			sourceTree = "<group>";
@@ -165,6 +170,7 @@
 				795FD0312A83DC7D00C203B4 /* Migrator.swift */,
 				7922F91328A2E5C60068879D /* Privacy.swift */,
 				79C1FFFF28A41E620049DAD3 /* Enums.swift */,
+				797EF21E2A890ADE00BDB39F /* UserNotifications.swift */,
 				7922F91028A2E5580068879D /* Views */,
 				795BC66228A2DFB8004A9840 /* Models */,
 				795BC65028A2DDD5004A9840 /* Assets.xcassets */,
@@ -191,6 +197,14 @@
 				795BC66528A2E077004A9840 /* Exam.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		797EF21D2A8909D900BDB39F /* SalesView */ = {
+			isa = PBXGroup;
+			children = (
+				797CF479295863D8005CD3CE /* SalesView.swift */,
+			);
+			path = SalesView;
 			sourceTree = "<group>";
 		};
 		79EA248F28CCEE9A0069F491 /* Exam */ = {
@@ -299,8 +313,10 @@
 				790B0C392A805DE10044F9EA /* StudentList.swift in Sources */,
 				79BDED2C290DC7D30070C8AF /* StudentView.swift in Sources */,
 				79F1219C29575C6E0019D455 /* ExamCard.swift in Sources */,
+				797EF21F2A890ADE00BDB39F /* UserNotifications.swift in Sources */,
 				7922F91428A2E5C60068879D /* Privacy.swift in Sources */,
 				795BC66428A2DFC0004A9840 /* Lesson.swift in Sources */,
+				797EF21C2A8909C900BDB39F /* SettingsView.swift in Sources */,
 				7944906628A9635E00884758 /* NavigatorView.swift in Sources */,
 				797CF47A295863D9005CD3CE /* SalesView.swift in Sources */,
 				79011D7D2A8847F8005879CC /* CalendarGrid.swift in Sources */,

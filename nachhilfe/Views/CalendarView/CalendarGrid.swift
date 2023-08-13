@@ -89,12 +89,12 @@ struct CalendarDay: View{
     let day: Int
     let date: Date
     
-    let lessons: Results<Lesson>
-    let exams: Results<Exam>
+    var lessons: Results<Lesson>
+    var exams: Results<Exam>
 
     var body: some View{
         ZStack{
-            RoundedRectangle(cornerRadius: 10)
+            RoundedRectangle(cornerRadius: 7.5)
                 .foregroundColor(selectedDate == date ? .teal : .clear)
                 .opacity(0.2)
             VStack(spacing: 0){

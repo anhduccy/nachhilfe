@@ -27,8 +27,8 @@ struct CalendarDetailView: View{
     
     @Binding var selectedDate: Date
     
-    let lessons: Results<Lesson>
-    let exams: Results<Exam>
+    var lessons: Results<Lesson>
+    var exams: Results<Exam>
     
     var dateFormatter: DateFormatter {
         let dateFormatter = DateFormatter()

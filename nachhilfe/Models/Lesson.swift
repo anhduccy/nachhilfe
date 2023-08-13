@@ -20,8 +20,9 @@ class Lesson: Object, ObjectKeyIdentifiable{
     
     static func add(model: LessonModel){
         try? realmEnv.write{
-            let student: Student = realmEnv.objects(Student.self).filter("_id == %@", model.student._id).first!
+            let student: Student = realmEnv.object(ofType: Student.self, forPrimaryKey: model.student._id)!
             student.lessons.append(model.toRealm(lesson: Lesson()))
+            NotificationCenter.scheduleLesson(lesson: model)
         }
     }
     
@@ -37,13 +38,16 @@ class Lesson: Object, ObjectKeyIdentifiable{
             try! realmEnv.write{
                 let store = Lesson(value: lesson.wrappedValue)
                 realmEnv.delete(realmEnv.objects(Lesson.self).filter("_id == %@", lesson.wrappedValue._id))
-                let student = realmEnv.objects(Student.self).filter("_id == %@", model.student._id).first!
+                let student = realmEnv.object(ofType: Student.self, forPrimaryKey: model.student._id)!
                 ObservedRealmObject(wrappedValue: student).projectedValue.lessons.append(model.toRealm(lesson: store))
             }
         }
+        NotificationCenter.deleteNotification(studentID: "\(lesson.wrappedValue.student.first!._id)", objID: "\(lesson.wrappedValue._id)", type: "lessons")
+        NotificationCenter.scheduleLesson(lesson: model)
     }
     
     static func delete(lesson: Lesson){
+        NotificationCenter.deleteNotification(studentID: "\(lesson.student.first!._id)", objID: "\(lesson._id)", type: "lessons")
         if realmEnv.isInWriteTransaction{
             realmEnv.delete(realmEnv.objects(Lesson.self).filter("_id == %@", lesson._id))
         } else {
